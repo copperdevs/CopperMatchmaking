@@ -18,7 +18,9 @@ namespace CopperMatchmaking
                 },
                 OnData = (connectionId, message) =>
                 {
-                    Log.Info($"New data received from client {connectionId}. Data: {BitConverter.ToString(message.Array, message.Offset, message.Count)}");
+                    // Log.Info($"New data received from client {connectionId}. Data: {BitConverter.ToString(message.Array, message.Offset, message.Count)}");
+                    var receivedMessage = new Message(message);
+                    Log.Info($"Received new data from client {connectionId}. Raw Data: {BitConverter.ToString(message.Array, message.Offset, message.Count)} | Message[{receivedMessage.Id}] receive is of type {((Message.MessageType)receivedMessage.Type).ToString()}. Data: {receivedMessage.GetData()}");
                 },
                 OnDisconnected = connectionId =>
                 {

@@ -9,7 +9,7 @@ namespace CopperMatchmaking
 {
     public class Message
     {
-        private enum MessageType : byte
+        public enum MessageType : byte
         {
             Bool = 1,
             Char,
@@ -54,10 +54,30 @@ namespace CopperMatchmaking
             return message;
         }
 
-        public static implicit operator byte[](Message message) => message.CreateMessage();
-        public static implicit operator ArraySegment<byte>(Message message) => new ArraySegment<byte>(message.CreateMessage());
+        public object GetData()
+        {
+            var type = (MessageType)Type;
+            return type switch
+            {
+                MessageType.Bool => BitConverter.ToBoolean(Contents),
+                MessageType.Char => BitConverter.ToChar(Contents),
+                MessageType.Double => BitConverter.ToDouble(Contents),
+                MessageType.Float => BitConverter.ToSingle(Contents),
+                MessageType.Int => BitConverter.ToInt32(Contents),
+                MessageType.Long => BitConverter.ToInt64(Contents),
+                MessageType.Short => BitConverter.ToInt16(Contents),
+                MessageType.Uint => BitConverter.ToUInt32(Contents),
+                MessageType.Ulong => BitConverter.ToUInt64(Contents),
+                MessageType.UShort => BitConverter.ToUInt16(Contents),
+                MessageType.String => Encoding.ASCII.GetString(Contents),
+                _ => throw new ArgumentOutOfRangeException()
+            };
+        }
 
-        #region Constructors
+        public static implicit operator byte[](Message message) => message.CreateMessage();
+
+        public static implicit operator ArraySegment<byte>(Message message) =>
+            new ArraySegment<byte>(message.CreateMessage());
 
         public Message(byte id, bool content) : this(id, (byte)MessageType.Bool, BitConverter.GetBytes(content))
         {
@@ -99,10 +119,8 @@ namespace CopperMatchmaking
         {
         }
 
-        public Message(byte id, string content) : this(id, (byte)MessageType.String, Encoding.UTF8.GetBytes(content))
+        public Message(byte id, string content) : this(id, (byte)MessageType.String, Encoding.ASCII.GetBytes(content))
         {
         }
-
-        #endregion
     }
 }

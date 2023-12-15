@@ -26,9 +26,9 @@ namespace CopperMatchmaking
                 },
                 OnData = message =>
                 {
-                    Log.Info($"Received new data from server. Data: {BitConverter.ToString(message.Array, message.Offset, message.Count)}");
+                    // Log.Info($"Received new data from server. Raw Data: {BitConverter.ToString(message.Array, message.Offset, message.Count)}");
                     var receivedMessage = new Message(message);
-                    Log.Info($"Message data - ");
+                    Log.Info($"Received new data from server. Raw Data: {BitConverter.ToString(message.Array, message.Offset, message.Count)} | Message[{receivedMessage.Id}] receive is of type {((Message.MessageType)receivedMessage.Type).ToString()}. Data: {receivedMessage.GetData()}");
                 },
                 OnDisconnected = () =>
                 {
@@ -43,7 +43,10 @@ namespace CopperMatchmaking
 
             Client.OnConnected += () =>
             {
-                var message = new Message(0, "hello world");
+                const string welcomeMessage = "hello world";
+                
+                Log.Info($"Sending welcome message '{welcomeMessage}'");
+                var message = new Message(0, welcomeMessage);
                 Client.Send(message);
             };
         }
