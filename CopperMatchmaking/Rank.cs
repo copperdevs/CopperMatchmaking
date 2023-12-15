@@ -1,19 +1,22 @@
-namespace CopperMatchmaking;
+using System;
 
-public class Rank
+namespace CopperMatchmaking
 {
-    public readonly string DisplayName;
-    public readonly byte Id;
-
-    public Rank(string displayName, Enum id) : this(displayName, Convert.ToByte(id))
+    public class Rank
     {
-    }
+        public readonly string DisplayName;
+        public readonly byte Id;
 
-    public Rank(string displayName, byte id)
-    {
-        DisplayName = displayName;
-        Id = id;
-    }
+        public Rank(string displayName, Enum id) : this(displayName, Convert.ToByte(id))
+        {
+        }
 
-    public static implicit operator byte(Rank rank) => rank.Id;
+        public Rank(string displayName, byte id)
+        {
+            DisplayName = displayName;
+            Id = id;
+        }
+
+        public static implicit operator byte(Rank rank) => rank.Id;
+    }
 }
