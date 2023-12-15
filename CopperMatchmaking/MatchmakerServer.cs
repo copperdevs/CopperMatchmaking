@@ -1,4 +1,5 @@
 using System;
+using CopperMatchmaking.Info;
 using CopperMatchmaking.Telepathy;
 
 namespace CopperMatchmaking
@@ -11,9 +12,18 @@ namespace CopperMatchmaking
         {
             server = new Server(Matchmaker.MaxMessageSize)
             {
-                OnConnected = (connectionId) => Console.WriteLine(connectionId + " Connected"),
-                OnData = (connectionId, message) => Console.WriteLine(connectionId + " Data: " + BitConverter.ToString(message.Array, message.Offset, message.Count)),
-                OnDisconnected = (connectionId) => Console.WriteLine(connectionId + " Disconnected")
+                OnConnected = connectionId =>
+                {
+                    Log.Info($"Client {connectionId} connected");
+                },
+                OnData = (connectionId, message) =>
+                {
+                    Log.Info($"New data received from client {connectionId}. Data: {BitConverter.ToString(message.Array, message.Offset, message.Count)}");
+                },
+                OnDisconnected = connectionId =>
+                {
+                    Log.Info($"Client {connectionId} Disconnected");
+                }
             };
         
             server.Start(7777);

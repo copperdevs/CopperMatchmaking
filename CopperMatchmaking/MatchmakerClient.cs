@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using CopperMatchmaking.Info;
 using CopperMatchmaking.Telepathy;
 
 namespace CopperMatchmaking
@@ -13,15 +14,26 @@ namespace CopperMatchmaking
         public MatchmakerClient(Enum id) : this(Convert.ToByte(id))
         {
         }
-    
+
         public MatchmakerClient(byte rankId)
         {
             RankId = rankId;
             Client = new Client(Matchmaker.MaxMessageSize)
             {
-                OnConnected = () => Console.WriteLine("Client Connected"),
-                OnData = message => Console.WriteLine("Client Data: " + BitConverter.ToString(message.Array, message.Offset, message.Count)),
-                OnDisconnected = () => Console.WriteLine("Client Disconnected")
+                OnConnected = () =>
+                {
+                    Log.Info("Client Connected");
+                },
+                OnData = message =>
+                {
+                    Log.Info($"Received new data from server. Data: {BitConverter.ToString(message.Array, message.Offset, message.Count)}");
+                    var receivedMessage = new Message(message);
+                    Log.Info($"Message data - ");
+                },
+                OnDisconnected = () =>
+                {
+                    Log.Info("Client Disconnected");
+                }
             };
         }
 
@@ -31,8 +43,8 @@ namespace CopperMatchmaking
 
             Client.OnConnected += () =>
             {
-                var message = Encoding.UTF8.GetBytes("hello world");
-                Client.Send(new ArraySegment<byte>(message));
+                var message = new Message(0, "hello world");
+                Client.Send(message);
             };
         }
 
