@@ -1,6 +1,6 @@
 ﻿namespace CopperMatchmaking.Telepathy;
 
-public enum EventType
+internal enum EventType
 {
     Connected,
     Data,

@@ -2,7 +2,7 @@
 
 namespace CopperMatchmaking.Telepathy;
 
-public abstract class Common
+internal abstract class Common
 {
     // IMPORTANT: DO NOT SHARE STATE ACROSS SEND/RECV LOOPS (DATA RACES)
     // (except receive pipe which is used for all threads)

@@ -1,4 +1,4 @@
-namespace CopperGui;
+namespace CopperMatchmaking;
 
 public static class Log
 {
@@ -6,6 +6,12 @@ public static class Log
     public static void Warning(object message) => CopperLogger.UninitializedLogWarning(message);
     public static void Error(object message) => CopperLogger.UninitializedLogError(message);
     public static void Error(Exception e) => Error($"[{e.GetType()}] {e.Message} \n {e.StackTrace}");
+
+    public static void Assert(bool condition, object message)
+    {
+        if (!condition)
+            Error(message);
+    }
 }
 
 public static partial class CopperLogger

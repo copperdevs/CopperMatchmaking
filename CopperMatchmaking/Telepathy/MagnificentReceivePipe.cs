@@ -9,7 +9,7 @@
 
 namespace CopperMatchmaking.Telepathy;
 
-public class MagnificentReceivePipe
+internal class MagnificentReceivePipe
 {
     // queue entry message. only used in here.
     // -> byte arrays are always of 4 + MaxMessageSize

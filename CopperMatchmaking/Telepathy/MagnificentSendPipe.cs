@@ -11,7 +11,7 @@ using CopperMatchmaking.Utility;
 
 namespace CopperMatchmaking.Telepathy;
 
-public class MagnificentSendPipe
+internal class MagnificentSendPipe
 {
     // message queue
     // ConcurrentQueue allocates. lock{} instead.

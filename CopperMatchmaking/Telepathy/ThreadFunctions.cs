@@ -11,12 +11,11 @@
 // NOT EVER be changed to non static!
 
 using System.Net.Sockets;
-using CopperGui;
 using CopperMatchmaking.Utility;
 
 namespace CopperMatchmaking.Telepathy;
 
-public static class ThreadFunctions
+internal static class ThreadFunctions
 {
     // send message (via stream) with the <size,content> message structure
     // this function is blocking sometimes!

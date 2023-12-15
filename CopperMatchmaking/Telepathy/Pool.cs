@@ -2,7 +2,7 @@
 
 namespace CopperMatchmaking.Telepathy;
 
-public class Pool<T>
+internal class Pool<T>
 {
     // objects
     readonly Stack<T> objects = new Stack<T>();

@@ -2,7 +2,7 @@
 
 namespace CopperMatchmaking.Telepathy;
 
-public static class NetworkStreamExtensions
+internal static class NetworkStreamExtensions
 {
     // .Read returns '0' if remote closed the connection but throws an
     // IOException if we voluntarily closed our own connection.

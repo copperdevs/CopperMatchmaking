@@ -1,5 +1,4 @@
 ﻿using System.Net.Sockets;
-using CopperGui;
 
 namespace CopperMatchmaking.Telepathy;
 
@@ -11,7 +10,7 @@ namespace CopperMatchmaking.Telepathy;
 //    while attempting to use it for a new connection attempt etc.
 // => creating a fresh client state each time is the best solution against
 //    data races here!
-class ClientConnectionState : ConnectionState
+internal sealed class ClientConnectionState : ConnectionState
 {
     public Thread receiveThread;
 
@@ -79,7 +78,7 @@ class ClientConnectionState : ConnectionState
     }
 }
 
-public class Client : Common
+internal sealed class Client : Common
 {
     // events to hook into
     // => OnData uses ArraySegment for allocation free receives later

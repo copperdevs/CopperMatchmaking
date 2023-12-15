@@ -1,11 +1,10 @@
 ﻿using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Sockets;
-using CopperGui;
 
 namespace CopperMatchmaking.Telepathy;
 
-public class Server : Common
+internal class Server : Common
 {
     // events to hook into
     // => OnData uses ArraySegment for allocation free receives later

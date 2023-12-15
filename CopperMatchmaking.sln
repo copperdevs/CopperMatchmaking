@@ -2,7 +2,9 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopperMatchmaking", "CopperMatchmaking\CopperMatchmaking.csproj", "{09EEAF6D-9C6B-4027-BBF9-65F024389FFF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopperMatchmaking.Server", "CopperMatchmaking.Server\CopperMatchmaking.Server.csproj", "{AB9D834C-DE26-43F6-9FB4-3F978B3ABAEB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopperMatchmaking.Testing.Server", "CopperMatchmaking.Testing.Server\CopperMatchmaking.Testing.Server.csproj", "{AB9D834C-DE26-43F6-9FB4-3F978B3ABAEB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopperMatchmaking.Testing.Client", "CopperMatchmaking.Testing.Client\CopperMatchmaking.Testing.Client.csproj", "{8AFDC43D-778F-4E05-A0D8-AFEB5B7345C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +20,9 @@ Global
 		{AB9D834C-DE26-43F6-9FB4-3F978B3ABAEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB9D834C-DE26-43F6-9FB4-3F978B3ABAEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB9D834C-DE26-43F6-9FB4-3F978B3ABAEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AFDC43D-778F-4E05-A0D8-AFEB5B7345C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AFDC43D-778F-4E05-A0D8-AFEB5B7345C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AFDC43D-778F-4E05-A0D8-AFEB5B7345C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AFDC43D-778F-4E05-A0D8-AFEB5B7345C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

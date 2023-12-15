@@ -1,4 +1,4 @@
-﻿namespace CopperMatchmaking.Server;
+﻿namespace CopperMatchmaking.Testing.Client;
 
 public static class Program
 {

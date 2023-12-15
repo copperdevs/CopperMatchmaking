@@ -11,7 +11,7 @@ using System.Net.Sockets;
 
 namespace CopperMatchmaking.Telepathy;
 
-public class ConnectionState
+internal class ConnectionState
 {
     public TcpClient client;
 
