@@ -11,4 +11,9 @@
       <Folder Include="obj\Debug\net7.0\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\CopperMatchmaking.Testing.Server\CopperMatchmaking.Testing.Server.csproj" />
+      <ProjectReference Include="..\CopperMatchmaking\CopperMatchmaking.csproj" />
+    </ItemGroup>
+
 </Project>

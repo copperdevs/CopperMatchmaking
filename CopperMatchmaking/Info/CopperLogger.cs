@@ -1,4 +1,4 @@
-namespace CopperMatchmaking;
+namespace CopperMatchmaking.Info;
 
 public static class Log
 {

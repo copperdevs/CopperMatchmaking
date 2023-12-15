@@ -1,4 +1,6 @@
-﻿namespace CopperMatchmaking.Testing.Server;
+﻿using CopperMatchmaking.Info;
+
+namespace CopperMatchmaking.Testing.Server;
 
 // 7781
 public static class Program
@@ -15,11 +17,8 @@ public static class Program
             new Rank("Master", Ranks.Master),
             new Rank("Chaos", Ranks.Chaos));
 
-        foreach (var rank in Matchmaker.Ranks)
-        {
-            Log.Info($"{rank.Key} {rank.Value.DisplayName}");
-        }
-
+        Matchmaker.Start();
+        
         while (true)
         {
             Matchmaker.Update();

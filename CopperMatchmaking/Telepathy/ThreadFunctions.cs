@@ -11,6 +11,7 @@
 // NOT EVER be changed to non static!
 
 using System.Net.Sockets;
+using CopperMatchmaking.Info;
 using CopperMatchmaking.Utility;
 
 namespace CopperMatchmaking.Telepathy;
