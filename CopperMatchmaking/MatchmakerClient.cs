@@ -20,20 +20,14 @@ namespace CopperMatchmaking
             RankId = rankId;
             Client = new Client(Matchmaker.MaxMessageSize)
             {
-                OnConnected = () =>
-                {
-                    Log.Info("Client Connected");
-                },
+                OnConnected = () => { Log.Info("Client Connected"); },
                 OnData = message =>
                 {
                     // Log.Info($"Received new data from server. Raw Data: {BitConverter.ToString(message.Array, message.Offset, message.Count)}");
                     var receivedMessage = new Message(message);
                     Log.Info($"Received new data from server. Raw Data: {BitConverter.ToString(message.Array, message.Offset, message.Count)} | Message[{receivedMessage.Id}] receive is of type {((Message.MessageType)receivedMessage.Type).ToString()}. Data: {receivedMessage.GetData()}");
                 },
-                OnDisconnected = () =>
-                {
-                    Log.Info("Client Disconnected");
-                }
+                OnDisconnected = () => { Log.Info("Client Disconnected"); }
             };
         }
 
@@ -43,11 +37,15 @@ namespace CopperMatchmaking
 
             Client.OnConnected += () =>
             {
-                const string welcomeMessage = "hello world";
-                
-                Log.Info($"Sending welcome message '{welcomeMessage}'");
-                var message = new Message(0, welcomeMessage);
-                Client.Send(message);
+                const string welcomeMessageValue = "hello world";
+
+                Log.Info($"Sending welcome message '{welcomeMessageValue}'");
+                var welcomeMessage = new Message((byte)MessageIds.ClientJoinedWelcomeMessage, welcomeMessageValue);
+                Client.Send(welcomeMessage);
+
+                Log.Info("Telling server the clients rank");
+                var rankUpdate = new Message((byte)MessageIds.ClientRankUpdate, RankId);
+                Client.Send(rankUpdate);
             };
         }
 

@@ -7,7 +7,7 @@ public static class Program
 {
     public static void Main()
     {
-        Matchmaker.Initialize();
+        Matchmaker.Initialize(4);
         Matchmaker.RegisterRanks(
             new Rank("Bronze", Ranks.Bronze),
             new Rank("Silver", Ranks.Silver),
