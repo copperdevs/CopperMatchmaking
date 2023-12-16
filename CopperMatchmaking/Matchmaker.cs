@@ -9,8 +9,10 @@ namespace CopperMatchmaking
 {
     public static class Matchmaker
     {
+        // rankid, rank
         public static readonly Dictionary<byte, Rank> Ranks = new Dictionary<byte, Rank>();
-
+        
+        // rankid, clients in queue
         public static readonly Dictionary<byte, List<ConnectedClient>> ClientRanks = new Dictionary<byte, List<ConnectedClient>>();
         
         public const int MaxMessageSize = 16 * 1024;
@@ -42,24 +44,33 @@ namespace CopperMatchmaking
                 return;
             }
 
+            Log.Info($"Registering new rank - {rank.DisplayName}");
+            
             Ranks.Add(rank, rank);
+            ClientRanks.Add(rank, new List<ConnectedClient>());
         }
 
         public static void Start()
         {
             Server = new MatchmakerServer();
+            Server.ClientConnected += (id, client) =>
+            {
+                ClientRanks[(byte)client.RankId].Add(client);
+            };
         }
 
-        public static Task Update()
+        public static void Update()
         {
             Server?.Update();
 
-            foreach (var rankTier in ClientRanks.Where(rankTier => rankTier.Value.Count >= MatchSize))
+            foreach (var rankTier in ClientRanks)
             {
-                Log.Info($"Enough people to make a match");
+                // Log.Info($"Rank Tier - {rankTier.Key}");
+                if (rankTier.Value.Count >= MatchSize)
+                {
+                    Log.Info($"Enough people ({ClientRanks.Values.Count}) to make a match in tier {Ranks[rankTier.Key].DisplayName} ({rankTier.Key})");
+                }
             }
-            
-            return Task.CompletedTask;
         }
     }
 }
