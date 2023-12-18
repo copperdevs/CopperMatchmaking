@@ -7,7 +7,7 @@ namespace CopperMatchmaking
 {
     public class MatchmakerServer
     {
-        private readonly Server server;
+        internal readonly Server server;
         private static List<int> queuedClients = new List<int>();
 
         public Dictionary<byte, Action<int, Message>> MessageHandlers = new Dictionary<byte, Action<int, Message>>();
@@ -67,6 +67,11 @@ namespace CopperMatchmaking
                 return;
             
             ClientConnected?.Invoke(connectionId, new ConnectedClient(connectionId, (short)message.GetData()));
+        }
+
+        public bool Send(int connectionId, ArraySegment<byte> message)
+        {
+            return server.Send(connectionId, message);
         }
     }
 }

@@ -1,32 +1,34 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using CopperMatchmaking.Info;
+using CopperMatchmaking.Utility;
 
 namespace CopperMatchmaking
 {
     public static class Matchmaker
     {
+        public static ThreadSafeRandom Random { get; } = new ThreadSafeRandom();
+
         // rankid, rank
         public static readonly Dictionary<byte, Rank> Ranks = new Dictionary<byte, Rank>();
-        
+
         // rankid, clients in queue
         public static readonly Dictionary<byte, List<ConnectedClient>> ClientRanks = new Dictionary<byte, List<ConnectedClient>>();
-        
+
         public const int MaxMessageSize = 16 * 1024;
-
-        public static MatchmakerServer Server;
-
         public static int MatchSize;
 
-        public static void Initialize(int matchSize = 10)
+        public static MatchmakerServer Server;
+        public static IMatchMaker MatchMaker;
+
+        public static void Initialize(IMatchMaker matchMaker, int matchSize = 10)
         {
             if (Math.Abs(matchSize) % 2 != 0)
                 return;
 
             MatchSize = matchSize;
+            MatchMaker = matchMaker;
 
             RegisterRank(new Rank("Unranked", 0));
         }
@@ -45,7 +47,7 @@ namespace CopperMatchmaking
             }
 
             Log.Info($"Registering new rank - {rank.DisplayName}");
-            
+
             Ranks.Add(rank, rank);
             ClientRanks.Add(rank, new List<ConnectedClient>());
         }
@@ -53,10 +55,7 @@ namespace CopperMatchmaking
         public static void Start()
         {
             Server = new MatchmakerServer();
-            Server.ClientConnected += (id, client) =>
-            {
-                ClientRanks[(byte)client.RankId].Add(client);
-            };
+            Server.ClientConnected += (id, client) => { ClientRanks[(byte)client.RankId].Add(client); };
         }
 
         public static void Update()
@@ -65,11 +64,18 @@ namespace CopperMatchmaking
 
             foreach (var rankTier in ClientRanks)
             {
-                // Log.Info($"Rank Tier - {rankTier.Key}");
-                if (rankTier.Value.Count >= MatchSize)
+                if (rankTier.Value.Count < MatchSize)
+                    continue;
+
+                Log.Info($"Enough people ({rankTier.Value.Count}) to make a match in tier {Ranks[rankTier.Key].DisplayName} ({rankTier.Key})");
+
+                var foundClients = rankTier.Value.ToList().OrderBy(_ => Random.Next()).Take(MatchSize).ToList();
+                foreach (var client in foundClients)
                 {
-                    Log.Info($"Enough people ({ClientRanks.Values.Count}) to make a match in tier {Ranks[rankTier.Key].DisplayName} ({rankTier.Key})");
+                    rankTier.Value.Remove(client);
                 }
+
+                MatchMaker.MatchFound(foundClients);
             }
         }
     }
