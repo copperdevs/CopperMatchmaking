@@ -1,6 +1,6 @@
 using System;
 
-namespace CopperMatchmaking
+namespace CopperMatchmaking.Data
 {
     public class Rank
     {

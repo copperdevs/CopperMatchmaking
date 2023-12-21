@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CopperMatchmaking.Data;
 using CopperMatchmaking.Info;
 using CopperMatchmaking.Utility;
 
@@ -61,21 +62,36 @@ namespace CopperMatchmaking
         public static void Update()
         {
             Server?.Update();
+            UpdateQueuedPlayers();
+        }
 
+        private static void UpdateQueuedPlayers()
+        {
             foreach (var rankTier in ClientRanks)
             {
+                // if we dont have enough people for a match skip this rank
                 if (rankTier.Value.Count < MatchSize)
                     continue;
 
                 Log.Info($"Enough people ({rankTier.Value.Count}) to make a match in tier {Ranks[rankTier.Key].DisplayName} ({rankTier.Key})");
 
+                // get enough random people from the rank for a match
                 var foundClients = rankTier.Value.ToList().OrderBy(_ => Random.Next()).Take(MatchSize).ToList();
                 foreach (var client in foundClients)
                 {
                     rankTier.Value.Remove(client);
                 }
-
-                MatchMaker.MatchFound(foundClients);
+                
+                // tell all clients we picked that there is a match
+                var message = new Message((byte)MessageIds.ServerMatchFound, true);
+                foreach (var client in foundClients)
+                {
+                    Server.Send(client.Id, message);
+                }
+                
+                // get the imatchmaker to choose teams then add them to lobby
+                var players = MatchMaker.MatchFound(foundClients);
+                Server.Send(players.Host.Id, new Message(MessageIds.ServerClientHostRequest, true));
             }
         }
     }

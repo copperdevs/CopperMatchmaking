@@ -1,13 +1,11 @@
+using CopperMatchmaking.Data;
+
 namespace CopperMatchmaking.Testing.Server;
 
 public class TestMatchmaker : IMatchMaker
 {
-    public void MatchFound(IEnumerable<ConnectedClient> clients)
+    public LobbyPlayers MatchFound(IEnumerable<ConnectedClient> clients)
     {
-        var message = new Message((byte)MessageIds.ServerMatchFound, 0);
-        foreach (var client in clients)
-        {
-            Matchmaker.Server.Send(client.Id, message);
-        }
+        return new LobbyPlayers(new ConnectedClient(0, 0), new List<ConnectedClient>(), new List<ConnectedClient>());
     }
 }

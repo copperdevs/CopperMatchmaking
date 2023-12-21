@@ -1,4 +1,4 @@
-namespace CopperMatchmaking
+namespace CopperMatchmaking.Data
 {
     public class ConnectedClient
     {

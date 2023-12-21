@@ -1,4 +1,5 @@
-﻿using CopperMatchmaking.Info;
+﻿using CopperMatchmaking.Data;
+using CopperMatchmaking.Info;
 
 namespace CopperMatchmaking.Testing.Server;
 

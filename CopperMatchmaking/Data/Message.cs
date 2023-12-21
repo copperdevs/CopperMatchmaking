@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 
-namespace CopperMatchmaking
+namespace CopperMatchmaking.Data
 {
     public class Message
     {
@@ -79,7 +77,17 @@ namespace CopperMatchmaking
         public static implicit operator ArraySegment<byte>(Message message) =>
             new ArraySegment<byte>(message.CreateMessage());
 
+        #region Constructor Variants
+
+        public Message(Enum id, bool content) : this(Convert.ToByte(id), (byte)MessageType.Bool, BitConverter.GetBytes(content))
+        {
+        }
+
         public Message(byte id, bool content) : this(id, (byte)MessageType.Bool, BitConverter.GetBytes(content))
+        {
+        }
+
+        public Message(Enum id, char content) : this(Convert.ToByte(id), (byte)MessageType.Char, BitConverter.GetBytes(content))
         {
         }
 
@@ -87,7 +95,15 @@ namespace CopperMatchmaking
         {
         }
 
+        public Message(Enum id, double content) : this(Convert.ToByte(id), (byte)MessageType.Double, BitConverter.GetBytes(content))
+        {
+        }
+
         public Message(byte id, double content) : this(id, (byte)MessageType.Double, BitConverter.GetBytes(content))
+        {
+        }
+
+        public Message(Enum id, float content) : this(Convert.ToByte(id), (byte)MessageType.Float, BitConverter.GetBytes(content))
         {
         }
 
@@ -95,15 +111,31 @@ namespace CopperMatchmaking
         {
         }
 
+        public Message(Enum id, int content) : this(Convert.ToByte(id), (byte)MessageType.Int, BitConverter.GetBytes(content))
+        {
+        }
+
         public Message(byte id, int content) : this(id, (byte)MessageType.Int, BitConverter.GetBytes(content))
         {
         }
 
-        public Message(byte id, long content) : this(id, (byte)MessageType.Long, BitConverter.GetBytes(content))
+        public Message(Enum id, long content) : this(Convert.ToByte(id), (byte)MessageType.Long, BitConverter.GetBytes(content))
         {
         }
 
-        public Message(byte id, short content) : this(id, (byte)MessageType.Short, BitConverter.GetBytes(content))
+        public Message(byte id, long content) : this(Convert.ToByte(id), (byte)MessageType.Long, BitConverter.GetBytes(content))
+        {
+        }
+
+        public Message(Enum id, short content) : this(Convert.ToByte(id), (byte)MessageType.Short, BitConverter.GetBytes(content))
+        {
+        }
+
+        public Message(byte id, short content) : this(Convert.ToByte(id), (byte)MessageType.Short, BitConverter.GetBytes(content))
+        {
+        }
+
+        public Message(Enum id, uint content) : this(Convert.ToByte(id), (byte)MessageType.Uint, BitConverter.GetBytes(content))
         {
         }
 
@@ -111,7 +143,15 @@ namespace CopperMatchmaking
         {
         }
 
+        public Message(Enum id, ulong content) : this(Convert.ToByte(id), (byte)MessageType.Ulong, BitConverter.GetBytes(content))
+        {
+        }
+
         public Message(byte id, ulong content) : this(id, (byte)MessageType.Ulong, BitConverter.GetBytes(content))
+        {
+        }
+
+        public Message(Enum id, ushort content) : this(Convert.ToByte(id), (byte)MessageType.UShort, BitConverter.GetBytes(content))
         {
         }
 
@@ -119,8 +159,14 @@ namespace CopperMatchmaking
         {
         }
 
+        public Message(Enum id, string content) : this(Convert.ToByte(id), (byte)MessageType.String, Encoding.ASCII.GetBytes(content))
+        {
+        }
+
         public Message(byte id, string content) : this(id, (byte)MessageType.String, Encoding.ASCII.GetBytes(content))
         {
         }
+
+        #endregion
     }
 }

@@ -6,7 +6,7 @@ public static class Program
 {
     public static void Main()
     {
-        var client = new MatchmakerClient(Ranks.Bronze);
+        var client = new MatchmakerClient(Ranks.Bronze, new ExampleClientHandler());
         client.Connect("127.0.0.1", 7777);
 
         while (true)

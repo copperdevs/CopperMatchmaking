@@ -1,9 +1,10 @@
 using System.Collections.Generic;
+using CopperMatchmaking.Data;
 
 namespace CopperMatchmaking
 {
     public interface IMatchMaker
     {
-        public void MatchFound(IEnumerable<ConnectedClient> clients);
+        public LobbyPlayers MatchFound(IEnumerable<ConnectedClient> clients);
     }
 }

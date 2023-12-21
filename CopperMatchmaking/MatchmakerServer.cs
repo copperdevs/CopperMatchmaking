@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using CopperMatchmaking.Data;
 using CopperMatchmaking.Info;
 using CopperMatchmaking.Telepathy;
 
@@ -59,7 +60,7 @@ namespace CopperMatchmaking
             server.Tick(100);
         }
 
-        public void ClientRankUpdateMessageHandler(int connectionId, Message message)
+        private void ClientRankUpdateMessageHandler(int connectionId, Message message)
         {
             if (queuedClients.Contains(connectionId))
                 queuedClients.Remove(connectionId);

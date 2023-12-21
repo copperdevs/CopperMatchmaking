@@ -17,6 +17,7 @@ namespace CopperMatchmaking.Utility
             {
                 seed = Global.Next();
             }
+            
 
             local = new Random(seed);
 
