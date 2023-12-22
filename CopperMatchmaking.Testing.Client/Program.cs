@@ -9,6 +9,7 @@ public static class Program
         var client = new MatchmakerClient(Ranks.Bronze, new ExampleClientHandler());
         client.Connect("127.0.0.1", 7777);
 
+        // fixed update for example
         while (true)
         {
             client.Update();

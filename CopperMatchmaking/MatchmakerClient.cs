@@ -28,6 +28,7 @@ namespace CopperMatchmaking
             this.handler = handler;
             
             MessageHandlers.Add((byte)MessageIds.ServerClientHostRequest, ServerClientHostRequestMessageHandler);
+            MessageHandlers.Add((byte)MessageIds.ServerClientJoinServer, ServerClientJoinServerMessageHandler);
             
             Client = new Client(Matchmaker.MaxMessageSize)
             {
@@ -73,7 +74,14 @@ namespace CopperMatchmaking
         // handlers
         private void ServerClientHostRequestMessageHandler(Message message)
         {
-            // todo: get code and send to server
+            var joinCode = handler.ClientRequestedHost();
+            Client.Send(new Message(MessageIds.ClientHostJoinCode, joinCode));
+        }
+
+        private void ServerClientJoinServerMessageHandler(Message message)
+        {
+            var joinCode = (ulong)message.GetData();
+            handler.JoinServer(joinCode);
         }
     }
 }

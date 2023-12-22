@@ -6,6 +6,14 @@ public class TestMatchmaker : IMatchMaker
 {
     public LobbyPlayers MatchFound(IEnumerable<ConnectedClient> clients)
     {
-        return new LobbyPlayers(new ConnectedClient(0, 0), new List<ConnectedClient>(), new List<ConnectedClient>());
+        var connectedClients = clients.ToList();
+        
+        var count = connectedClients.Count;
+        var teamSize = count / 2;
+
+        var teamOne = connectedClients.Take(teamSize);
+        var teamTwo = connectedClients.Skip(count);
+
+        return new LobbyPlayers(connectedClients[0], teamOne, teamTwo);
     }
 }

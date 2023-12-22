@@ -6,10 +6,11 @@ namespace CopperMatchmaking.Data
         // client telling the server its rank
         ClientRankUpdate = 1,
         
-        // server
         ServerMatchFound = 2,
         ServerClientHostRequest = 3,
-        ClientHostJoinCode = 4,
+        ServerClientJoinServer = 4,
+        
+        ClientHostJoinCode = 5,
 
 
         ServerClientJoinedWelcomeMessage = 255

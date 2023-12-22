@@ -16,6 +16,9 @@ namespace CopperMatchmaking
 
         // rankid, clients in queue
         public static readonly Dictionary<byte, List<ConnectedClient>> ClientRanks = new Dictionary<byte, List<ConnectedClient>>();
+        
+        // host id, lobby players
+        public static readonly Dictionary<int, LobbyPlayers> CurrentLobbies = new Dictionary<int, LobbyPlayers>();
 
         public const int MaxMessageSize = 16 * 1024;
         public static int MatchSize;
@@ -57,6 +60,20 @@ namespace CopperMatchmaking
         {
             Server = new MatchmakerServer();
             Server.ClientConnected += (id, client) => { ClientRanks[(byte)client.RankId].Add(client); };
+            Server.MessageHandlers.Add((byte)MessageIds.ClientHostJoinCode, (connectionId, message) =>
+            {
+                if (CurrentLobbies.ContainsKey(connectionId))
+                {
+                    var joinCode = (ulong)message.GetData();
+                    CurrentLobbies[connectionId].TeamOne.ToList().ForEach(user => Server.Send(user.Id, new Message(MessageIds.ServerClientJoinServer, joinCode)));
+                    CurrentLobbies[connectionId].TeamTwo.ToList().ForEach(user => Server.Send(user.Id, new Message(MessageIds.ServerClientJoinServer, joinCode)));
+                    CurrentLobbies.Remove(connectionId);
+                }
+                else
+                {
+                    Log.Info("Client tried to tell server a join code, but they dont have a key.");
+                }
+            });
         }
 
         public static void Update()
@@ -92,6 +109,8 @@ namespace CopperMatchmaking
                 // get the imatchmaker to choose teams then add them to lobby
                 var players = MatchMaker.MatchFound(foundClients);
                 Server.Send(players.Host.Id, new Message(MessageIds.ServerClientHostRequest, true));
+                
+                CurrentLobbies.Add(players.Host.Id, players);
             }
         }
     }
