@@ -1,9 +1,15 @@
 ﻿
-using CopperMatchmaking;
+namespace CopperMatchmaking.Riptide.Testing.Client;
 
-var client = new MatchmakerClient("127.0.0.1");
-
-while (true)
+public static class Program
 {
-    client.Update();
+    public static void Main()
+    {
+        var client = new MatchmakerClient("127.0.0.1", new ClientHandler());
+
+        while (client.ShouldUpdate)
+        {
+            client.Update();
+        }
+    }
 }
