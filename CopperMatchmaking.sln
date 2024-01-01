@@ -6,6 +6,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopperMatchmaking.Testing.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopperMatchmaking.Testing.Client", "CopperMatchmaking.Testing.Client\CopperMatchmaking.Testing.Client.csproj", "{8AFDC43D-778F-4E05-A0D8-AFEB5B7345C9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopperMatchmaking.Riptide", "CopperMatchmaking.Riptide\CopperMatchmaking.Riptide.csproj", "{E36A2A7C-2921-4C84-9BA0-2CB03CAF7BE4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopperMatchmaking.Riptide.Testing.Client", "CopperMatchmaking.Riptide.Testing.Client\CopperMatchmaking.Riptide.Testing.Client.csproj", "{8B3958BA-929F-475C-9A7B-BB7933EA5FA6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopperMatchmaking.Riptide.Testing.Server", "CopperMatchmaking.Riptide.Testing.Server\CopperMatchmaking.Riptide.Testing.Server.csproj", "{49433FD8-9E01-460B-9FAB-AA6138D07481}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +30,17 @@ Global
 		{8AFDC43D-778F-4E05-A0D8-AFEB5B7345C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8AFDC43D-778F-4E05-A0D8-AFEB5B7345C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8AFDC43D-778F-4E05-A0D8-AFEB5B7345C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E36A2A7C-2921-4C84-9BA0-2CB03CAF7BE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E36A2A7C-2921-4C84-9BA0-2CB03CAF7BE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E36A2A7C-2921-4C84-9BA0-2CB03CAF7BE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E36A2A7C-2921-4C84-9BA0-2CB03CAF7BE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B3958BA-929F-475C-9A7B-BB7933EA5FA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B3958BA-929F-475C-9A7B-BB7933EA5FA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B3958BA-929F-475C-9A7B-BB7933EA5FA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B3958BA-929F-475C-9A7B-BB7933EA5FA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49433FD8-9E01-460B-9FAB-AA6138D07481}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49433FD8-9E01-460B-9FAB-AA6138D07481}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49433FD8-9E01-460B-9FAB-AA6138D07481}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49433FD8-9E01-460B-9FAB-AA6138D07481}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
