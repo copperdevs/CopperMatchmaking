@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\CopperMatchmaking.Riptide.Testing.Server\CopperMatchmaking.Riptide.Testing.Server.csproj" />
       <ProjectReference Include="..\CopperMatchmaking.Riptide\CopperMatchmaking.Riptide.csproj" />
     </ItemGroup>
 

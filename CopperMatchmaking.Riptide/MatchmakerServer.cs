@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Riptide;
 using Riptide.Transports.Tcp;
 using Riptide.Utils;
@@ -8,6 +10,7 @@ namespace CopperMatchmaking
     public class MatchmakerServer
     {
         private RiptideServer server;
+        private List<Rank> ranks = new List<Rank>();
 
         public MatchmakerServer(ushort maxClients = 65534)
         {
@@ -21,6 +24,11 @@ namespace CopperMatchmaking
         public void Update()
         {
             server.Update();
+        }
+
+        public void RegisterRanks(params Rank[] targetRanks)
+        {
+            ranks.AddRange(targetRanks.ToList());
         }
     }
 }

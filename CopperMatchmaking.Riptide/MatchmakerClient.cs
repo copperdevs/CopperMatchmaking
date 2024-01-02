@@ -1,3 +1,4 @@
+using System;
 using Riptide;
 using Riptide.Transports.Tcp;
 using Riptide.Transports.Udp;
@@ -13,14 +14,17 @@ namespace CopperMatchmaking
         private RiptideClient client;
         private IClientHandler clientHandler;
 
-        public MatchmakerClient(string ip, IClientHandler clientHandler)
+        private byte rankId;
+
+        public MatchmakerClient(string ip, IClientHandler clientHandler, Enum rankId)
         {
             // init logs
             CopperLogger.Initialize(CopperLogger.LogInfo, CopperLogger.LogWarning, CopperLogger.LogError);
             RiptideLogger.Initialize(CopperLogger.LogInfo, CopperLogger.LogInfo, CopperLogger.LogWarning, CopperLogger.LogError, false);
             
-            // interface
+            // values/handlers
             this.clientHandler = clientHandler;
+            this.rankId = Convert.ToByte(rankId);
             
             // start riptide crap
             client = new RiptideClient(new TcpClient());
@@ -32,6 +36,15 @@ namespace CopperMatchmaking
         {
             if(ShouldUpdate)
                 client.Update();
+        }
+
+        private Message GetJoinMessage()
+        {
+            var result = Message.Create(MessageSendMode.Reliable, MessageIds.ClientJoined);
+            
+            
+            
+            return result;
         }
     }
 }
