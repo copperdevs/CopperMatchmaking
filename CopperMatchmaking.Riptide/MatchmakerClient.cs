@@ -14,9 +14,10 @@ namespace CopperMatchmaking
         private RiptideClient client;
         private IClientHandler clientHandler;
 
-        private byte rankId;
+        private readonly byte rankId;
+        private readonly ulong playerId;
 
-        public MatchmakerClient(string ip, IClientHandler clientHandler, Enum rankId)
+        public MatchmakerClient(string ip, IClientHandler clientHandler, Enum rankId, ulong playerId)
         {
             // init logs
             CopperLogger.Initialize(CopperLogger.LogInfo, CopperLogger.LogWarning, CopperLogger.LogError);
@@ -25,11 +26,14 @@ namespace CopperMatchmaking
             // values/handlers
             this.clientHandler = clientHandler;
             this.rankId = Convert.ToByte(rankId);
+            this.playerId = playerId;
             
             // start riptide crap
             client = new RiptideClient(new TcpClient());
             client.Connect($"{ip}:7777");
             ShouldUpdate = true;
+
+            client.Send(GetJoinMessage());
         }
 
         public void Update()
@@ -41,8 +45,9 @@ namespace CopperMatchmaking
         private Message GetJoinMessage()
         {
             var result = Message.Create(MessageSendMode.Reliable, MessageIds.ClientJoined);
-            
-            
+
+            result.Add(playerId);
+            result.Add(rankId);
             
             return result;
         }
