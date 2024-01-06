@@ -107,3 +107,63 @@ of those players to be the host in a peer to peer architecture. It also has rank
         Chaos = 7
     }
     ```
+
+### Client
+
+1. The client is a lot easier to setup. The first step is to create a `ClientHandler` script that inherits from
+   the `IClientHandler` interface. This example just shows blank information.
+
+   ```csharp
+   public class ClientHandler : IClientHandler
+   {
+       public ulong ClientRequestedToHost()
+       {
+           var serverJoinCode = 0;
+           return serverJoinCode;
+       }
+   
+       public void JoinServer(ulong serverJoinCode)
+       {
+       }
+   }
+   ```
+
+2. Once the `ClientHandler` script is created we can create the client. The `MatchmakerClient` has four parameters with no defaults.
+   - `ip`
+      - `ip` is simple the target ip of the matchmaker server you wish to join. The player should not input this but the developer.. 
+   - `clientHandler`
+      - `clientHandler` is the script we created in the last step. 
+   - `rankId`
+      - `rankId` is the byte of the rank you created in the server getting started step one.
+   - `playerId`
+      - `playerId` is the id of the connecting player. Its intent when created was to use the players SteamId.
+
+   ```csharp
+   var client = new MatchmakerClient("127.0.0.1", new ClientHandler(), 0, 76561199083358154);
+   ```
+   
+3. Update the client when needed. This should be done in `FixedUpdate` in unity
+    ```csharp
+    while (client.ShouldUpdate)
+    {
+        client.Update();
+    }
+    ```
+    ```csharp
+    public void FixedUpdate()
+    {
+        while (client.ShouldUpdate)
+        {
+            client.Update();
+        }
+    }
+    ```
+4. Full example. Can also be found in the `CopperMatchmaking.Example.Client` project.
+    ```csharp
+    var client = new MatchmakerClient("127.0.0.1", new ClientHandler(), 0, 76561199083358154);
+    
+    while (client.ShouldUpdate)
+    {
+        client.Update();
+    }
+    ```
