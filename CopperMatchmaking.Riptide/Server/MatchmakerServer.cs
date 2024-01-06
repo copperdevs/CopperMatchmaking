@@ -13,29 +13,27 @@ namespace CopperMatchmaking.Server
     public class MatchmakerServer
     {
         internal static MatchmakerServer Instance = null!;
-        
+
         private readonly RiptideServer server = null!;
 
         private readonly List<Rank> ranks = new List<Rank>();
 
         private readonly ServerQueueManager queueManager = null!;
-        // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
-        internal readonly ServerLobbyManager lobbyManager = null!;
+        internal readonly ServerLobbyManager LobbyManager = null!;
         private readonly IServerHandler handler;
 
-
-        public MatchmakerServer(ushort maxClients = 65534) : this(new BasicServerHandler(), maxClients)
+        public MatchmakerServer(byte lobbySize = 10, ushort maxClients = 65534) : this(new BasicServerHandler(), lobbySize, maxClients)
         {
         }
 
-        public MatchmakerServer(IServerHandler handler, ushort maxClients = 65534)
+        public MatchmakerServer(IServerHandler handler, byte lobbySize, ushort maxClients = 65534)
         {
             // values
             this.handler = handler;
             Instance = this;
 
             // checks
-            if (maxClients % 2 != 0)
+            if (lobbySize % 2 != 0)
                 return;
 
             // logs
@@ -47,11 +45,11 @@ namespace CopperMatchmaking.Server
             server.Start(7777, maxClients);
 
             // matchmaking 
-            queueManager = new ServerQueueManager(maxClients);
-            lobbyManager = new ServerLobbyManager(handler, this);
+            queueManager = new ServerQueueManager(lobbySize);
+            LobbyManager = new ServerLobbyManager(handler, this);
 
             // actions
-            queueManager.PotentialLobbyFound += lobbyManager.PotentialLobbyFound;
+            queueManager.PotentialLobbyFound += LobbyManager.PotentialLobbyFound;
         }
 
         public void Update()

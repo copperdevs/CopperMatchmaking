@@ -11,7 +11,7 @@ namespace CopperMatchmaking.Client
         // {
         //     
         // }
-        
+
         [MessageHandler((ushort)MessageIds.ServerRequestedClientToHost)]
         internal static void MessageHandler(Message receivedMessage)
         {
@@ -24,6 +24,14 @@ namespace CopperMatchmaking.Client
             message.Add(hostedLobbyId);
 
             MatchmakerClient.Instance.Client.Send(message);
+        }
+
+
+        [MessageHandler((ushort)MessageIds.ClientJoinCreatedLobby)]
+        internal static void ClientJoinCreatedLobbyMessageHandler(Message receivedMessage)
+        {
+            var lobbyId = receivedMessage.GetULong();
+            MatchmakerClient.Instance.Handler.JoinServer(lobbyId);
         }
     }
 }

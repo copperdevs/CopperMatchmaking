@@ -11,21 +11,21 @@ namespace CopperMatchmaking.Server
         // {
         //     
         // }
-        
+
         [MessageHandler((ushort)MessageIds.ClientJoined)]
         internal static void ClientJoinedMessageHandler(ushort sender, Message receivedMessage)
         {
             var playerId = receivedMessage.GetUShort();
             var rankId = receivedMessage.GetByte();
         }
-        
+
         [MessageHandler((ushort)MessageIds.ClientHostLobbyId)]
         internal static void ClientHostLobbyIdMessageHandler(ushort sender, Message receivedMessage)
         {
             var lobbyId = receivedMessage.GetUInt();
             var hostedLobbyId = receivedMessage.GetULong();
 
-            MatchmakerServer.Instance.lobbyManager.HandleClientHostResponse(lobbyId, hostedLobbyId);
+            MatchmakerServer.Instance.LobbyManager.HandleClientHostResponse(lobbyId, hostedLobbyId);
         }
     }
 }

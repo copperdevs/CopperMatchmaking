@@ -11,9 +11,9 @@ namespace CopperMatchmaking.Client
     public class MatchmakerClient
     {
         internal static MatchmakerClient Instance = null!;
-        
+
         public bool ShouldUpdate { get; private set; }
-        
+
         internal readonly RiptideClient Client;
         internal readonly IClientHandler Handler;
 
@@ -25,7 +25,7 @@ namespace CopperMatchmaking.Client
             // init logs
             CopperLogger.Initialize(CopperLogger.LogInfo, CopperLogger.LogWarning, CopperLogger.LogError);
             RiptideLogger.Initialize(CopperLogger.LogInfo, CopperLogger.LogInfo, CopperLogger.LogWarning, CopperLogger.LogError, false);
-            
+
             // values/handlers
             this.rankId = Convert.ToByte(rankId);
             this.playerId = playerId;
@@ -37,14 +37,14 @@ namespace CopperMatchmaking.Client
             Client.Connect($"{ip}:7777");
             ShouldUpdate = true;
 
-            Client.Disconnected += (sender, args) => ShouldUpdate = false; 
+            Client.Disconnected += (sender, args) => ShouldUpdate = false;
 
             Client.Send(GetJoinMessage());
         }
 
         public void Update()
         {
-            if(ShouldUpdate)
+            if (ShouldUpdate)
                 Client.Update();
         }
 
@@ -54,7 +54,7 @@ namespace CopperMatchmaking.Client
 
             result.Add(playerId); // ushort
             result.Add(rankId); // byte
-            
+
             return result;
         }
     }
