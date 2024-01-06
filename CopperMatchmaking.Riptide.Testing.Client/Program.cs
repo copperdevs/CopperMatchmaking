@@ -1,4 +1,5 @@
 ﻿
+using CopperMatchmaking.Client;
 using CopperMatchmaking.Riptide.Testing.Server;
 
 namespace CopperMatchmaking.Riptide.Testing.Client;

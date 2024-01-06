@@ -1,7 +1,7 @@
 using System;
 using Riptide;
 
-namespace CopperMatchmaking
+namespace CopperMatchmaking.Data
 {
     public class Rank : IMessageSerializable
     {

@@ -1,5 +1,7 @@
 ﻿using CopperMatchmaking;
+using CopperMatchmaking.Data;
 using CopperMatchmaking.Riptide.Testing.Server;
+using CopperMatchmaking.Server;
 
 var server = new MatchmakerServer();
 server.RegisterRanks(

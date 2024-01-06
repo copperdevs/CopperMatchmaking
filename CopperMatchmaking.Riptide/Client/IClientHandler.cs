@@ -1,4 +1,4 @@
-namespace CopperMatchmaking
+namespace CopperMatchmaking.Client
 {
     public interface IClientHandler
     {

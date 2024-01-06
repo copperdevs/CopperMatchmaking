@@ -1,18 +1,21 @@
 using System;
+using CopperMatchmaking.Data;
+using CopperMatchmaking.Info;
 using Riptide;
 using Riptide.Transports.Tcp;
-using Riptide.Transports.Udp;
 using Riptide.Utils;
 using RiptideClient = Riptide.Client;
 
-namespace CopperMatchmaking
+namespace CopperMatchmaking.Client
 {
     public class MatchmakerClient
     {
+        internal static MatchmakerClient Instance = null!;
+        
         public bool ShouldUpdate { get; private set; }
         
-        private RiptideClient client;
-        private IClientHandler clientHandler;
+        internal readonly RiptideClient Client;
+        internal readonly IClientHandler Handler;
 
         private readonly byte rankId;
         private readonly ulong playerId;
@@ -24,30 +27,33 @@ namespace CopperMatchmaking
             RiptideLogger.Initialize(CopperLogger.LogInfo, CopperLogger.LogInfo, CopperLogger.LogWarning, CopperLogger.LogError, false);
             
             // values/handlers
-            this.clientHandler = clientHandler;
             this.rankId = Convert.ToByte(rankId);
             this.playerId = playerId;
-            
+            Handler = clientHandler;
+            Instance = this;
+
             // start riptide crap
-            client = new RiptideClient(new TcpClient());
-            client.Connect($"{ip}:7777");
+            Client = new RiptideClient(new TcpClient());
+            Client.Connect($"{ip}:7777");
             ShouldUpdate = true;
 
-            client.Send(GetJoinMessage());
+            Client.Disconnected += (sender, args) => ShouldUpdate = false; 
+
+            Client.Send(GetJoinMessage());
         }
 
         public void Update()
         {
             if(ShouldUpdate)
-                client.Update();
+                Client.Update();
         }
 
         private Message GetJoinMessage()
         {
             var result = Message.Create(MessageSendMode.Reliable, MessageIds.ClientJoined);
 
-            result.Add(playerId);
-            result.Add(rankId);
+            result.Add(playerId); // ushort
+            result.Add(rankId); // byte
             
             return result;
         }

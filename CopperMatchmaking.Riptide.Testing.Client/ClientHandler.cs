@@ -1,4 +1,6 @@
 using System.Runtime.CompilerServices;
+using CopperMatchmaking.Client;
+using CopperMatchmaking.Info;
 
 namespace CopperMatchmaking.Riptide.Testing.Client;
 
