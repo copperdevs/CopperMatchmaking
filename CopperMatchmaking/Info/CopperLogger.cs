@@ -16,7 +16,7 @@ namespace CopperMatchmaking.Info
         }
     }
 
-    public static partial class CopperLogger
+    internal static partial class CopperLogger
     {
         public delegate void BaseLog(object message);
 

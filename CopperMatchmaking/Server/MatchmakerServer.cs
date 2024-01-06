@@ -9,6 +9,9 @@ using RiptideServer = Riptide.Server;
 
 namespace CopperMatchmaking.Server
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class MatchmakerServer
     {
         internal static MatchmakerServer Instance = null!;
@@ -21,10 +24,21 @@ namespace CopperMatchmaking.Server
         internal readonly ServerLobbyManager LobbyManager = null!;
         private readonly IServerHandler handler;
 
+        /// <summary>
+        /// Base Constructor with a pre-made ServerHandler
+        /// </summary>
+        /// <param name="lobbySize">Size of a lobby. Must be an even number</param>
+        /// <param name="maxClients">Max amount of clients that can connect to the matchmaking server</param>
         public MatchmakerServer(byte lobbySize = 10, ushort maxClients = 65534) : this(new BasicServerHandler(), lobbySize, maxClients)
         {
         }
 
+        /// <summary>
+        /// Base Constructor
+        /// </summary>
+        /// <param name="handler">Server handler</param>
+        /// <param name="lobbySize">Size of a lobby. Must be an even number</param>
+        /// <param name="maxClients">Max amount of clients that can connect to the matchmaking server</param>
         public MatchmakerServer(IServerHandler handler, byte lobbySize, ushort maxClients = 65534)
         {
             // values
@@ -51,6 +65,9 @@ namespace CopperMatchmaking.Server
             queueManager.PotentialLobbyFound += LobbyManager.PotentialLobbyFound;
         }
 
+        /// <summary>
+        /// Method to run often to update the server
+        /// </summary>
         public void Update()
         {
             // internal crap
@@ -60,6 +77,10 @@ namespace CopperMatchmaking.Server
             Server.Update();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="targetRanks">Ranks to register</param>
         public void RegisterRanks(params Rank[] targetRanks)
         {
             // bytes are used internally for rank ids so we dont want more than the max amount of a byte

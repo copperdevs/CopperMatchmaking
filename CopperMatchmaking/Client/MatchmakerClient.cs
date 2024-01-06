@@ -7,6 +7,9 @@ using RiptideClient = Riptide.Client;
 
 namespace CopperMatchmaking.Client
 {
+    /// <summary>
+    /// Matchmaker client for connecting to the matchmaker with
+    /// </summary>
     public class MatchmakerClient
     {
         internal static MatchmakerClient Instance = null!;
@@ -19,6 +22,13 @@ namespace CopperMatchmaking.Client
         private readonly byte rankId;
         private readonly ulong playerId;
 
+        /// <summary>
+        /// Base constructor
+        /// </summary>
+        /// <param name="ip">Target ip of the matchmaker server</param>
+        /// <param name="clientHandler">Handler for the client</param>
+        /// <param name="rankId">Id of the clients rank</param>
+        /// <param name="playerId">Player id (SteamId for example)</param>
         public MatchmakerClient(string ip, IClientHandler clientHandler, byte rankId, ulong playerId)
         {
             // init logs
@@ -50,6 +60,9 @@ namespace CopperMatchmaking.Client
             };
         }
 
+        /// <summary>
+        /// Method to run often to update the client
+        /// </summary>
         public void Update()
         {
             if (ShouldUpdate)
