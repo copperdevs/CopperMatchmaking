@@ -1,5 +1,3 @@
-using Riptide;
-
 using RiptideConnection = Riptide.Connection;
 
 namespace CopperMatchmaking.Data
@@ -9,7 +7,7 @@ namespace CopperMatchmaking.Data
         public readonly Rank Rank;
         public readonly uint ConnectionId;
         public readonly RiptideConnection RiptideConnection;
-        
+
         public ConnectedClient(Rank rank, RiptideConnection riptideConnection)
         {
             Rank = rank;
@@ -17,7 +15,7 @@ namespace CopperMatchmaking.Data
 
             ConnectionId = riptideConnection.Id;
         }
-        
+
         public static implicit operator Rank(ConnectedClient client) => client.Rank;
         public static implicit operator uint(ConnectedClient client) => client.ConnectionId;
         public static implicit operator RiptideConnection(ConnectedClient client) => client.RiptideConnection;

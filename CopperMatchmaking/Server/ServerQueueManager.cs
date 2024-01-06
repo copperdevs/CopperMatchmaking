@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CopperMatchmaking.Data;
-using CopperMatchmaking.Utility;
+using CopperMatchmaking.Info;
 
 namespace CopperMatchmaking.Server
 {
@@ -50,6 +50,5 @@ namespace CopperMatchmaking.Server
             rankQueues[client.Rank].Add(client);
             Log.Info($"Registered new client to {GetType().Name}");
         }
-        
     }
 }

@@ -1,8 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using CopperMatchmaking.Data;
-using CopperMatchmaking.Utility;
+using CopperMatchmaking.Info;
 using Riptide;
 using Riptide.Transports.Tcp;
 using Riptide.Utils;
@@ -14,11 +13,9 @@ namespace CopperMatchmaking.Server
     {
         internal static MatchmakerServer Instance = null!;
 
-        internal readonly RiptideServer server = null!;
+        internal readonly RiptideServer Server = null!;
 
-        internal readonly List<Rank> ranks = new List<Rank>();
-
-        private readonly List<ConnectedClient> clients = new List<ConnectedClient>();
+        internal readonly List<Rank> Ranks = new List<Rank>();
 
         private readonly ServerQueueManager queueManager = null!;
         internal readonly ServerLobbyManager LobbyManager = null!;
@@ -43,8 +40,8 @@ namespace CopperMatchmaking.Server
             RiptideLogger.Initialize(CopperLogger.LogInfo, CopperLogger.LogInfo, CopperLogger.LogWarning, CopperLogger.LogError, false);
 
             // networking
-            server = new RiptideServer(new TcpServer());
-            server.Start(7777, maxClients);
+            Server = new RiptideServer(new TcpServer());
+            Server.Start(7777, maxClients);
 
             // matchmaking 
             queueManager = new ServerQueueManager(lobbySize);
@@ -60,35 +57,35 @@ namespace CopperMatchmaking.Server
             queueManager.CheckForLobbies();
 
             // networking
-            server.Update();
+            Server.Update();
         }
 
         public void RegisterRanks(params Rank[] targetRanks)
         {
             // bytes are used internally for rank ids so we dont want more than the max amount of a byte
-            if (ranks.Count + targetRanks.Length > byte.MaxValue - 1)
+            if (Ranks.Count + targetRanks.Length > byte.MaxValue - 1)
                 return;
 
-            ranks.AddRange(targetRanks.ToList());
-            Log.Info($"Registering {targetRanks.Length} new ranks, bringing the total to {ranks.Count}. | Ranks: {ranks.Aggregate("", (current, rank) => current + $"{rank.DisplayName}[{rank.Id}], ")}");
+            Ranks.AddRange(targetRanks.ToList());
+            Log.Info(
+                $"Registering {targetRanks.Length} new ranks, bringing the total to {Ranks.Count}. | Ranks: {Ranks.Aggregate("", (current, rank) => current + $"{rank.DisplayName}[{rank.Id}], ")}");
 
-            queueManager.RegisterRanks(ranks);
+            queueManager.RegisterRanks(Ranks);
         }
 
         internal void RegisterClient(ConnectedClient client)
         {
             Log.Info($"New Client Joined | Rank: {client.Rank.DisplayName} | ConnectionId: {client.ConnectionId}");
-            
-            clients.Add(client);
+
             queueManager.RegisterPlayer(client);
         }
-        
-        internal void SendMessage(Message message, ushort toClient, bool shouldRelease = true) => server.Send(message, toClient, shouldRelease);
 
-        internal ushort SendMessage(Message message, Connection toClient, bool shouldRelease = true) => server.Send(message, toClient, shouldRelease);
+        internal void SendMessage(Message message, ushort toClient, bool shouldRelease = true) => Server.Send(message, toClient, shouldRelease);
 
-        internal void SendMessageToAll(Message message, bool shouldRelease = true) => server.SendToAll(message, shouldRelease);
+        internal ushort SendMessage(Message message, Connection toClient, bool shouldRelease = true) => Server.Send(message, toClient, shouldRelease);
 
-        internal void SendMessageToAll(Message message, ushort exceptToClientId, bool shouldRelease = true) => server.SendToAll(message, exceptToClientId, shouldRelease);
+        internal void SendMessageToAll(Message message, bool shouldRelease = true) => Server.SendToAll(message, shouldRelease);
+
+        internal void SendMessageToAll(Message message, ushort exceptToClientId, bool shouldRelease = true) => Server.SendToAll(message, exceptToClientId, shouldRelease);
     }
 }

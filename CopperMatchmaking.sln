@@ -1,10 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopperMatchmaking.Riptide", "CopperMatchmaking.Riptide\CopperMatchmaking.Riptide.csproj", "{E36A2A7C-2921-4C84-9BA0-2CB03CAF7BE4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopperMatchmaking", "CopperMatchmaking\CopperMatchmaking.csproj", "{E36A2A7C-2921-4C84-9BA0-2CB03CAF7BE4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopperMatchmaking.Riptide.Testing.Client", "CopperMatchmaking.Riptide.Testing.Client\CopperMatchmaking.Riptide.Testing.Client.csproj", "{8B3958BA-929F-475C-9A7B-BB7933EA5FA6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopperMatchmaking.Example.Client", "CopperMatchmaking.Example.Client\CopperMatchmaking.Example.Client.csproj", "{8B3958BA-929F-475C-9A7B-BB7933EA5FA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopperMatchmaking.Riptide.Testing.Server", "CopperMatchmaking.Riptide.Testing.Server\CopperMatchmaking.Riptide.Testing.Server.csproj", "{49433FD8-9E01-460B-9FAB-AA6138D07481}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopperMatchmaking.Example.Server", "CopperMatchmaking.Example.Server\CopperMatchmaking.Example.Server.csproj", "{49433FD8-9E01-460B-9FAB-AA6138D07481}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -8,7 +8,7 @@ namespace CopperMatchmaking.Data
         ServerRequestedClientToHost,
         // client to server to give the lobby id after hosting
         ClientHostLobbyId,
-        // server to client to say "yo join the lobby
+        // server to client to say "yo join the lobby"
         ClientJoinCreatedLobby,
     }
 }

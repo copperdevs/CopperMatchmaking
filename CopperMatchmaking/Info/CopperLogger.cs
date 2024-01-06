@@ -1,10 +1,9 @@
 using System;
 
-namespace CopperMatchmaking.Utility
+namespace CopperMatchmaking.Info
 {
     public static class Log
     {
-        // base
         public static void Info(object message) => CopperLogger.UninitializedLogInfo(message);
         public static void Warning(object message) => CopperLogger.UninitializedLogWarning(message);
         public static void Error(object message) => CopperLogger.UninitializedLogError(message);

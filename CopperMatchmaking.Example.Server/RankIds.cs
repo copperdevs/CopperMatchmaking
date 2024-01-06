@@ -1,4 +1,4 @@
-namespace CopperMatchmaking.Riptide.Testing.Server;
+namespace CopperMatchmaking.Example.Server;
 
 public enum RankIds : byte
 {

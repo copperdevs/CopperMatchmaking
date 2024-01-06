@@ -1,7 +1,5 @@
-using System;
-using System.Threading.Tasks;
 using CopperMatchmaking.Data;
-using CopperMatchmaking.Utility;
+using CopperMatchmaking.Info;
 using Riptide;
 using Riptide.Transports.Tcp;
 using Riptide.Utils;
@@ -42,12 +40,11 @@ namespace CopperMatchmaking.Client
 
             Client.Connected += (sender, args) =>
             {
-                
                 var joinMessage = Message.Create(MessageSendMode.Reliable, MessageIds.ClientJoined);
 
                 joinMessage.Add(playerId); // ushort
                 joinMessage.Add(rankId); // byte
-            
+
                 Log.Info($"Creating client join message. | PlayerId {playerId} | RankId {rankId}");
                 Client.Send(joinMessage);
             };

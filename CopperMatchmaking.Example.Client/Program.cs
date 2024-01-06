@@ -1,7 +1,7 @@
 ﻿using CopperMatchmaking.Client;
-using CopperMatchmaking.Riptide.Testing.Server;
+using CopperMatchmaking.Example.Server;
 
-namespace CopperMatchmaking.Riptide.Testing.Client;
+namespace CopperMatchmaking.Example.Client;
 
 public static class Program
 {
