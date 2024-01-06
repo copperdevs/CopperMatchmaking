@@ -1,2 +1,0 @@
-telepathy - https://github.com/MirrorNetworking/Telepathy
-version - 1.9
