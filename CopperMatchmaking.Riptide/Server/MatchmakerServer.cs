@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CopperMatchmaking.Data;
-using CopperMatchmaking.Info;
+using CopperMatchmaking.Utility;
 using Riptide;
 using Riptide.Transports.Tcp;
 using Riptide.Utils;
@@ -14,9 +14,11 @@ namespace CopperMatchmaking.Server
     {
         internal static MatchmakerServer Instance = null!;
 
-        private readonly RiptideServer server = null!;
+        internal readonly RiptideServer server = null!;
 
-        private readonly List<Rank> ranks = new List<Rank>();
+        internal readonly List<Rank> ranks = new List<Rank>();
+
+        private readonly List<ConnectedClient> clients = new List<ConnectedClient>();
 
         private readonly ServerQueueManager queueManager = null!;
         internal readonly ServerLobbyManager LobbyManager = null!;
@@ -68,10 +70,19 @@ namespace CopperMatchmaking.Server
                 return;
 
             ranks.AddRange(targetRanks.ToList());
+            Log.Info($"Registering {targetRanks.Length} new ranks, bringing the total to {ranks.Count}. | Ranks: {ranks.Aggregate("", (current, rank) => current + $"{rank.DisplayName}[{rank.Id}], ")}");
 
             queueManager.RegisterRanks(ranks);
         }
 
+        internal void RegisterClient(ConnectedClient client)
+        {
+            Log.Info($"New Client Joined | Rank: {client.Rank.DisplayName} | ConnectionId: {client.ConnectionId}");
+            
+            clients.Add(client);
+            queueManager.RegisterPlayer(client);
+        }
+        
         internal void SendMessage(Message message, ushort toClient, bool shouldRelease = true) => server.Send(message, toClient, shouldRelease);
 
         internal ushort SendMessage(Message message, Connection toClient, bool shouldRelease = true) => server.Send(message, toClient, shouldRelease);

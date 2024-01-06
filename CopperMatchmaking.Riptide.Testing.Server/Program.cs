@@ -2,7 +2,7 @@
 using CopperMatchmaking.Riptide.Testing.Server;
 using CopperMatchmaking.Server;
 
-var server = new MatchmakerServer();
+var server = new MatchmakerServer(4);
 server.RegisterRanks(
     new Rank("Unranked", RankIds.Unranked),
     new Rank("Bronze", RankIds.Bronze),

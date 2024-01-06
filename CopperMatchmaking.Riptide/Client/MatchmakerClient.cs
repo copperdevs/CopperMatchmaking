@@ -1,6 +1,7 @@
 using System;
+using System.Threading.Tasks;
 using CopperMatchmaking.Data;
-using CopperMatchmaking.Info;
+using CopperMatchmaking.Utility;
 using Riptide;
 using Riptide.Transports.Tcp;
 using Riptide.Utils;
@@ -20,14 +21,14 @@ namespace CopperMatchmaking.Client
         private readonly byte rankId;
         private readonly ulong playerId;
 
-        public MatchmakerClient(string ip, IClientHandler clientHandler, Enum rankId, ulong playerId)
+        public MatchmakerClient(string ip, IClientHandler clientHandler, byte rankId, ulong playerId)
         {
             // init logs
             CopperLogger.Initialize(CopperLogger.LogInfo, CopperLogger.LogWarning, CopperLogger.LogError);
             RiptideLogger.Initialize(CopperLogger.LogInfo, CopperLogger.LogInfo, CopperLogger.LogWarning, CopperLogger.LogError, false);
 
             // values/handlers
-            this.rankId = Convert.ToByte(rankId);
+            this.rankId = rankId;
             this.playerId = playerId;
             Handler = clientHandler;
             Instance = this;
@@ -39,23 +40,23 @@ namespace CopperMatchmaking.Client
 
             Client.Disconnected += (sender, args) => ShouldUpdate = false;
 
-            Client.Send(GetJoinMessage());
+            Client.Connected += (sender, args) =>
+            {
+                
+                var joinMessage = Message.Create(MessageSendMode.Reliable, MessageIds.ClientJoined);
+
+                joinMessage.Add(playerId); // ushort
+                joinMessage.Add(rankId); // byte
+            
+                Log.Info($"Creating client join message. | PlayerId {playerId} | RankId {rankId}");
+                Client.Send(joinMessage);
+            };
         }
 
         public void Update()
         {
             if (ShouldUpdate)
                 Client.Update();
-        }
-
-        private Message GetJoinMessage()
-        {
-            var result = Message.Create(MessageSendMode.Reliable, MessageIds.ClientJoined);
-
-            result.Add(playerId); // ushort
-            result.Add(rankId); // byte
-
-            return result;
         }
     }
 }
