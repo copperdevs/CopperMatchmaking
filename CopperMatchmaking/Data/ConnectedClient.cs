@@ -2,13 +2,13 @@ using RiptideConnection = Riptide.Connection;
 
 namespace CopperMatchmaking.Data
 {
-    public class ConnectedClient
+    internal class ConnectedClient
     {
-        public readonly Rank Rank;
-        public readonly uint ConnectionId;
-        public readonly RiptideConnection RiptideConnection;
+        internal readonly Rank Rank;
+        internal readonly uint ConnectionId;
+        internal readonly RiptideConnection RiptideConnection;
 
-        public ConnectedClient(Rank rank, RiptideConnection riptideConnection)
+        internal ConnectedClient(Rank rank, RiptideConnection riptideConnection)
         {
             Rank = rank;
             RiptideConnection = riptideConnection;

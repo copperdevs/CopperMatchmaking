@@ -8,14 +8,12 @@ namespace CopperMatchmaking.Server
 {
     internal class ServerLobbyManager
     {
-        private readonly IServerHandler handler;
         private readonly MatchmakerServer server;
 
         private readonly Dictionary<uint, List<ConnectedClient>> lobbies = new Dictionary<uint, List<ConnectedClient>>();
 
-        public ServerLobbyManager(IServerHandler handler, MatchmakerServer server)
+        internal ServerLobbyManager(MatchmakerServer server)
         {
-            this.handler = handler;
             this.server = server;
         }
 

@@ -1,6 +1,6 @@
 namespace CopperMatchmaking.Data
 {
-    public enum MessageIds : ushort
+    internal enum MessageIds : ushort
     {
         // client from server to tell them their rank and userid
         ClientJoined = 1,

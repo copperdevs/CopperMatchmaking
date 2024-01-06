@@ -4,7 +4,7 @@ using Riptide;
 
 namespace CopperMatchmaking.Client
 {
-    public static class ClientMessageHandlers
+    internal static class ClientMessageHandlers
     {
         [MessageHandler((ushort)MessageIds.ServerRequestedClientToHost)]
         internal static void MessageHandler(Message receivedMessage)

@@ -45,7 +45,7 @@ namespace CopperMatchmaking.Server
 
             // matchmaking 
             queueManager = new ServerQueueManager(lobbySize);
-            LobbyManager = new ServerLobbyManager(handler, this);
+            LobbyManager = new ServerLobbyManager(this);
 
             // actions
             queueManager.PotentialLobbyFound += LobbyManager.PotentialLobbyFound;

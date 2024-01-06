@@ -1,5 +1,7 @@
 # CopperMatchmaking
 
+[server example](CopperMatchmaking.Example.Server/Program.cs)
+
 > Simple matchmaking server for creating two even player count teams for use in peer to peer
 
 ## Use Case
@@ -76,7 +78,7 @@ of those players to be the host in a peer to peer architecture. It also has rank
         }
     ```
 
-5. Full example. Can also be found in the `CopperMatchmaking.Example.Server` project.
+5. Full example. Can also be found in the [CopperMatchmaking.Example.Server](CopperMatchmaking.Example.Server/Program.cs) project.
     ```csharp
         var server = new MatchmakerServer();
         server.RegisterRanks(
@@ -158,7 +160,8 @@ of those players to be the host in a peer to peer architecture. It also has rank
         }
     }
     ```
-4. Full example. Can also be found in the `CopperMatchmaking.Example.Client` project.
+   
+4. Full example. Can also be found in the [CopperMatchmaking.Example.Client](CopperMatchmaking.Example.Client/Program.cs) project.
     ```csharp
     var client = new MatchmakerClient("127.0.0.1", new ClientHandler(), 0, 76561199083358154);
     
