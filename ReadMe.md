@@ -1,7 +1,5 @@
 # CopperMatchmaking
 
-[server example](CopperMatchmaking.Example.Server/Program.cs)
-
 > Simple matchmaking server for creating two even player count teams for use in peer to peer
 
 ## Use Case
