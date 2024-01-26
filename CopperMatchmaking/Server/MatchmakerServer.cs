@@ -88,8 +88,7 @@ namespace CopperMatchmaking.Server
                 return;
 
             Ranks.AddRange(targetRanks.ToList());
-            Log.Info(
-                $"Registering {targetRanks.Length} new ranks, bringing the total to {Ranks.Count}. | Ranks: {Ranks.Aggregate("", (current, rank) => current + $"{rank.DisplayName}[{rank.Id}], ")}");
+            Log.Info($"Registering {targetRanks.Length} new ranks, bringing the total to {Ranks.Count}. | Ranks: {Ranks.Aggregate("", (current, rank) => current + $"{rank.DisplayName}[{rank.Id}], ")}");
 
             queueManager.RegisterRanks(Ranks);
         }
@@ -98,6 +97,12 @@ namespace CopperMatchmaking.Server
         {
             Log.Info($"New Client Joined | Rank: {client.Rank.DisplayName} | ConnectionId: {client.ConnectionId}");
 
+            if (!handler.VerifyPlayer(client))
+            {
+                Log.Info($"Couldn't verify client. Disconnecting");
+                return;
+            }
+            
             queueManager.RegisterPlayer(client);
         }
 

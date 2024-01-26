@@ -17,7 +17,7 @@ namespace CopperMatchmaking.Server
             var connection = MatchmakerServer.Instance.Server.Clients[sender - 1];
             var rank = MatchmakerServer.Instance.Ranks[rankId - 1];
 
-            MatchmakerServer.Instance.RegisterClient(new ConnectedClient(rank, connection));
+            MatchmakerServer.Instance.RegisterClient(new ConnectedClient(rank, connection, playerId));
         }
 
         [MessageHandler((ushort)MessageIds.ClientHostLobbyId)]
