@@ -15,7 +15,7 @@ namespace CopperMatchmaking.Data
             this.riptideConnection = riptideConnection;
 
             ConnectionId = riptideConnection.Id;
-            this.PlayerId = playerId;
+            PlayerId = playerId;
         }
 
         public static implicit operator Rank(ConnectedClient client) => client.Rank;
