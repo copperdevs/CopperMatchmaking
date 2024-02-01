@@ -7,11 +7,6 @@
 `CopperMatchmaking` was made for games with two teams, each with the same amount of players (5 for example), and for one
 of those players to be the host in a peer to peer architecture. It also has ranks built in for pooling players.
 
-## ToDo
-
-- [ ] Give `IServerHandler` a use.
-    - Its intent is to have it make the lobbies from each pool of players, just unsure of how to add it.
-
 ## Getting Started
 
 ### Server
