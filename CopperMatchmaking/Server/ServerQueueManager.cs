@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CopperMatchmaking.Data;
 using CopperMatchmaking.Info;
+using Riptide;
 
 namespace CopperMatchmaking.Server
 {
@@ -49,6 +50,25 @@ namespace CopperMatchmaking.Server
         {
             rankQueues[client.Rank].Add(client);
             Log.Info($"Registered new client to {GetType().Name}");
+        }
+
+        internal void DisconnectClient(Connection connection)
+        {
+            for (var i = 0; i < rankQueues.Values.ToList().Count; i++)
+            {
+                var connectedClients = rankQueues.Values.ToList()[i];
+                
+                for (var ii = 0; ii < connectedClients.Count; ii++)
+                {
+                    var client = connectedClients[ii];
+
+                    if (client.RiptideConnection != connection) 
+                        continue;
+                    
+                    Log.Info($"Removing client {connection.Id} due to being disconnected");
+                    rankQueues[(byte)i].RemoveAt(ii);
+                }
+            }
         }
     }
 }

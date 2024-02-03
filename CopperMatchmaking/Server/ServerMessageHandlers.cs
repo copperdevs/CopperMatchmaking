@@ -1,5 +1,6 @@
 using CopperMatchmaking.Data;
 using CopperMatchmaking.Info;
+using CopperMatchmaking.Util;
 using Riptide;
 
 namespace CopperMatchmaking.Server
@@ -14,9 +15,15 @@ namespace CopperMatchmaking.Server
 
             Log.Info($"Received new ClientJoined message. | PlayerId: {playerId} | RankId: {rankId} | Sender: {sender}");
 
-            var connection = MatchmakerServer.Instance.Server.Clients[sender - 1];
+            var connection = MatchmakerServer.Instance.Server.GetConnection(sender);
             var rank = MatchmakerServer.Instance.Ranks[rankId - 1];
 
+            if (connection is null)
+            {
+                Log.Info($"Disconnecting client due to connection being null | Sender: {sender}");
+                return;
+            }
+            
             MatchmakerServer.Instance.RegisterClient(new ConnectedClient(rank, connection, playerId));
         }
 

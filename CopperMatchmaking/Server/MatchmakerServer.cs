@@ -63,6 +63,11 @@ namespace CopperMatchmaking.Server
 
             // actions
             queueManager.PotentialLobbyFound += LobbyManager.PotentialLobbyFound;
+            Server.ClientDisconnected += (sender, args) =>
+            {
+                Log.Info($"Client disconnected");
+                queueManager.DisconnectClient(args.Client);
+            };
         }
 
         /// <summary>
@@ -88,7 +93,8 @@ namespace CopperMatchmaking.Server
                 return;
 
             Ranks.AddRange(targetRanks.ToList());
-            Log.Info($"Registering {targetRanks.Length} new ranks, bringing the total to {Ranks.Count}. | Ranks: {Ranks.Aggregate("", (current, rank) => current + $"{rank.DisplayName}[{rank.Id}], ")}");
+            Log.Info(
+                $"Registering {targetRanks.Length} new ranks, bringing the total to {Ranks.Count}. | Ranks: {Ranks.Aggregate("", (current, rank) => current + $"{rank.DisplayName}[{rank.Id}], ")}");
 
             queueManager.RegisterRanks(Ranks);
         }
@@ -102,7 +108,7 @@ namespace CopperMatchmaking.Server
                 Log.Info($"Couldn't verify client. Disconnecting");
                 return;
             }
-            
+
             queueManager.RegisterPlayer(client);
         }
 
