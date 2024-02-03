@@ -4,9 +4,9 @@ namespace CopperMatchmaking.Info
 {
     public static class Log
     {
-        public static void Info(object message) => CopperLogger.UninitializedLogInfo(message);
-        public static void Warning(object message) => CopperLogger.UninitializedLogWarning(message);
-        public static void Error(object message) => CopperLogger.UninitializedLogError(message);
+        public static void Info(object message) => CopperLogger.LogInfo(message);
+        public static void Warning(object message) => CopperLogger.LogWarning(message);
+        public static void Error(object message) => CopperLogger.LogError(message);
         public static void Error(Exception e) => Error($"[{e.GetType()}] {e.Message} \n {e.StackTrace}");
 
         public static void Assert(bool condition, object message)
@@ -16,13 +16,13 @@ namespace CopperMatchmaking.Info
         }
     }
 
-    internal static partial class CopperLogger
+    public static class CopperLogger
     {
         public delegate void BaseLog(object message);
 
-        public static BaseLog? Info;
-        public static BaseLog? Warning;
-        public static BaseLog? Error;
+        private static BaseLog? info;
+        private static BaseLog? warning;
+        private static BaseLog? error;
 
         private static bool initialized = false;
 
@@ -31,7 +31,7 @@ namespace CopperMatchmaking.Info
 
         public static void Initialize(bool timestamps = true)
         {
-            Initialize(LogInfo, LogWarning, LogError, includeTimestamps);
+            Initialize(InternalLogInfo, InternalLogWarning, InternalLogError, includeTimestamps);
         }
 
         public static void Initialize(BaseLog infoLog, BaseLog warningLog, BaseLog errorLog, bool timestamps = true)
@@ -40,35 +40,22 @@ namespace CopperMatchmaking.Info
                 return;
             initialized = true;
 
-            Info = infoLog;
-            Warning = warningLog;
-            Error = errorLog;
+            info = infoLog;
+            warning = warningLog;
+            error = errorLog;
 
             includeTimestamps = timestamps;
         }
+        
+        public static void LogInfo(object message) => info?.Invoke(message);
 
+        public static void LogWarning(object message) => warning?.Invoke(message);
 
-        internal static void UninitializedLogInfo(object message)
-        {
-            Initialize(LogInfo, LogWarning, LogError);
-            LogInfo(message);
-        }
-
-        internal static void UninitializedLogWarning(object message)
-        {
-            Initialize(LogInfo, LogWarning, LogError);
-            LogWarning(message);
-        }
-
-        internal static void UninitializedLogError(object message)
-        {
-            Initialize(LogInfo, LogWarning, LogError);
-            LogError(message);
-        }
-
-        public static void LogInfo(object message) => WriteBaseLog("INFO", message, ConsoleColor.DarkGray);
-        public static void LogWarning(object message) => WriteBaseLog("WARN", message, ConsoleColor.DarkYellow);
-        public static void LogError(object message) => WriteBaseLog("ERROR", message, ConsoleColor.DarkRed);
+        public static void LogError(object message) => error?.Invoke(message);
+        
+        public static void InternalLogInfo(object message) => WriteBaseLog("INFO", message, ConsoleColor.DarkGray);
+        public static void InternalLogWarning(object message) => WriteBaseLog("WARN", message, ConsoleColor.DarkYellow);
+        public static void InternalLogError(object message) => WriteBaseLog("ERROR", message, ConsoleColor.DarkRed);
 
         private static void WriteBaseLog(string prefix, object message, ConsoleColor color)
         {
@@ -77,7 +64,6 @@ namespace CopperMatchmaking.Info
             var logString = "";
 
             if (includeTimestamps)
-                // logString += $"[{DateTime.Now.ToShortTimeString()}] ";
                 logString += $"[{DateTime.Now:HH:mm:ss}] ";
             logString += $"[{prefix}] {message}";
 

@@ -3,6 +3,7 @@ using Riptide;
 
 namespace CopperMatchmaking.Data
 {
+    [Serializable]
     public class Rank : IMessageSerializable
     {
         public string DisplayName;

@@ -39,7 +39,7 @@ namespace CopperMatchmaking.Server
         /// <param name="handler">Server handler</param>
         /// <param name="lobbySize">Size of a lobby. Must be an even number</param>
         /// <param name="maxClients">Max amount of clients that can connect to the matchmaking server</param>
-        public MatchmakerServer(IServerHandler handler, byte lobbySize, ushort maxClients = 65534)
+        public MatchmakerServer(IServerHandler handler, byte lobbySize = 10, ushort maxClients = 65534)
         {
             // values
             this.handler = handler;
@@ -50,7 +50,7 @@ namespace CopperMatchmaking.Server
                 return;
 
             // logs
-            CopperLogger.Initialize(CopperLogger.LogInfo, CopperLogger.LogWarning, CopperLogger.LogError);
+            CopperLogger.Initialize(CopperLogger.InternalLogInfo, CopperLogger.InternalLogWarning, CopperLogger.InternalLogError);
             RiptideLogger.Initialize(CopperLogger.LogInfo, CopperLogger.LogInfo, CopperLogger.LogWarning, CopperLogger.LogError, false);
 
             // networking

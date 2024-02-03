@@ -10,7 +10,7 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <RepositoryUrl>https://github.com/copperdevs/CopperMatchmaking</RepositoryUrl>
-        <PackageTags>game;networking;game development;matchmaking;matchmaking;</PackageTags>
+        <PackageTags>game;networking;game development;matchmaking;</PackageTags>
         <PackageReadmeFile>nuget-readme.md</PackageReadmeFile>
     </PropertyGroup>
 

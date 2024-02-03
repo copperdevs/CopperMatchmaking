@@ -32,7 +32,7 @@ namespace CopperMatchmaking.Client
         public MatchmakerClient(string ip, IClientHandler clientHandler, byte rankId, ulong playerId)
         {
             // init logs
-            CopperLogger.Initialize(CopperLogger.LogInfo, CopperLogger.LogWarning, CopperLogger.LogError);
+            CopperLogger.Initialize(CopperLogger.InternalLogInfo, CopperLogger.InternalLogWarning, CopperLogger.InternalLogError);
             RiptideLogger.Initialize(CopperLogger.LogInfo, CopperLogger.LogInfo, CopperLogger.LogWarning, CopperLogger.LogError, false);
 
             // values/handlers
