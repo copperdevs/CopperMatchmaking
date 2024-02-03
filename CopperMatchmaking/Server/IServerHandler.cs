@@ -2,6 +2,9 @@ using CopperMatchmaking.Data;
 
 namespace CopperMatchmaking.Server
 {
+    /// <summary>
+    /// Server handler interface handler
+    /// </summary>
     public interface IServerHandler
     {
         /// <summary>

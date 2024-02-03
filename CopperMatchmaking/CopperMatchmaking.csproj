@@ -12,6 +12,15 @@
         <RepositoryUrl>https://github.com/copperdevs/CopperMatchmaking</RepositoryUrl>
         <PackageTags>game;networking;game development;matchmaking;</PackageTags>
         <PackageReadmeFile>nuget-readme.md</PackageReadmeFile>
+        <AssemblyVersion>1.0.0</AssemblyVersion>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <DocumentationFile>bin\Debug\CopperMatchmaking.xml</DocumentationFile>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <DocumentationFile>bin\Release\CopperMatchmaking.xml</DocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>

@@ -14,6 +14,9 @@ namespace CopperMatchmaking.Client
     {
         internal static MatchmakerClient Instance = null!;
 
+        /// <summary>
+        /// Enabled when <see cref="Update"/> needs to be ran to update the client.
+        /// </summary>
         public bool ShouldUpdate { get; private set; }
 
         internal readonly RiptideClient Client;
