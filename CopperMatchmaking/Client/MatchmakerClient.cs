@@ -45,6 +45,7 @@ namespace CopperMatchmaking.Client
             Client = new RiptideClient(new TcpClient());
             Client.Connect($"{ip}:7777");
             ShouldUpdate = true;
+            Client.Connection.CanQualityDisconnect = false;
 
             Client.Disconnected += (sender, args) => ShouldUpdate = false;
 

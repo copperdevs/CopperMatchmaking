@@ -23,6 +23,8 @@ namespace CopperMatchmaking.Server
                 Log.Info($"Disconnecting client due to connection being null | Sender: {sender}");
                 return;
             }
+
+            connection.CanQualityDisconnect = false;
             
             MatchmakerServer.Instance.RegisterClient(new ConnectedClient(rank, connection, playerId));
         }
