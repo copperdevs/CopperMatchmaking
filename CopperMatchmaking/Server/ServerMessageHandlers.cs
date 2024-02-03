@@ -15,7 +15,7 @@ namespace CopperMatchmaking.Server
             Log.Info($"Received new ClientJoined message. | PlayerId: {playerId} | RankId: {rankId} | Sender: {sender}");
 
             var connection = MatchmakerServer.Instance.Server.GetConnection(sender);
-            var rank = MatchmakerServer.Instance.Ranks[rankId - 1];
+            var rank = MatchmakerServer.Instance.Ranks[rankId];
 
             if (connection is null)
             {
