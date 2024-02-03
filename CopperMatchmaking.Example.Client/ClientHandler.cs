@@ -1,5 +1,6 @@
 using CopperMatchmaking.Client;
 using CopperMatchmaking.Info;
+using Riptide;
 
 namespace CopperMatchmaking.Example.Client;
 
@@ -15,5 +16,10 @@ public class ClientHandler : IClientHandler
     public void JoinServer(ulong serverJoinCode)
     {
         Log.Info($"join code: {serverJoinCode}");
+    }
+
+    public void Disconnected(DisconnectReason reason)
+    {
+        Log.Info($"Disconnected. | Reason: {reason}");
     }
 }

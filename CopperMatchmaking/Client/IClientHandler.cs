@@ -1,3 +1,5 @@
+using Riptide;
+
 namespace CopperMatchmaking.Client
 {
     /// <summary>
@@ -10,10 +12,16 @@ namespace CopperMatchmaking.Client
         /// </summary>
         /// <returns>Lobby join code</returns>
         public ulong ClientRequestedToHost();
+        
         /// <summary>
         /// Method for joining a server from a join code
         /// </summary>
         /// <param name="serverJoinCode">Lobby join code</param>
         public void JoinServer(ulong serverJoinCode);
+
+        /// <summary>
+        /// Method ran when disconnected from the server
+        /// </summary>
+        public void Disconnected(DisconnectReason reason);
     }
 }

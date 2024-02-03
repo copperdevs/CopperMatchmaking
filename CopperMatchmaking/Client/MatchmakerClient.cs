@@ -78,6 +78,12 @@ namespace CopperMatchmaking.Client
                         break;
                 }
             };
+
+            Client.Disconnected += (sender, args) =>
+            {
+                Log.Info($"Client disconnected | Reason: {args.Reason}");
+                clientHandler.Disconnected(args.Reason);
+            };
         }
 
         /// <summary>
