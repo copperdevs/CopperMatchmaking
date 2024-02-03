@@ -43,7 +43,7 @@ namespace CopperMatchmaking.Client
 
             // start riptide crap
             Client = new RiptideClient(new TcpClient());
-            Client.Connect($"{ip}:7777");
+            Client.Connect($"{ip}:7777", 5, 0, null, false);
             ShouldUpdate = true;
             Client.Connection.CanQualityDisconnect = false;
 
@@ -58,6 +58,25 @@ namespace CopperMatchmaking.Client
 
                 Log.Info($"Creating client join message. | PlayerId {playerId} | RankId {rankId}");
                 Client.Send(joinMessage);
+            };
+
+            Client.MessageReceived += (sender, args) =>
+            {
+                Log.Info($"Received message of id {args.MessageId}.");
+                switch (args.MessageId)
+                {
+                    case 2:
+                        Log.Info($"Received {nameof(MessageIds.ServerRequestedClientToHost)} message.");
+                        ClientMessageHandlers.ServerRequestedClientToHostMessageHandler(args.Message);
+                        break;
+                    case 4:
+                        Log.Info($"Received {nameof(MessageIds.ClientJoinCreatedLobby)} message.");
+                        ClientMessageHandlers.ClientJoinCreatedLobbyMessageHandler(args.Message);
+                        break;
+                    default:
+                        Log.Warning($"Received unknown message of id {args.MessageId}.");
+                        break;
+                }
             };
         }
 

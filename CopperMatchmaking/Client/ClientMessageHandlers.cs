@@ -6,8 +6,7 @@ namespace CopperMatchmaking.Client
 {
     internal static class ClientMessageHandlers
     {
-        [MessageHandler((ushort)MessageIds.ServerRequestedClientToHost)]
-        internal static void MessageHandler(Message receivedMessage)
+        internal static void ServerRequestedClientToHostMessageHandler(Message receivedMessage)
         {
             var lobbyId = receivedMessage.GetUInt();
 
@@ -22,7 +21,6 @@ namespace CopperMatchmaking.Client
             MatchmakerClient.Instance.Client.Send(message);
         }
         
-        [MessageHandler((ushort)MessageIds.ClientJoinCreatedLobby)]
         internal static void ClientJoinCreatedLobbyMessageHandler(Message receivedMessage)
         {
             var lobbyId = receivedMessage.GetULong();

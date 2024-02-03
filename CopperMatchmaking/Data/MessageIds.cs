@@ -5,10 +5,10 @@ namespace CopperMatchmaking.Data
         // client from server to tell them their rank and userid
         ClientJoined = 1,
         // server to client to ask a client to host
-        ServerRequestedClientToHost,
+        ServerRequestedClientToHost = 2,
         // client to server to give the lobby id after hosting
-        ClientHostLobbyId,
+        ClientHostLobbyId = 3,
         // server to client to say "yo join the lobby"
-        ClientJoinCreatedLobby,
+        ClientJoinCreatedLobby = 4,
     }
 }

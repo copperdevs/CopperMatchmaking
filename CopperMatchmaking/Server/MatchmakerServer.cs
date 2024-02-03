@@ -55,7 +55,8 @@ namespace CopperMatchmaking.Server
 
             // networking
             Server = new RiptideServer(new TcpServer());
-            Server.Start(7777, maxClients);
+            Server.Start(7777, maxClients, 0, false);
+            
 
             // matchmaking 
             queueManager = new ServerQueueManager(lobbySize);
@@ -67,6 +68,24 @@ namespace CopperMatchmaking.Server
             {
                 Log.Info($"Client disconnected");
                 queueManager.DisconnectClient(args.Client);
+            };
+            Server.MessageReceived += (sender, args) =>
+            {
+                Log.Info($"Received message of id {args.MessageId}.");
+                switch (args.MessageId)
+                {
+                    case 1:
+                        Log.Info($"Received {nameof(MessageIds.ClientJoined)} message.");
+                        ServerMessageHandlers.ClientJoinedMessageHandler(args.FromConnection.Id, args.Message);
+                        break;
+                    case 3:
+                        Log.Info($"Received {nameof(MessageIds.ClientHostLobbyId)} message.");
+                        ServerMessageHandlers.ClientHostLobbyIdMessageHandler(args.FromConnection.Id, args.Message);
+                        break;
+                    default:
+                        Log.Warning($"Received unknown message of id {args.MessageId}.");
+                        break;
+                }
             };
         }
 
