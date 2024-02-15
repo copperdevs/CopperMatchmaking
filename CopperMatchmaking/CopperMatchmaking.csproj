@@ -16,8 +16,6 @@
         <Title>CopperMatchmaking</Title>
         <Description>Simple matchmaking server for creating two even player count teams for use in peer to peer</Description>
         <Copyright>MIT</Copyright>
-        <PackageProjectUrl>https://github.com/copperdevs/CopperMatchmaking</PackageProjectUrl>
-        <PackageLicenseUrl>https://github.com/copperdevs/CopperMatchmaking/blob/master/LICENSE</PackageLicenseUrl>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
