@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <PackageId>CopperMatchmaking</PackageId>
-        <Version>1.0.0</Version>
+        <Version>1.1.0</Version>
         <Authors>copperdev</Authors>
         <TargetFramework>netstandard2.1</TargetFramework>
         <Nullable>enable</Nullable>
@@ -13,6 +13,11 @@
         <PackageTags>game;networking;game development;matchmaking;</PackageTags>
         <PackageReadmeFile>nuget-readme.md</PackageReadmeFile>
         <AssemblyVersion>1.0.0</AssemblyVersion>
+        <Title>CopperMatchmaking</Title>
+        <Description>Simple matchmaking server for creating two even player count teams for use in peer to peer</Description>
+        <Copyright>MIT</Copyright>
+        <PackageProjectUrl>https://github.com/copperdevs/CopperMatchmaking</PackageProjectUrl>
+        <PackageLicenseUrl>https://github.com/copperdevs/CopperMatchmaking/blob/master/LICENSE</PackageLicenseUrl>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
