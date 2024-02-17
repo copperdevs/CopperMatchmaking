@@ -11,13 +11,13 @@ namespace CopperMatchmaking.Client
         /// Method for getting the join code of a lobby the client
         /// </summary>
         /// <returns>Lobby join code</returns>
-        public ulong ClientRequestedToHost();
+        public string ClientRequestedToHost();
         
         /// <summary>
         /// Method for joining a server from a join code
         /// </summary>
         /// <param name="serverJoinCode">Lobby join code</param>
-        public void JoinServer(ulong serverJoinCode);
+        public void JoinServer(string serverJoinCode);
 
         /// <summary>
         /// Method ran when disconnected from the server

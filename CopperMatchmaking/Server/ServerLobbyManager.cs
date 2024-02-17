@@ -31,7 +31,7 @@ namespace CopperMatchmaking.Server
             server.SendMessage(message, connectedClients[0]);
         }
 
-        internal void HandleClientHostResponse(uint lobbyId, ulong hostedLobbyId)
+        internal void HandleClientHostResponse(uint lobbyId, string hostedLobbyId)
         {
             Log.Info($"ConnectedClient[{lobbies[lobbyId][0].ConnectionId}] has responded with the join code of {hostedLobbyId}. Telling all clients of their lobby, and disconnecting them from the matchmaking server.");
 

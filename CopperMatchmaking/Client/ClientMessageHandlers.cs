@@ -6,6 +6,26 @@ namespace CopperMatchmaking.Client
 {
     internal static class ClientMessageHandlers
     {
+        internal static void ClientReceivedMessageHandler(object sender, MessageReceivedEventArgs args)
+        {
+            Log.Info($"Received message of id {args.MessageId}.");
+            
+            switch (args.MessageId)
+            {
+                case 2:
+                    Log.Info($"Received {nameof(MessageIds.ServerRequestedClientToHost)} message.");
+                    ClientMessageHandlers.ServerRequestedClientToHostMessageHandler(args.Message);
+                    break;
+                case 4:
+                    Log.Info($"Received {nameof(MessageIds.ClientJoinCreatedLobby)} message.");
+                    ClientMessageHandlers.ClientJoinCreatedLobbyMessageHandler(args.Message);
+                    break;
+                default:
+                    Log.Warning($"Received unknown message of id {args.MessageId}.");
+                    break;
+            }
+        }
+        
         internal static void ServerRequestedClientToHostMessageHandler(Message receivedMessage)
         {
             var lobbyId = receivedMessage.GetUInt();
@@ -23,7 +43,7 @@ namespace CopperMatchmaking.Client
         
         internal static void ClientJoinCreatedLobbyMessageHandler(Message receivedMessage)
         {
-            var lobbyId = receivedMessage.GetULong();
+            var lobbyId = receivedMessage.GetString();
             Log.Info($"Received new ClientJoinCreatedLobby message. | LobbyId: {lobbyId}");
             MatchmakerClient.Instance.Handler.JoinServer(lobbyId);
         }

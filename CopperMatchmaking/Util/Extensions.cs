@@ -17,7 +17,7 @@ namespace CopperMatchmaking.Util
         /// <returns>Riptide connection</returns>
         public static Connection? GetConnection(this RiptideServer server, ushort id)
         {
-            return server.Clients.FirstOrDefault(connection => !(connection is null) && connection.Id == id);
+            return server.TryGetClient(id, out var client) ? client : null;
         }
     }
 }

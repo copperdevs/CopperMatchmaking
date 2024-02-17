@@ -12,7 +12,7 @@ namespace CopperMatchmaking.Server
         // byte is used here but its just the rank class
         private readonly Dictionary<byte, List<ConnectedClient>> rankQueues = new Dictionary<byte, List<ConnectedClient>>();
 
-        private ushort lobbySize;
+        private readonly ushort lobbySize;
 
         internal Action<List<ConnectedClient>>? PotentialLobbyFound;
 
@@ -52,6 +52,13 @@ namespace CopperMatchmaking.Server
             Log.Info($"Registered new client to {GetType().Name}");
         }
 
+        // This function is used instead of the DisconnectClient below so it can be connected to riptide servers client disconnected callback
+        internal void ClientDisconnected(object sender, ServerDisconnectedEventArgs args)
+        {
+            Log.Info($"Client disconnected");
+            DisconnectClient(args.Client);
+        }
+        
         internal void DisconnectClient(Connection connection)
         {
             for (var i = 0; i < rankQueues.Values.ToList().Count; i++)

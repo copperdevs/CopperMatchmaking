@@ -6,14 +6,14 @@ namespace CopperMatchmaking.Example.Client;
 
 public class ClientHandler : IClientHandler
 {
-    public ulong ClientRequestedToHost()
+    public string ClientRequestedToHost()
     {
         var serverJoinCode = (ulong)Random.Shared.NextInt64(1000000000000);
         Log.Info($"join code: {serverJoinCode}");
-        return serverJoinCode;
+        return serverJoinCode.ToString();
     }
 
-    public void JoinServer(ulong serverJoinCode)
+    public void JoinServer(string serverJoinCode)
     {
         Log.Info($"join code: {serverJoinCode}");
     }

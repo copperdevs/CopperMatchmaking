@@ -1,3 +1,4 @@
+using System;
 using CopperMatchmaking.Data;
 using CopperMatchmaking.Info;
 using Riptide;
@@ -17,7 +18,7 @@ namespace CopperMatchmaking.Client
         /// <summary>
         /// Enabled when <see cref="Update"/> needs to be ran to update the client.
         /// </summary>
-        public bool ShouldUpdate { get; private set; }
+        public bool ShouldUpdate => Client.IsConnected;
 
         internal readonly RiptideClient Client;
         internal readonly IClientHandler Handler;
@@ -47,46 +48,18 @@ namespace CopperMatchmaking.Client
             // start riptide crap
             Client = new RiptideClient(new TcpClient());
             Client.Connect($"{ip}:7777", 5, 0, null, false);
-            ShouldUpdate = true;
-            Client.Connection.CanQualityDisconnect = false;
+            Client.Connection.CanQualityDisconnect = true;
 
-            Client.Disconnected += (sender, args) => ShouldUpdate = false;
+            Client.Connected += ClientConnectedHandler;
+            Client.MessageReceived += ClientMessageHandlers.ClientReceivedMessageHandler;
+            Client.Disconnected += ClientDisconnectedHandler;
+        }
 
-            Client.Connected += (sender, args) =>
-            {
-                var joinMessage = Message.Create(MessageSendMode.Reliable, MessageIds.ClientJoined);
-
-                joinMessage.Add(playerId); // ushort
-                joinMessage.Add(rankId); // byte
-
-                Log.Info($"Creating client join message. | PlayerId {playerId} | RankId {rankId}");
-                Client.Send(joinMessage);
-            };
-
-            Client.MessageReceived += (sender, args) =>
-            {
-                Log.Info($"Received message of id {args.MessageId}.");
-                switch (args.MessageId)
-                {
-                    case 2:
-                        Log.Info($"Received {nameof(MessageIds.ServerRequestedClientToHost)} message.");
-                        ClientMessageHandlers.ServerRequestedClientToHostMessageHandler(args.Message);
-                        break;
-                    case 4:
-                        Log.Info($"Received {nameof(MessageIds.ClientJoinCreatedLobby)} message.");
-                        ClientMessageHandlers.ClientJoinCreatedLobbyMessageHandler(args.Message);
-                        break;
-                    default:
-                        Log.Warning($"Received unknown message of id {args.MessageId}.");
-                        break;
-                }
-            };
-
-            Client.Disconnected += (sender, args) =>
-            {
-                Log.Info($"Client disconnected | Reason: {args.Reason}");
-                clientHandler.Disconnected(args.Reason);
-            };
+        ~MatchmakerClient()
+        {
+            Client.Connected -= ClientConnectedHandler;
+            Client.MessageReceived -= ClientMessageHandlers.ClientReceivedMessageHandler;
+            Client.Disconnected -= ClientDisconnectedHandler;
         }
 
         /// <summary>
@@ -96,6 +69,23 @@ namespace CopperMatchmaking.Client
         {
             if (ShouldUpdate)
                 Client.Update();
+        }
+
+        private void ClientConnectedHandler(object sender, EventArgs eventArgs)
+        {
+            var joinMessage = Message.Create(MessageSendMode.Reliable, MessageIds.ClientJoined);
+
+            joinMessage.Add(playerId); // ulong
+            joinMessage.Add(rankId); // byte
+
+            Log.Info($"Creating client join message. | PlayerId {playerId} | RankId {rankId}");
+            Client.Send(joinMessage);
+        }
+        
+        private void ClientDisconnectedHandler(object sender, DisconnectedEventArgs args)
+        {
+            Log.Info($"Client disconnected | Reason: {args.Reason}");
+            Handler.Disconnected(args.Reason);
         }
     }
 }
