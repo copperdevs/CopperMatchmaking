@@ -11,7 +11,7 @@ of those players to be the host in a peer to peer architecture. It also has rank
 
 ### Server
 
-1. Create ranks. The matchmaker creates a pool of players for each rank. Each connected client can only be matchmaked
+1. Create ranks. The matchmaker creates a pool of players for each rank. Each connected client can only be matched
    into a lobby with players of the same rank.
 
     ```csharp
@@ -28,12 +28,12 @@ of those players to be the host in a peer to peer architecture. It also has rank
     }
     ```
 
-2. Create the server. The constructor for `MatchmakerServer` has two paramters both with defaults.
+2. Create the server. The constructor for `MatchmakerServer` has two parameters both with defaults.
     - `lobbySize`
         - `lobbySize` determines the amount of players in a lobby. This has to be an even number so both teams can have
           the same amount of players. The default is set to 10.
     - `maxClients`
-        - `maxClients` determines the max amount of clients that can be connnected to the matchmaker server. The default
+        - `maxClients` determines the max amount of clients that can be connected to the matchmaker server. The default
           is set to 65534.
 
     ```csharp
@@ -55,7 +55,7 @@ of those players to be the host in a peer to peer architecture. It also has rank
         new Rank("Chaos", RankIds.Chaos));
     ```
 
-4. Now you just have to consistenly update the server. This can be done in a `while(true)` loop or in unitys built
+4. Now you just have to consistently update the server. This can be done in a `while(true)` loop or in unitys built
    in `FixedUpdate` method.
     ```csharp
         while (true)
@@ -117,7 +117,11 @@ of those players to be the host in a peer to peer architecture. It also has rank
            return serverJoinCode;
        }
    
-       public void JoinServer(ulong serverJoinCode)
+       public void JoinServer(string serverJoinCode)
+       {
+       }
+
+       public void Disconnected(DisconnectReason reason)
        {
        }
    }
@@ -147,7 +151,7 @@ of those players to be the host in a peer to peer architecture. It also has rank
     ```csharp
     public void FixedUpdate()
     {
-        while (client.ShouldUpdate)
+        if (client.ShouldUpdate)
         {
             client.Update();
         }
