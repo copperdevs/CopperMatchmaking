@@ -7,6 +7,13 @@
 `CopperMatchmaking` was made for games with two teams, each with the same amount of players (5 for example), and for one
 of those players to be the host in a peer to peer architecture. It also has ranks built in for pooling players.
 
+## Installation
+
+1. Install [RiptideNetworking](https://github.com/RiptideNetworking/Riptide?tab=readme-ov-file). Instructions for installing riptide can be found [here](https://riptide.tomweiland.net/manual/overview/installation.html).
+2. Install matchmaking
+   - Unity package manager: `https://github.com/copperdevs/CopperMatchmaking.git?path=/unity#1.2.0`
+   - [https://www.nuget.org/packages/CopperMatchmaking]:  `dotnet add package CopperMatchmaking --version 1.2.0`
+   
 ## Getting Started
 
 ### Server
