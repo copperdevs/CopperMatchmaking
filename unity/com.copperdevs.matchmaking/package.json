@@ -2,7 +2,7 @@
   "name": "com.copperdevs.matchmaking",
   "displayName": "Copper Matchmaking",
   "version": "1.2.0",
-  "unity": "2022.3.19f1",
+  "unity": "2022.3",
   "license": "MIT",
   "documentationUrl": "https://github.com/copperdevs/CopperMatchmaking?tab=readme-ov-file#getting-started",
   "description": "Simple matchmaking server for creating two even player count teams for use in peer to peer",
