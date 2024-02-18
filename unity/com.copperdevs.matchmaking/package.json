@@ -12,9 +12,6 @@
     "multiplayer",
     "unity"
   ],
-  "dependencies": {
-    "tomweiland.riptide.runtime": "https://github.com/RiptideNetworking/Riptide.git?path=/Packages/Core#2.2.0"
-  },
   "category": "Unity",
   "repository": {
     "url": "https://github.com/copperdevs/CopperMatchmaking",
