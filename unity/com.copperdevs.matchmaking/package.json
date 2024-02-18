@@ -12,6 +12,11 @@
     "multiplayer",
     "unity"
   ],
+  "changelogUrl": "https://github.com/copperdevs/CopperMatchmaking/releases",
+  "author": {
+    "name": "copperdevs",
+    "url": "https://github.com/copperdevs"
+  },
   "category": "Unity",
   "repository": {
     "url": "https://github.com/copperdevs/CopperMatchmaking",
