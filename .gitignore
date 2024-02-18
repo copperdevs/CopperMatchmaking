@@ -16,3 +16,4 @@
 /CopperMatchmaking.Example.Client/obj/
 /CopperMatchmaking.Example.Server/bin/
 /CopperMatchmaking.Example.Server/obj/
+*.meta
