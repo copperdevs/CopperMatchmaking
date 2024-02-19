@@ -43,7 +43,7 @@ namespace CopperMatchmaking.Server
                 return;
             }
 
-            connection.CanQualityDisconnect = true;
+            connection.CanQualityDisconnect = false;
             
             MatchmakerServer.Instance.RegisterClient(new ConnectedClient(rank, connection, playerId));
         }
