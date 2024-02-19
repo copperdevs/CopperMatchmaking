@@ -18,7 +18,7 @@ namespace CopperMatchmaking.Client
         /// <summary>
         /// Enabled when <see cref="Update"/> needs to be ran to update the client.
         /// </summary>
-        public bool ShouldUpdate => Client.IsConnected;
+        public bool ShouldUpdate { get; private set; }
 
         internal readonly RiptideClient Client;
         internal readonly IClientHandler Handler;
@@ -47,9 +47,11 @@ namespace CopperMatchmaking.Client
 
             // start riptide crap
             Client = new RiptideClient(new TcpClient());
+            ShouldUpdate = true;
+            
             Client.Connect($"{ip}:7777", 5, 0, null, false);
-            Client.Connection.CanQualityDisconnect = true;
-
+            Client.Connection.CanQualityDisconnect = false;
+            
             Client.Connected += ClientConnectedHandler;
             Client.MessageReceived += ClientMessageHandlers.ClientReceivedMessageHandler;
             Client.Disconnected += ClientDisconnectedHandler;
@@ -57,6 +59,7 @@ namespace CopperMatchmaking.Client
 
         ~MatchmakerClient()
         {
+            ShouldUpdate = false;
             Client.Connected -= ClientConnectedHandler;
             Client.MessageReceived -= ClientMessageHandlers.ClientReceivedMessageHandler;
             Client.Disconnected -= ClientDisconnectedHandler;

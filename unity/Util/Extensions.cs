@@ -7,6 +7,7 @@ namespace CopperMatchmaking.Util
     /// <summary>
     /// Extensions
     /// </summary>
+#nullable enable
     public static class Extensions
     {
         /// <summary>
@@ -15,11 +16,10 @@ namespace CopperMatchmaking.Util
         /// <param name="server">Target server to get the connection from</param>
         /// <param name="id">Connection id</param>
         /// <returns>Riptide connection</returns>
-#nullable enable
         public static Connection? GetConnection(this RiptideServer server, ushort id)
         {
             return server.TryGetClient(id, out var client) ? client : null;
         }
-#nullable disable
     }
+#nullable disable
 }

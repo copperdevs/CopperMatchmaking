@@ -60,20 +60,20 @@ namespace CopperMatchmaking.Server
             Log.Info($"Client disconnected");
             DisconnectClient(args.Client);
         }
-
+        
         internal void DisconnectClient(Connection connection)
         {
             for (var i = 0; i < rankQueues.Values.ToList().Count; i++)
             {
                 var connectedClients = rankQueues.Values.ToList()[i];
-
+                
                 for (var ii = 0; ii < connectedClients.Count; ii++)
                 {
                     var client = connectedClients[ii];
 
-                    if (client.RiptideConnection != connection)
+                    if (client.RiptideConnection != connection) 
                         continue;
-
+                    
                     Log.Info($"Removing client {connection.Id} due to being disconnected");
                     rankQueues[(byte)i].RemoveAt(ii);
                 }
