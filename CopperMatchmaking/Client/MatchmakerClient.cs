@@ -1,6 +1,7 @@
 using System;
 using CopperMatchmaking.Data;
 using CopperMatchmaking.Info;
+using CopperMatchmaking.Util;
 using Riptide;
 using Riptide.Transports.Tcp;
 using Riptide.Utils;
@@ -11,10 +12,8 @@ namespace CopperMatchmaking.Client
     /// <summary>
     /// Matchmaker client for connecting to the matchmaker with
     /// </summary>
-    public class MatchmakerClient
+    public class MatchmakerClient : Singleton<MatchmakerClient>
     {
-        internal static MatchmakerClient Instance = null!;
-
         /// <summary>
         /// Enabled when <see cref="Update"/> needs to be ran to update the client.
         /// </summary>
@@ -43,7 +42,7 @@ namespace CopperMatchmaking.Client
             this.rankId = rankId;
             this.playerId = playerId;
             Handler = clientHandler;
-            Instance = this;
+            SetInstance(this);
 
             // start riptide crap
             Client = new RiptideClient(new TcpClient());
