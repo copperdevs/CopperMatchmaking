@@ -1,6 +1,7 @@
 using System;
 using CopperMatchmaking.Data;
 using CopperMatchmaking.Info;
+using CopperMatchmaking.Util;
 using Riptide;
 using Riptide.Transports.Tcp;
 using Riptide.Utils;
@@ -11,10 +12,8 @@ namespace CopperMatchmaking.Client
     /// <summary>
     /// Matchmaker client for connecting to the matchmaker with
     /// </summary>
-    public class MatchmakerClient
+    public class MatchmakerClient : Singleton<MatchmakerClient>
     {
-        internal static MatchmakerClient Instance = null!;
-
         /// <summary>
         /// Enabled when <see cref="Update"/> needs to be ran to update the client.
         /// </summary>
@@ -25,6 +24,9 @@ namespace CopperMatchmaking.Client
 
         private readonly byte rankId;
         private readonly ulong playerId;
+
+        internal bool NeededToHost = false;
+        internal uint CurrentLobbyCode;
 
         /// <summary>
         /// Base constructor
@@ -43,7 +45,7 @@ namespace CopperMatchmaking.Client
             this.rankId = rankId;
             this.playerId = playerId;
             Handler = clientHandler;
-            Instance = this;
+            SetInstance(this);
 
             // start riptide crap
             Client = new RiptideClient(new TcpClient());
@@ -89,6 +91,26 @@ namespace CopperMatchmaking.Client
         {
             Log.Info($"Client disconnected | Reason: {args.Reason}");
             Handler.Disconnected(args.Reason);
+        }
+
+        /// <summary>
+        /// When requested in <see cref="IClientHandler"/> to host, you can call this function to send the lobby id.
+        /// </summary>
+        /// <param name="hostedLobbyId"></param>
+        public void SendLobbyCode(string hostedLobbyId)
+        {
+            if (!NeededToHost)
+            {
+                Log.Error($"Client is trying to send a lobby code but is not currently needed to host a lobby.");
+                return;
+            }
+            
+            var message = Message.Create(MessageSendMode.Reliable, MessageIds.ClientHostLobbyId);
+            message.Add(CurrentLobbyCode);
+            message.Add(hostedLobbyId);
+
+            Client.Send(message);
+            NeededToHost = false;
         }
     }
 }

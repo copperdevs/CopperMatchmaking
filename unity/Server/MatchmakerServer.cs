@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CopperMatchmaking.Data;
 using CopperMatchmaking.Info;
+using CopperMatchmaking.Util;
 using Riptide;
 using Riptide.Transports.Tcp;
 using Riptide.Utils;
@@ -12,38 +13,36 @@ namespace CopperMatchmaking.Server
     /// <summary>
     /// 
     /// </summary>
-    public class MatchmakerServer
+    public class MatchmakerServer : Singleton<MatchmakerServer>
     {
-        internal static MatchmakerServer Instance = null!;
-
         internal readonly RiptideServer Server = null!;
 
         internal readonly List<Rank> Ranks = new List<Rank>();
 
         private readonly ServerQueueManager queueManager = null!;
         internal readonly ServerLobbyManager LobbyManager = null!;
-        private readonly IServerHandler handler;
-
+        internal readonly ServerHandler handler;
+        
         /// <summary>
-        /// Base Constructor with a pre-made ServerHandler
+        /// Base Constructor with a pre-made <see cref="ServerHandler"/>
         /// </summary>
         /// <param name="lobbySize">Size of a lobby. Must be an even number</param>
         /// <param name="maxClients">Max amount of clients that can connect to the matchmaking server</param>
-        public MatchmakerServer(byte lobbySize = 10, ushort maxClients = 65534) : this(new BasicServerHandler(), lobbySize, maxClients)
+        public MatchmakerServer(byte lobbySize = 10, ushort maxClients = 65534) : this(new ServerHandler(), lobbySize, maxClients)
         {
         }
 
         /// <summary>
         /// Base Constructor
         /// </summary>
-        /// <param name="handler">Server handler</param>
+        /// <param name="handler"><see cref="ServerHandler"/></param>
         /// <param name="lobbySize">Size of a lobby. Must be an even number</param>
         /// <param name="maxClients">Max amount of clients that can connect to the matchmaking server</param>
-        public MatchmakerServer(IServerHandler handler, byte lobbySize = 10, ushort maxClients = 65534)
+        public MatchmakerServer(ServerHandler handler, byte lobbySize = 10, ushort maxClients = 65534)
         {
             // values
             this.handler = handler;
-            Instance = this;
+            SetInstance(this);
 
             // checks
             if (lobbySize % 2 != 0)

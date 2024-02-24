@@ -14,9 +14,7 @@ namespace CopperMatchmaking.Server
 
         private readonly ushort lobbySize;
 
-#nullable enable
         internal Action<List<ConnectedClient>>? PotentialLobbyFound;
-#nullable disable
 
         public ServerQueueManager(ushort lobbySize)
         {

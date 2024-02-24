@@ -7,7 +7,6 @@ namespace CopperMatchmaking.Util
     /// <summary>
     /// Extensions
     /// </summary>
-#nullable enable
     public static class Extensions
     {
         /// <summary>
@@ -21,5 +20,4 @@ namespace CopperMatchmaking.Util
             return server.TryGetClient(id, out var client) ? client : null;
         }
     }
-#nullable disable
 }

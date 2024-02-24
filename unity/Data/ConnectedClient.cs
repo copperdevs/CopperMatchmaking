@@ -1,3 +1,4 @@
+using CopperMatchmaking.Server;
 using RiptideConnection = Riptide.Connection;
 
 namespace CopperMatchmaking.Data
@@ -10,7 +11,7 @@ namespace CopperMatchmaking.Data
         /// <summary>
         /// Clients rank
         /// </summary>
-        public readonly Rank Rank;
+        public Rank Rank { get; private set; }
         
         /// <summary>
         /// Riptides ConnectionId  
@@ -57,5 +58,14 @@ namespace CopperMatchmaking.Data
         /// <param name="client">Target client</param>
         /// <returns>Clients riptide connection</returns>
         public static implicit operator RiptideConnection(ConnectedClient client) => client.RiptideConnection;
+
+        /// <summary>
+        /// Update a clients rank from a 
+        /// </summary>
+        /// <param name="id">Rank id</param>
+        public void UpdateRank(byte id)
+        {
+            Rank = MatchmakerServer.Instance.Ranks[id];
+        }
     }
 }

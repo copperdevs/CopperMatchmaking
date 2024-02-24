@@ -29,6 +29,8 @@ namespace CopperMatchmaking.Server
             message.Add(lobbyId);
 
             server.SendMessage(message, connectedClients[0]);
+            
+            server.handler.LobbyCreated(connectedClients);
         }
 
         internal void HandleClientHostResponse(uint lobbyId, string hostedLobbyId)

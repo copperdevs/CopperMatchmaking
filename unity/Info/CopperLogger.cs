@@ -54,11 +54,9 @@ namespace CopperMatchmaking.Info
         /// </summary>
         public delegate void BaseLog(object message);
 
-        #nullable enable
         private static BaseLog? info;
         private static BaseLog? warning;
         private static BaseLog? error;
-        #nullable disable
 
         private static bool initialized;
 
