@@ -6,11 +6,12 @@ namespace CopperMatchmaking.Example.Client;
 
 public class ClientHandler : IClientHandler
 {
-    public string ClientRequestedToHost()
+    public void ClientRequestedToHost()
     {
-        var serverJoinCode = (ulong)Random.Shared.NextInt64(1000000000000);
+        var serverJoinCode = ((ulong)Random.Shared.NextInt64(1000000000000)).ToString();
         Log.Info($"join code: {serverJoinCode}");
-        return serverJoinCode.ToString();
+        
+        MatchmakerClient.Instance.SendLobbyCode(serverJoinCode);
     }
 
     public void JoinServer(string serverJoinCode)

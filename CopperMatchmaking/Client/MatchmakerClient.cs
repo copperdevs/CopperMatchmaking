@@ -25,6 +25,9 @@ namespace CopperMatchmaking.Client
         private readonly byte rankId;
         private readonly ulong playerId;
 
+        internal bool NeededToHost = false;
+        internal uint CurrentLobbyCode;
+
         /// <summary>
         /// Base constructor
         /// </summary>
@@ -88,6 +91,26 @@ namespace CopperMatchmaking.Client
         {
             Log.Info($"Client disconnected | Reason: {args.Reason}");
             Handler.Disconnected(args.Reason);
+        }
+
+        /// <summary>
+        /// When requested in <see cref="IClientHandler"/> to host, you can call this function to send the lobby id.
+        /// </summary>
+        /// <param name="hostedLobbyId"></param>
+        public void SendLobbyCode(string hostedLobbyId)
+        {
+            if (!NeededToHost)
+            {
+                Log.Error($"Client is trying to send a lobby code but is not currently needed to host a lobby.");
+                return;
+            }
+            
+            var message = Message.Create(MessageSendMode.Reliable, MessageIds.ClientHostLobbyId);
+            message.Add(CurrentLobbyCode);
+            message.Add(hostedLobbyId);
+
+            Client.Send(message);
+            NeededToHost = false;
         }
     }
 }

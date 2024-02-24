@@ -10,8 +10,7 @@ namespace CopperMatchmaking.Client
         /// <summary>
         /// Method for getting the join code of a lobby the client
         /// </summary>
-        /// <returns>Lobby join code</returns>
-        public string ClientRequestedToHost();
+        public void ClientRequestedToHost();
         
         /// <summary>
         /// Method for joining a server from a join code

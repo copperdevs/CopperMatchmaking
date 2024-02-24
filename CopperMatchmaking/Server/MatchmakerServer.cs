@@ -21,24 +21,24 @@ namespace CopperMatchmaking.Server
 
         private readonly ServerQueueManager queueManager = null!;
         internal readonly ServerLobbyManager LobbyManager = null!;
-        private readonly IServerHandler handler;
+        internal readonly ServerHandler handler;
         
         /// <summary>
-        /// Base Constructor with a pre-made <see cref="IServerHandler"/>
+        /// Base Constructor with a pre-made <see cref="ServerHandler"/>
         /// </summary>
         /// <param name="lobbySize">Size of a lobby. Must be an even number</param>
         /// <param name="maxClients">Max amount of clients that can connect to the matchmaking server</param>
-        public MatchmakerServer(byte lobbySize = 10, ushort maxClients = 65534) : this(new BasicServerHandler(), lobbySize, maxClients)
+        public MatchmakerServer(byte lobbySize = 10, ushort maxClients = 65534) : this(new ServerHandler(), lobbySize, maxClients)
         {
         }
 
         /// <summary>
         /// Base Constructor
         /// </summary>
-        /// <param name="handler"><see cref="IServerHandler"/></param>
+        /// <param name="handler"><see cref="ServerHandler"/></param>
         /// <param name="lobbySize">Size of a lobby. Must be an even number</param>
         /// <param name="maxClients">Max amount of clients that can connect to the matchmaking server</param>
-        public MatchmakerServer(IServerHandler handler, byte lobbySize = 10, ushort maxClients = 65534)
+        public MatchmakerServer(ServerHandler handler, byte lobbySize = 10, ushort maxClients = 65534)
         {
             // values
             this.handler = handler;

@@ -14,35 +14,33 @@ namespace CopperMatchmaking.Client
             {
                 case 2:
                     Log.Info($"Received {nameof(MessageIds.ServerRequestedClientToHost)} message.");
-                    ClientMessageHandlers.ServerRequestedClientToHostMessageHandler(args.Message);
+                    ServerRequestedClientToHostMessageHandler(args.Message);
                     break;
                 case 4:
                     Log.Info($"Received {nameof(MessageIds.ClientJoinCreatedLobby)} message.");
-                    ClientMessageHandlers.ClientJoinCreatedLobbyMessageHandler(args.Message);
+                    ClientJoinCreatedLobbyMessageHandler(args.Message);
                     break;
                 default:
                     Log.Warning($"Received unknown message of id {args.MessageId}.");
                     break;
             }
         }
-        
-        internal static void ServerRequestedClientToHostMessageHandler(Message receivedMessage)
+
+        private static void ServerRequestedClientToHostMessageHandler(Message receivedMessage)
         {
             var lobbyId = receivedMessage.GetUInt();
-
-            var hostedLobbyId = MatchmakerClient.Instance.Handler.ClientRequestedToHost();
-
-            Log.Info($"Received new ServerRequestedClientToHost message. | LobbyId: {lobbyId} | Hosting new lobby. HostedLobbyId {hostedLobbyId}");
-
-            var message = Message.Create(MessageSendMode.Reliable, MessageIds.ClientHostLobbyId);
-            message.Add(lobbyId);
-            message.Add(hostedLobbyId);
-
-            MatchmakerClient.Instance.Client.Send(message);
+            MatchmakerClient.Instance.CurrentLobbyCode = lobbyId;
+            
+            MatchmakerClient.Instance.NeededToHost = true;
+            MatchmakerClient.Instance.Handler.ClientRequestedToHost();
+            
+            Log.Info($"Received new ServerRequestedClientToHost message. | LobbyId: {lobbyId}");
         }
-        
-        internal static void ClientJoinCreatedLobbyMessageHandler(Message receivedMessage)
+
+        private static void ClientJoinCreatedLobbyMessageHandler(Message receivedMessage)
         {
+            MatchmakerClient.Instance.NeededToHost = false;
+            
             var lobbyId = receivedMessage.GetString();
             Log.Info($"Received new ClientJoinCreatedLobby message. | LobbyId: {lobbyId}");
             MatchmakerClient.Instance.Handler.JoinServer(lobbyId);
