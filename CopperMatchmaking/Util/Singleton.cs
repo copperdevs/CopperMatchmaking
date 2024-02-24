@@ -4,7 +4,7 @@ using CopperMatchmaking.Info;
 namespace CopperMatchmaking.Util
 {
     /// <summary>
-    /// singleton :(
+    /// singleton :)
     /// </summary>
     /// <typeparam name="T">Type of the singleton</typeparam>
     public class Singleton<T>  where T : class
@@ -14,12 +14,16 @@ namespace CopperMatchmaking.Util
         /// </summary>
         public static T Instance => GetInstance();
         private static T? instance;
+        
+        ~Singleton()
+        {
+            instance = null;
+        }
     
         private static T GetInstance()
         {
             if (instance is null)
                 throw new NullReferenceException($"{nameof(Singleton<T>)} couldn't find an instance.");
-            
             return instance;
         }
         
@@ -27,7 +31,7 @@ namespace CopperMatchmaking.Util
         /// Update the instance of the singleton
         /// </summary>
         /// <param name="newInstance">New global instance of the singleton</param>
-        protected void SetInstance(T newInstance)
+        protected void SetInstance(T? newInstance)
         {
             if (instance != null)
             {

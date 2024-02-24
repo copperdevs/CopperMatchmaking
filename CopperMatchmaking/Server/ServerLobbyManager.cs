@@ -19,18 +19,20 @@ namespace CopperMatchmaking.Server
 
         internal void PotentialLobbyFound(List<ConnectedClient> connectedClients)
         {
-            var lobbyId = connectedClients[0].ConnectionId;
+            var host = connectedClients[server.handler.ChooseLobbyHost(connectedClients)];
+            
+            var lobbyId = host.ConnectionId;
 
             lobbies.Add(lobbyId, connectedClients);
 
-            Log.Info($"Potential Lobby Found. Creating lobby with ConnectedClient[{connectedClients[0].ConnectionId}] as host.");
+            Log.Info($"Potential Lobby Found. Creating lobby with ConnectedClient[{host.ConnectionId}] as host.");
 
             var message = Message.Create(MessageSendMode.Reliable, MessageIds.ServerRequestedClientToHost);
             message.Add(lobbyId);
 
-            server.SendMessage(message, connectedClients[0]);
+            server.SendMessage(message, host);
             
-            server.handler.LobbyCreated(connectedClients);
+            server.handler.LobbyCreated(connectedClients, lobbyId);
         }
 
         internal void HandleClientHostResponse(uint lobbyId, string hostedLobbyId)

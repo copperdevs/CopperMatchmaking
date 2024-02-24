@@ -65,6 +65,8 @@ namespace CopperMatchmaking.Client
             Client.Connected -= ClientConnectedHandler;
             Client.MessageReceived -= ClientMessageHandlers.ClientReceivedMessageHandler;
             Client.Disconnected -= ClientDisconnectedHandler;
+            
+            SetInstance(null);
         }
 
         /// <summary>
