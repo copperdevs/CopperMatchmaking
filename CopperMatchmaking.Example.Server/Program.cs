@@ -22,5 +22,6 @@ public static class Program
         {
             server.Update();
         }
+        // ReSharper disable once FunctionNeverReturns
     }
 }

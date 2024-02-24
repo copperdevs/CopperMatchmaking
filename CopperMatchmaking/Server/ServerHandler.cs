@@ -23,7 +23,7 @@ namespace CopperMatchmaking.Server
         /// </summary>
         /// <param name="lobbyClients">Clients in the lobby</param>
         /// <param name="lobbyId">Id of the created lobby</param>
-        public virtual void LobbyCreated(List<ConnectedClient> lobbyClients, uint lobbyId)
+        public virtual void LobbyCreated(CreatedLobby lobby)
         {
             
         }
