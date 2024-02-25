@@ -19,9 +19,14 @@ namespace CopperMatchmaking.Server
 
         internal readonly List<Rank> Ranks = new List<Rank>();
 
-        private readonly ServerQueueManager queueManager = null!;
+        internal readonly ServerQueueManager QueueManager = null!;
         internal readonly ServerLobbyManager LobbyManager = null!;
-        internal readonly ServerHandler handler;
+        internal readonly ServerHandler Handler;
+
+        /// <summary>
+        /// Time in seconds that the host of a lobby has to send the join code for said lobby 
+        /// </summary>
+        public float LobbyTimeoutTime = 5;
         
         /// <summary>
         /// Base Constructor with a pre-made <see cref="ServerHandler"/>
@@ -41,7 +46,7 @@ namespace CopperMatchmaking.Server
         public MatchmakerServer(ServerHandler handler, byte lobbySize = 10, ushort maxClients = 65534)
         {
             // values
-            this.handler = handler;
+            this.Handler = handler;
             SetInstance(this);
 
             // checks
@@ -60,19 +65,19 @@ namespace CopperMatchmaking.Server
             Server.Start(7777, maxClients, 0, false);
 
             // matchmaking 
-            queueManager = new ServerQueueManager(lobbySize);
+            QueueManager = new ServerQueueManager(lobbySize);
             LobbyManager = new ServerLobbyManager(this);
 
             // actions
-            queueManager.PotentialLobbyFound += LobbyManager.PotentialLobbyFound;
-            Server.ClientDisconnected += queueManager.ClientDisconnected;
+            QueueManager.PotentialLobbyFound += LobbyManager.PotentialLobbyFound;
+            Server.ClientDisconnected += QueueManager.ClientDisconnected;
             Server.MessageReceived += ServerMessageHandlers.ServerReceivedMessageHandler;
         }
         
         ~MatchmakerServer()
         {
-            queueManager.PotentialLobbyFound -= LobbyManager.PotentialLobbyFound;
-            Server.ClientDisconnected -= queueManager.ClientDisconnected;
+            QueueManager.PotentialLobbyFound -= LobbyManager.PotentialLobbyFound;
+            Server.ClientDisconnected -= QueueManager.ClientDisconnected;
             Server.MessageReceived -= ServerMessageHandlers.ServerReceivedMessageHandler;
                 
             SetInstance(null);
@@ -84,7 +89,8 @@ namespace CopperMatchmaking.Server
         public void Update()
         {
             // internal crap
-            queueManager.CheckForLobbies();
+            LobbyManager.TimeoutCheck();
+            QueueManager.CheckForLobbies();
 
             // networking
             Server.Update();
@@ -104,20 +110,20 @@ namespace CopperMatchmaking.Server
             Log.Info(
                 $"Registering {targetRanks.Length} new ranks, bringing the total to {Ranks.Count}. | Ranks: {Ranks.Aggregate("", (current, rank) => current + $"{rank.DisplayName}[{rank.Id}], ")}");
 
-            queueManager.RegisterRanks(Ranks);
+            QueueManager.RegisterRanks(Ranks);
         }
 
         internal void RegisterClient(ConnectedClient client)
         {
             Log.Info($"New Client Joined | Rank: {client.Rank.DisplayName} | ConnectionId: {client.ConnectionId}");
 
-            if (!handler.VerifyPlayer(client))
+            if (!Handler.VerifyPlayer(client))
             {
                 Log.Info($"Couldn't verify client. Disconnecting");
                 return;
             }
 
-            queueManager.RegisterPlayer(client);
+            QueueManager.RegisterPlayer(client);
         }
 
         internal void SendMessage(Message message, ushort toClient, bool shouldRelease = true) => Server.Send(message, toClient, shouldRelease);

@@ -114,5 +114,24 @@ namespace CopperMatchmaking.Client
             Client.Send(message);
             NeededToHost = false;
         }
+
+        /// <summary>
+        /// Disconnect the client from matchmaking
+        /// </summary>
+        public void Disconnect()
+        {
+            Log.Info($"Disconnecting the matchmaking client");
+            
+            NeededToHost = false;
+            ShouldUpdate = false;
+            
+            Client.Connected -= ClientConnectedHandler;
+            Client.MessageReceived -= ClientMessageHandlers.ClientReceivedMessageHandler;
+            Client.Disconnected -= ClientDisconnectedHandler;
+            
+            SetInstance(null);
+            
+            Client.Disconnect();
+        }
     }
 }
