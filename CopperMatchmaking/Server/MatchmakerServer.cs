@@ -26,7 +26,7 @@ namespace CopperMatchmaking.Server
         /// <summary>
         /// Time in seconds that the host of a lobby has to send the join code for said lobby 
         /// </summary>
-        public float LobbyTimeoutTime = 5;
+        public readonly Optional<float> LobbyTimeoutTime = 5;
         
         /// <summary>
         /// Base Constructor with a pre-made <see cref="ServerHandler"/>
@@ -46,7 +46,7 @@ namespace CopperMatchmaking.Server
         public MatchmakerServer(ServerHandler handler, byte lobbySize = 10, ushort maxClients = 65534)
         {
             // values
-            this.Handler = handler;
+            Handler = handler;
             SetInstance(this);
 
             // checks

@@ -64,6 +64,9 @@ namespace CopperMatchmaking.Server
 
         internal void TimeoutCheck()
         {
+            if (!server.LobbyTimeoutTime)
+                return;
+            
             foreach (var lobby in lobbies.Values.ToList().Where(lobby => (DateTime.Now - lobby.LobbyCreationTime).Seconds >= server.LobbyTimeoutTime))
             {
                 Log.Info($"The host of lobby {lobby.LobbyId} has taken too long to send the join code. Timing out the lobby.");
