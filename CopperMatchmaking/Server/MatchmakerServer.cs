@@ -66,6 +66,7 @@ namespace CopperMatchmaking.Server
             // actions
             QueueManager.PotentialLobbyFound += LobbyManager.PotentialLobbyFound;
             Server.ClientDisconnected += QueueManager.ClientDisconnected;
+            Server.ClientDisconnected += LobbyManager.ClientDisconnected;
             Server.MessageReceived += ServerMessageHandlers.ServerReceivedMessageHandler;
         }
 
@@ -73,6 +74,7 @@ namespace CopperMatchmaking.Server
         {
             QueueManager.PotentialLobbyFound -= LobbyManager.PotentialLobbyFound;
             Server.ClientDisconnected -= QueueManager.ClientDisconnected;
+            Server.ClientDisconnected -= LobbyManager.ClientDisconnected;
             Server.MessageReceived -= ServerMessageHandlers.ServerReceivedMessageHandler;
 
             SetInstance(null);

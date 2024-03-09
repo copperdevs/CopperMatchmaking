@@ -20,7 +20,7 @@ namespace CopperMatchmaking.Server
         internal void PotentialLobbyFound(List<ConnectedClient> connectedClients, byte rank)
         {
             var host = connectedClients[server.Handler.ChooseLobbyHost(connectedClients)];
-            
+
             var lobbyId = host.ConnectionId;
 
             lobbies.Add(lobbyId, new CreatedLobby(lobbyId, connectedClients, rank));
@@ -31,7 +31,7 @@ namespace CopperMatchmaking.Server
             message.Add(lobbyId);
 
             server.SendMessage(message, host);
-            
+
             server.Handler.LobbyCreated(lobbies[lobbyId]);
         }
 
@@ -42,8 +42,9 @@ namespace CopperMatchmaking.Server
                 Log.Info($"Client has seen join code for lobby {lobbyId}. However there is no lobby with id '{lobbyId}'. It might have timed out or the client is lying.");
                 return;
             }
-            
-            Log.Info($"ConnectedClient[{lobbies[lobbyId][0].ConnectionId}] has responded with the join code of {hostedLobbyId}. Telling all clients of their lobby, and disconnecting them from the matchmaking server.");
+
+            Log.Info(
+                $"ConnectedClient[{lobbies[lobbyId][0].ConnectionId}] has responded with the join code of {hostedLobbyId}. Telling all clients of their lobby, and disconnecting them from the matchmaking server.");
 
             foreach (var client in lobbies[lobbyId].Where(client => !(lobbies[lobbyId].IndexOf(client) is 0)))
             {
@@ -58,6 +59,38 @@ namespace CopperMatchmaking.Server
             }
 
             lobbies.Remove(lobbyId);
+        }
+
+        internal void ClientDisconnected(object sender, ServerDisconnectedEventArgs args)
+        {
+            if (args.Reason != DisconnectReason.Kicked)
+                DisconnectClient(args.Client);
+        }
+
+        private void DisconnectClient(Connection connection)
+        {
+            foreach (var lobby in lobbies)
+            {
+                if(lobby.Key == connection.Id)
+                    RemoveLobby(connection, lobby.Value);
+
+                foreach (var client in lobby.Value.LobbyClients.Where(client => client.RiptideConnection.Id == connection.Id))
+                {
+                    RemoveLobby(client.RiptideConnection, lobby.Value);
+                }
+            }
+            
+            return;
+
+            void RemoveLobby(Connection clientConnection, CreatedLobby lobby)
+            {
+                Log.Info($"Removing lobby due to someone disconnect. | Client: {clientConnection.Id} | Lobby: {lobby.LobbyId}");
+                
+                lobbies.Remove(lobby.LobbyId);
+                
+                lobby.Skip(1).ToList().ForEach(server.QueueManager.RegisterPlayer);
+                server.QueueManager.RegisterPlayer(lobby[0]);
+            }
         }
     }
 }
