@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 
 namespace CopperMatchmaking.Info
 {
@@ -13,19 +12,19 @@ namespace CopperMatchmaking.Info
         /// </summary>
         /// <param name="message">Message to log</param>
         public static void Info(object message) => CopperLogger.LogInfo(message);
-        
+
         /// <summary>
         /// Logs an warning message to the console
         /// </summary>
         /// <param name="message">Message to log</param>
         public static void Warning(object message) => CopperLogger.LogWarning(message);
-        
+
         /// <summary>
         /// Logs an error message to the console
         /// </summary>
         /// <param name="message">Message to log</param>
         public static void Error(object message) => CopperLogger.LogError(message);
-        
+
         /// <summary>
         /// Logs an exception to the console
         /// </summary>
@@ -91,7 +90,7 @@ namespace CopperMatchmaking.Info
 
             includeTimestamps = timestamps;
         }
-        
+
         /// <summary>
         /// Uses log action to log a message
         /// </summary>
@@ -109,19 +108,19 @@ namespace CopperMatchmaking.Info
         /// </summary>
         /// <param name="message"></param>
         public static void LogError(object message) => error?.Invoke(message);
-        
+
         /// <summary>
         /// Base internal info log
         /// </summary>
         /// <param name="message"></param>
         public static void InternalLogInfo(object message) => WriteBaseLog("INFO", message, ConsoleColor.DarkGray);
-        
+
         /// <summary>
         /// Base internal warning log
         /// </summary>
         /// <param name="message"></param>
         public static void InternalLogWarning(object message) => WriteBaseLog("WARN", message, ConsoleColor.DarkYellow);
-        
+
         /// <summary>
         /// Base internal error
         /// </summary>

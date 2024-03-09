@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using CopperMatchmaking.Components;
 using CopperMatchmaking.Data;
 using CopperMatchmaking.Info;
 using CopperMatchmaking.Util;
@@ -24,7 +22,7 @@ namespace CopperMatchmaking.Server
         internal readonly ServerQueueManager QueueManager = null!;
         internal readonly ServerLobbyManager LobbyManager = null!;
         internal readonly ServerHandler Handler;
-        
+
         /// <summary>
         /// Base Constructor with a pre-made <see cref="ServerHandler"/>
         /// </summary>
@@ -70,13 +68,13 @@ namespace CopperMatchmaking.Server
             Server.ClientDisconnected += QueueManager.ClientDisconnected;
             Server.MessageReceived += ServerMessageHandlers.ServerReceivedMessageHandler;
         }
-        
+
         ~MatchmakerServer()
         {
             QueueManager.PotentialLobbyFound -= LobbyManager.PotentialLobbyFound;
             Server.ClientDisconnected -= QueueManager.ClientDisconnected;
             Server.MessageReceived -= ServerMessageHandlers.ServerReceivedMessageHandler;
-                
+
             SetInstance(null);
         }
 
@@ -86,9 +84,9 @@ namespace CopperMatchmaking.Server
         public void Update()
         {
             QueueManager.CheckForLobbies();
-            
+
             UpdateComponents();
-            
+
             Server.Update();
         }
 
@@ -129,5 +127,33 @@ namespace CopperMatchmaking.Server
         internal void SendMessageToAll(Message message, bool shouldRelease = true) => Server.SendToAll(message, shouldRelease);
 
         internal void SendMessageToAll(Message message, ushort exceptToClientId, bool shouldRelease = true) => Server.SendToAll(message, exceptToClientId, shouldRelease);
+
+        /// <summary>
+        /// Get all currently registered ranks
+        /// </summary>
+        /// <returns>List of all currently registered ranks</returns>
+        public List<Rank> GetAllRanks()
+        {
+            return Ranks;
+        }
+
+        /// <summary>
+        /// Get all current lobbies waiting for a host response
+        /// </summary>
+        /// <returns>List of all current lobbies awaiting a host response</returns>
+        public List<CreatedLobby> GetCurrentLobbies()
+        {
+            return LobbyManager.lobbies.Values.ToList();
+        }
+
+        /// <summary>
+        /// Get all rank queues with their players
+        /// </summary>
+        /// <returns>Dictionary of all clients currently in queue</returns>
+        /// <remarks>The key is the rank</remarks>
+        public Dictionary<byte, List<ConnectedClient>> GetRankQueues()
+        {
+            return QueueManager.RankQueues;
+        }
     }
 }

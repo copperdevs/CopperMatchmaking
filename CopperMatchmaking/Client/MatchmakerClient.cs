@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using CopperMatchmaking.Components;
 using CopperMatchmaking.Data;
 using CopperMatchmaking.Info;
 using CopperMatchmaking.Util;
@@ -98,6 +95,7 @@ namespace CopperMatchmaking.Client
         
         private void ClientDisconnectedHandler(object sender, DisconnectedEventArgs args)
         {
+            ShouldUpdate = false;
             Log.Info($"Client disconnected | Reason: {args.Reason}");
             Handler.Disconnected(args.Reason);
         }

@@ -10,7 +10,8 @@ public static class Program
     {
         var server = new MatchmakerServer(2)
         {
-            new LobbyTimeoutComponent()
+            new LobbyTimeoutComponent(),
+            // new InfoLoggerComponent()
         };
 
         server.RegisterRanks(
