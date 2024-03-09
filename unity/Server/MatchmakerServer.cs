@@ -13,7 +13,7 @@ namespace CopperMatchmaking.Server
     /// <summary>
     /// 
     /// </summary>
-    public class MatchmakerServer : Singleton<MatchmakerServer>
+    public partial class MatchmakerServer : Singleton<MatchmakerServer>
     {
         internal readonly RiptideServer Server = null!;
 
@@ -23,11 +23,6 @@ namespace CopperMatchmaking.Server
         internal readonly ServerLobbyManager LobbyManager = null!;
         internal readonly ServerHandler Handler;
 
-        /// <summary>
-        /// Time in seconds that the host of a lobby has to send the join code for said lobby 
-        /// </summary>
-        public float LobbyTimeoutTime = 5;
-        
         /// <summary>
         /// Base Constructor with a pre-made <see cref="ServerHandler"/>
         /// </summary>
@@ -46,7 +41,7 @@ namespace CopperMatchmaking.Server
         public MatchmakerServer(ServerHandler handler, byte lobbySize = 10, ushort maxClients = 65534)
         {
             // values
-            this.Handler = handler;
+            Handler = handler;
             SetInstance(this);
 
             // checks
@@ -73,13 +68,13 @@ namespace CopperMatchmaking.Server
             Server.ClientDisconnected += QueueManager.ClientDisconnected;
             Server.MessageReceived += ServerMessageHandlers.ServerReceivedMessageHandler;
         }
-        
+
         ~MatchmakerServer()
         {
             QueueManager.PotentialLobbyFound -= LobbyManager.PotentialLobbyFound;
             Server.ClientDisconnected -= QueueManager.ClientDisconnected;
             Server.MessageReceived -= ServerMessageHandlers.ServerReceivedMessageHandler;
-                
+
             SetInstance(null);
         }
 
@@ -88,16 +83,15 @@ namespace CopperMatchmaking.Server
         /// </summary>
         public void Update()
         {
-            // internal crap
-            LobbyManager.TimeoutCheck();
             QueueManager.CheckForLobbies();
 
-            // networking
+            UpdateComponents();
+
             Server.Update();
         }
 
         /// <summary>
-        /// 
+        /// Register new ranks
         /// </summary>
         /// <param name="targetRanks">Ranks to register</param>
         public void RegisterRanks(params Rank[] targetRanks)
@@ -133,5 +127,33 @@ namespace CopperMatchmaking.Server
         internal void SendMessageToAll(Message message, bool shouldRelease = true) => Server.SendToAll(message, shouldRelease);
 
         internal void SendMessageToAll(Message message, ushort exceptToClientId, bool shouldRelease = true) => Server.SendToAll(message, exceptToClientId, shouldRelease);
+
+        /// <summary>
+        /// Get all currently registered ranks
+        /// </summary>
+        /// <returns>List of all currently registered ranks</returns>
+        public List<Rank> GetAllRanks()
+        {
+            return Ranks;
+        }
+
+        /// <summary>
+        /// Get all current lobbies waiting for a host response
+        /// </summary>
+        /// <returns>List of all current lobbies awaiting a host response</returns>
+        public List<CreatedLobby> GetCurrentLobbies()
+        {
+            return LobbyManager.lobbies.Values.ToList();
+        }
+
+        /// <summary>
+        /// Get all rank queues with their players
+        /// </summary>
+        /// <returns>Dictionary of all clients currently in queue</returns>
+        /// <remarks>The key is the rank</remarks>
+        public Dictionary<byte, List<ConnectedClient>> GetRankQueues()
+        {
+            return QueueManager.RankQueues;
+        }
     }
 }
