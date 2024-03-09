@@ -10,7 +10,7 @@ namespace CopperMatchmaking.Server
     {
         private readonly MatchmakerServer server;
 
-        internal readonly Dictionary<uint, CreatedLobby> lobbies = new Dictionary<uint, CreatedLobby>();
+        internal readonly Dictionary<uint, CreatedLobby> Lobbies = new Dictionary<uint, CreatedLobby>();
 
         internal ServerLobbyManager(MatchmakerServer server)
         {
@@ -21,9 +21,15 @@ namespace CopperMatchmaking.Server
         {
             var host = connectedClients[server.Handler.ChooseLobbyHost(connectedClients)];
 
+            if (Lobbies.ContainsKey(host.ConnectionId))
+            {
+                Log.Warning($"Potential lobby attempting to be created has an id the same as a lobby already created");
+                return;
+            }
+            
             var lobbyId = host.ConnectionId;
 
-            lobbies.Add(lobbyId, new CreatedLobby(lobbyId, connectedClients, rank));
+            Lobbies.Add(lobbyId, new CreatedLobby(lobbyId, connectedClients, rank));
 
             Log.Info($"Potential Lobby Found. Creating lobby with ConnectedClient[{host.ConnectionId}] as host.");
 
@@ -32,33 +38,33 @@ namespace CopperMatchmaking.Server
 
             server.SendMessage(message, host);
 
-            server.Handler.LobbyCreated(lobbies[lobbyId]);
+            server.Handler.LobbyCreated(Lobbies[lobbyId]);
         }
 
         internal void HandleClientHostResponse(uint lobbyId, string hostedLobbyId)
         {
-            if (!lobbies.ContainsKey(lobbyId))
+            if (!Lobbies.ContainsKey(lobbyId))
             {
                 Log.Info($"Client has seen join code for lobby {lobbyId}. However there is no lobby with id '{lobbyId}'. It might have timed out or the client is lying.");
                 return;
             }
 
             Log.Info(
-                $"ConnectedClient[{lobbies[lobbyId][0].ConnectionId}] has responded with the join code of {hostedLobbyId}. Telling all clients of their lobby, and disconnecting them from the matchmaking server.");
+                $"ConnectedClient[{Lobbies[lobbyId][0].ConnectionId}] has responded with the join code of {hostedLobbyId}. Telling all clients of their lobby, and disconnecting them from the matchmaking server.");
 
-            foreach (var client in lobbies[lobbyId].Where(client => !(lobbies[lobbyId].IndexOf(client) is 0)))
+            foreach (var client in Lobbies[lobbyId].Where(client => !(Lobbies[lobbyId].IndexOf(client) is 0)))
             {
                 var message = Message.Create(MessageSendMode.Reliable, MessageIds.ClientJoinCreatedLobby);
                 message.Add(hostedLobbyId);
                 server.SendMessage(message, client);
             }
 
-            foreach (var client in lobbies[lobbyId])
+            foreach (var client in Lobbies[lobbyId])
             {
                 server.Server.DisconnectClient(client);
             }
 
-            lobbies.Remove(lobbyId);
+            Lobbies.Remove(lobbyId);
         }
 
         internal void ClientDisconnected(object sender, ServerDisconnectedEventArgs args)
@@ -69,10 +75,13 @@ namespace CopperMatchmaking.Server
 
         private void DisconnectClient(Connection connection)
         {
-            foreach (var lobby in lobbies)
+            foreach (var lobby in Lobbies)
             {
-                if(lobby.Key == connection.Id)
+                if (lobby.Key == connection.Id)
+                {
                     RemoveLobby(connection, lobby.Value);
+                    return;
+                }
 
                 foreach (var client in lobby.Value.LobbyClients.Where(client => client.RiptideConnection.Id == connection.Id))
                 {
@@ -86,7 +95,7 @@ namespace CopperMatchmaking.Server
             {
                 Log.Info($"Removing lobby due to someone disconnect. | Client: {clientConnection.Id} | Lobby: {lobby.LobbyId}");
                 
-                lobbies.Remove(lobby.LobbyId);
+                Lobbies.Remove(lobby.LobbyId);
                 
                 lobby.Skip(1).ToList().ForEach(server.QueueManager.RegisterPlayer);
                 server.QueueManager.RegisterPlayer(lobby[0]);

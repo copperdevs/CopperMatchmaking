@@ -145,7 +145,7 @@ namespace CopperMatchmaking.Server
         /// <returns>List of all current lobbies awaiting a host response</returns>
         public List<CreatedLobby> GetCurrentLobbies()
         {
-            return LobbyManager.lobbies.Values.ToList();
+            return LobbyManager.Lobbies.Values.ToList();
         }
 
         /// <summary>
