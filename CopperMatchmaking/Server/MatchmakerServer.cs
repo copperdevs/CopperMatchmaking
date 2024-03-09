@@ -1,5 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using CopperMatchmaking.Components;
 using CopperMatchmaking.Data;
 using CopperMatchmaking.Info;
 using CopperMatchmaking.Util;
@@ -13,7 +15,7 @@ namespace CopperMatchmaking.Server
     /// <summary>
     /// 
     /// </summary>
-    public class MatchmakerServer : Singleton<MatchmakerServer>
+    public partial class MatchmakerServer : Singleton<MatchmakerServer>
     {
         internal readonly RiptideServer Server = null!;
 
@@ -22,11 +24,6 @@ namespace CopperMatchmaking.Server
         internal readonly ServerQueueManager QueueManager = null!;
         internal readonly ServerLobbyManager LobbyManager = null!;
         internal readonly ServerHandler Handler;
-
-        /// <summary>
-        /// Time in seconds that the host of a lobby has to send the join code for said lobby 
-        /// </summary>
-        public readonly Optional<float> LobbyTimeoutTime = 5;
         
         /// <summary>
         /// Base Constructor with a pre-made <see cref="ServerHandler"/>
@@ -88,16 +85,15 @@ namespace CopperMatchmaking.Server
         /// </summary>
         public void Update()
         {
-            // internal crap
-            LobbyManager.TimeoutCheck();
             QueueManager.CheckForLobbies();
-
-            // networking
+            
+            UpdateComponents();
+            
             Server.Update();
         }
 
         /// <summary>
-        /// 
+        /// Register new ranks
         /// </summary>
         /// <param name="targetRanks">Ranks to register</param>
         public void RegisterRanks(params Rank[] targetRanks)

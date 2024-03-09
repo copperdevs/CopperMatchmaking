@@ -1,4 +1,7 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using CopperMatchmaking.Components;
 using CopperMatchmaking.Data;
 using CopperMatchmaking.Info;
 using CopperMatchmaking.Util;
@@ -12,7 +15,7 @@ namespace CopperMatchmaking.Client
     /// <summary>
     /// Matchmaker client for connecting to the matchmaker with
     /// </summary>
-    public class MatchmakerClient : Singleton<MatchmakerClient>
+    public partial class MatchmakerClient : Singleton<MatchmakerClient>
     {
         /// <summary>
         /// Enabled when <see cref="Update"/> needs to be ran to update the client.
@@ -69,13 +72,17 @@ namespace CopperMatchmaking.Client
             SetInstance(null);
         }
 
+
         /// <summary>
         /// Method to run often to update the client
         /// </summary>
         public void Update()
         {
-            if (ShouldUpdate)
-                Client.Update();
+            if (!ShouldUpdate) 
+                return;
+            
+            UpdateComponents();
+            Client.Update();
         }
 
         private void ClientConnectedHandler(object sender, EventArgs eventArgs)

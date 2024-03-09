@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using CopperMatchmaking.Data;
@@ -12,7 +11,7 @@ namespace CopperMatchmaking.Server
     {
         private readonly MatchmakerServer server;
 
-        private readonly Dictionary<uint, CreatedLobby> lobbies = new Dictionary<uint, CreatedLobby>();
+        internal readonly Dictionary<uint, CreatedLobby> lobbies = new Dictionary<uint, CreatedLobby>();
 
         internal ServerLobbyManager(MatchmakerServer server)
         {
@@ -60,20 +59,6 @@ namespace CopperMatchmaking.Server
             }
 
             lobbies.Remove(lobbyId);
-        }
-
-        internal void TimeoutCheck()
-        {
-            if (!server.LobbyTimeoutTime)
-                return;
-            
-            foreach (var lobby in lobbies.Values.ToList().Where(lobby => (DateTime.Now - lobby.LobbyCreationTime).Seconds >= server.LobbyTimeoutTime))
-            {
-                Log.Info($"The host of lobby {lobby.LobbyId} has taken too long to send the join code. Timing out the lobby.");
-                lobbies.Remove(lobby.LobbyId);
-                
-                server.QueueManager.ReturnLobby(lobby);
-            }
         }
     }
 }
