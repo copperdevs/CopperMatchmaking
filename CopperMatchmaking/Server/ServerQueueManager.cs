@@ -90,7 +90,7 @@ namespace CopperMatchmaking.Server
             {
                 var connectedClients = RankQueues.Values.ToList()[i];
 
-                foreach (var client in connectedClients.Where(client => !client.RiptideConnection.IsConnected))
+                foreach (var client in connectedClients.Where(client => !client.RiptideConnection.IsConnected).ToList())
                 {
                     RankQueues[i].Remove(client);
                 }
