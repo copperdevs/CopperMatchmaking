@@ -120,10 +120,12 @@ namespace CopperMatchmaking.Client
             NeededToHost = false;
         }
 
+
         /// <summary>
         /// Disconnect the client from matchmaking
         /// </summary>
-        public void Disconnect()
+        /// <param name="silent">If enabled, the disconnect method of the <see cref="IClientHandler"/> won't be called</param>
+        public void Disconnect(bool silent = true)
         {
             Log.Info($"Disconnecting the matchmaking client");
             
@@ -137,6 +139,9 @@ namespace CopperMatchmaking.Client
             SetInstance(null);
             
             Client.Disconnect();
+            
+            if(!silent)
+                Handler.Disconnected(DisconnectReason.Disconnected);
         }
     }
 }

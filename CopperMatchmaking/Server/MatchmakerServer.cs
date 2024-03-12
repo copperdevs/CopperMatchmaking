@@ -85,10 +85,18 @@ namespace CopperMatchmaking.Server
         /// </summary>
         public void Update()
         {
+            // them pesky players
+            QueueManager.DisconnectedPlayerCheck();
+            LobbyManager.DisconnectedPlayerCheck();
+            
+            // maybe not all of them are pesky!
+            // lets make a lobby
             QueueManager.CheckForLobbies();
 
+            // components and crap ig
             UpdateComponents();
 
+            // networking!
             Server.Update();
         }
 

@@ -49,8 +49,7 @@ namespace CopperMatchmaking.Server
                 return;
             }
 
-            Log.Info(
-                $"ConnectedClient[{Lobbies[lobbyId][0].ConnectionId}] has responded with the join code of {hostedLobbyId}. Telling all clients of their lobby, and disconnecting them from the matchmaking server.");
+            Log.Info($"ConnectedClient[{Lobbies[lobbyId][0].ConnectionId}] has responded with the join code of {hostedLobbyId}. Telling all clients of their lobby, and disconnecting them from the matchmaking server.");
 
             foreach (var client in Lobbies[lobbyId].Where(client => !(Lobbies[lobbyId].IndexOf(client) is 0)))
             {
@@ -88,17 +87,30 @@ namespace CopperMatchmaking.Server
                     RemoveLobby(client.RiptideConnection, lobby.Value);
                 }
             }
-            
-            return;
+        }
 
-            void RemoveLobby(Connection clientConnection, CreatedLobby lobby)
+        internal void DisconnectedPlayerCheck()
+        {
+            foreach (var lobby in Lobbies.Values.ToList())
             {
-                Log.Info($"Removing lobby due to someone disconnect. | Client: {clientConnection.Id} | Lobby: {lobby.LobbyId}");
+                foreach (var client in lobby)
+                {
+                    if(!client.RiptideConnection.IsConnected)
+                        RemoveLobby(client.RiptideConnection, lobby);
+                }
+            }
+        }
+        
+        private void RemoveLobby(Connection clientConnection, CreatedLobby lobby)
+        {
+            Log.Info($"Removing lobby due to someone disconnecting. | Client: {clientConnection.Id} | Lobby: {lobby.LobbyId}");
                 
-                Lobbies.Remove(lobby.LobbyId);
-                
-                lobby.Skip(1).ToList().ForEach(server.QueueManager.RegisterPlayer);
-                server.QueueManager.RegisterPlayer(lobby[0]);
+            Lobbies.Remove(lobby.LobbyId);
+
+            foreach (var client in lobby)
+            {
+                if(client.RiptideConnection.IsConnected)
+                    server.QueueManager.RegisterPlayer(client);
             }
         }
     }
