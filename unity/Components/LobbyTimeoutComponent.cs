@@ -12,7 +12,7 @@ namespace CopperMatchmaking.Components
     [ServerOnlyComponent]
     public class LobbyTimeoutComponent : BaseComponent
     {
-        private Dictionary<uint, CreatedLobby> Lobbies => Server?.LobbyManager.lobbies!;
+        private Dictionary<uint, CreatedLobby> Lobbies => Server?.LobbyManager.Lobbies!;
         
         /// <summary>
         /// Time in seconds that the host of a lobby has to send the join code for said lobby 

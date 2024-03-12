@@ -21,8 +21,7 @@ namespace CopperMatchmaking.Server
         /// <summary>
         /// Ran for when a lobby is created on the server
         /// </summary>
-        /// <param name="lobbyClients">Clients in the lobby</param>
-        /// <param name="lobbyId">Id of the created lobby</param>
+        /// <param name="lobby">Created lobby data</param>
         public virtual void LobbyCreated(CreatedLobby lobby)
         {
             

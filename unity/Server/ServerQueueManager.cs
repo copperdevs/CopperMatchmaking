@@ -83,5 +83,18 @@ namespace CopperMatchmaking.Server
             lobby.Skip(1).ToList().ForEach(RegisterPlayer);
             RegisterPlayer(lobby[0]);
         }
+
+        internal void DisconnectedPlayerCheck()
+        {
+            for (byte i = 0; i < RankQueues.Values.ToList().Count; i++)
+            {
+                var connectedClients = RankQueues.Values.ToList()[i];
+
+                foreach (var client in connectedClients.Where(client => !client.RiptideConnection.IsConnected).ToList())
+                {
+                    RankQueues[i].Remove(client);
+                }
+            }
+        }
     }
 }

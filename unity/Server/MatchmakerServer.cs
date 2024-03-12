@@ -66,6 +66,7 @@ namespace CopperMatchmaking.Server
             // actions
             QueueManager.PotentialLobbyFound += LobbyManager.PotentialLobbyFound;
             Server.ClientDisconnected += QueueManager.ClientDisconnected;
+            Server.ClientDisconnected += LobbyManager.ClientDisconnected;
             Server.MessageReceived += ServerMessageHandlers.ServerReceivedMessageHandler;
         }
 
@@ -73,6 +74,7 @@ namespace CopperMatchmaking.Server
         {
             QueueManager.PotentialLobbyFound -= LobbyManager.PotentialLobbyFound;
             Server.ClientDisconnected -= QueueManager.ClientDisconnected;
+            Server.ClientDisconnected -= LobbyManager.ClientDisconnected;
             Server.MessageReceived -= ServerMessageHandlers.ServerReceivedMessageHandler;
 
             SetInstance(null);
@@ -83,10 +85,18 @@ namespace CopperMatchmaking.Server
         /// </summary>
         public void Update()
         {
+            // them pesky players
+            QueueManager.DisconnectedPlayerCheck();
+            LobbyManager.DisconnectedPlayerCheck();
+            
+            // maybe not all of them are pesky!
+            // lets make a lobby
             QueueManager.CheckForLobbies();
 
+            // components and crap ig
             UpdateComponents();
 
+            // networking!
             Server.Update();
         }
 
@@ -143,7 +153,7 @@ namespace CopperMatchmaking.Server
         /// <returns>List of all current lobbies awaiting a host response</returns>
         public List<CreatedLobby> GetCurrentLobbies()
         {
-            return LobbyManager.lobbies.Values.ToList();
+            return LobbyManager.Lobbies.Values.ToList();
         }
 
         /// <summary>
