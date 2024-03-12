@@ -31,7 +31,7 @@ namespace CopperMatchmaking.Util
         /// Update the instance of the singleton
         /// </summary>
         /// <param name="newInstance">New global instance of the singleton</param>
-        protected void SetInstance(T? newInstance)
+        public void SetInstance(T? newInstance)
         {
             if (instance != null)
             {
