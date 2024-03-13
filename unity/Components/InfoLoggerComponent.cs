@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using CopperMatchmaking.Info;
+using CopperMatchmaking.Server;
 
 namespace CopperMatchmaking.Components
 {
@@ -34,7 +35,7 @@ namespace CopperMatchmaking.Components
 
             lastLogTime = DateTime.Now;
 
-            var ranks = Server?.GetAllRanks();
+            var ranks = MatchmakerServer.GetAllRanks();
             var currentLobbies = Server?.GetCurrentLobbies();
             var currentQueues = Server?.GetRankQueues();
             

@@ -5,22 +5,27 @@ namespace CopperMatchmaking.Client
     /// <summary>
     /// Interface for clients to handle hosting and joining lobbies.
     /// </summary>
-    public interface IClientHandler
+    public abstract class BaseClientHandler
     {
+        /// <summary>
+        /// The target client for the handler
+        /// </summary>
+        public MatchmakerClient Client { get; internal set; } = null!;
+        
         /// <summary>
         /// Method for getting the join code of a lobby the client
         /// </summary>
-        public void ClientRequestedToHost();
+        public abstract void ClientRequestedToHost();
         
         /// <summary>
         /// Method for joining a server from a join code
         /// </summary>
         /// <param name="serverJoinCode">Lobby join code</param>
-        public void JoinServer(string serverJoinCode);
+        public abstract void JoinServer(string serverJoinCode);
 
         /// <summary>
         /// Method ran when disconnected from the server
         /// </summary>
-        public void Disconnected(DisconnectReason reason);
+        public abstract  void Disconnected(DisconnectReason reason);
     }
 }

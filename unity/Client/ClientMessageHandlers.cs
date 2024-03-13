@@ -6,9 +6,16 @@ using Riptide;
 
 namespace CopperMatchmaking.Client
 {
-    internal static class ClientMessageHandlers
+    internal class ClientMessageHandlers
     {
-        internal static void ClientReceivedMessageHandler(object sender, MessageReceivedEventArgs args)
+        private MatchmakerClient targetClient;
+
+        public ClientMessageHandlers(MatchmakerClient targetClient)
+        {
+            this.targetClient = targetClient;
+        }
+
+        internal void ClientReceivedMessageHandler(object sender, MessageReceivedEventArgs args)
         {
             Log.Info($"Received message of id {args.MessageId}.");
             
@@ -28,13 +35,13 @@ namespace CopperMatchmaking.Client
             }
         }
 
-        private static void ServerRequestedClientToHostMessageHandler(Message receivedMessage)
+        private void ServerRequestedClientToHostMessageHandler(Message receivedMessage)
         {
             var lobbyId = receivedMessage.GetUInt();
-            MatchmakerClient.Instance.CurrentLobbyCode = lobbyId;
+            targetClient.CurrentLobbyCode = lobbyId;
             
-            MatchmakerClient.Instance.NeededToHost = true;
-            MatchmakerClient.Instance.Handler.ClientRequestedToHost();
+            targetClient.NeededToHost = true;
+            targetClient.Handler.ClientRequestedToHost();
 
             var clientCount = receivedMessage.GetInt();
 
@@ -46,9 +53,9 @@ namespace CopperMatchmaking.Client
             Log.Info($"Received new ServerRequestedClientToHost message. | LobbyId: {lobbyId} | Lobby Clients: <{clients.Aggregate("", (current, client) => current + $"(Client Id: {client.PlayerId} | Connection Id: {client.ConnectionId} | Rank: {client.Rank.DisplayName}[{client.Rank.Id}]), ")}>");
         }
 
-        private static void ClientJoinCreatedLobbyMessageHandler(Message receivedMessage)
+        private void ClientJoinCreatedLobbyMessageHandler(Message receivedMessage)
         {
-            MatchmakerClient.Instance.NeededToHost = false;
+            targetClient.NeededToHost = false;
             
             var lobbyId = receivedMessage.GetString();
             
@@ -60,7 +67,7 @@ namespace CopperMatchmaking.Client
                 clients.Add(receivedMessage.GetSerializable<ConnectedClient>());
             
             Log.Info($"Received new ClientJoinCreatedLobby message. | LobbyId: {lobbyId} | Lobby Clients: <{clients.Aggregate("", (current, client) => current + $"(Client Id: {client.PlayerId} | Connection Id: {client.ConnectionId} | Rank: {client.Rank.DisplayName}[{client.Rank.Id}]), ")}>");
-            MatchmakerClient.Instance.Handler.JoinServer(lobbyId);
+            targetClient.Handler.JoinServer(lobbyId);
         }
     }
 }
