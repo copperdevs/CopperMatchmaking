@@ -36,9 +36,17 @@ namespace CopperMatchmaking.Server
             var message = Message.Create(MessageSendMode.Reliable, MessageIds.ServerRequestedClientToHost);
             message.Add(lobbyId);
 
+            message.Add(connectedClients.Count);
+
+            foreach (var client in connectedClients)
+            {
+                message.Add(client);
+            }
+
             server.SendMessage(message, host);
 
             server.Handler.LobbyCreated(Lobbies[lobbyId]);
+            server.LobbyCreated?.Invoke(Lobbies[lobbyId]);
         }
 
         internal void HandleClientHostResponse(uint lobbyId, string hostedLobbyId)
@@ -55,6 +63,12 @@ namespace CopperMatchmaking.Server
             {
                 var message = Message.Create(MessageSendMode.Reliable, MessageIds.ClientJoinCreatedLobby);
                 message.Add(hostedLobbyId);
+
+                message.Add(Lobbies[lobbyId].LobbyClients.Count);
+
+                foreach (var lobbyClients in Lobbies[lobbyId].LobbyClients) 
+                    message.Add(lobbyClients);
+                
                 server.SendMessage(message, client);
             }
 
