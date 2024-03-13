@@ -23,6 +23,7 @@ namespace CopperMatchmaking.Server
         internal readonly ServerQueueManager QueueManager = null!;
         internal readonly ServerLobbyManager LobbyManager = null!;
         internal readonly ServerHandler Handler;
+        private readonly ServerClientCounter clientCounter;
 
         internal readonly ServerMessageHandlers MessageHandlers;
 
@@ -76,6 +77,9 @@ namespace CopperMatchmaking.Server
             Server.ClientDisconnected += QueueManager.ClientDisconnected;
             Server.ClientDisconnected += LobbyManager.ClientDisconnected;
             Server.MessageReceived += MessageHandlers.ServerReceivedMessageHandler;
+            
+            // created last so everything else is setup
+            clientCounter = new ServerClientCounter(this);
         }
 
         ~MatchmakerServer()
@@ -101,6 +105,7 @@ namespace CopperMatchmaking.Server
 
             // components and crap ig
             UpdateComponents();
+            clientCounter.PlayerCountUpdateCheck();
 
             // networking!
             Server.Update();

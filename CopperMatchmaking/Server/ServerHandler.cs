@@ -46,5 +46,14 @@ namespace CopperMatchmaking.Server
         {
             
         }
+
+        /// <summary>
+        /// Ran when the number of players in queue is updated
+        /// </summary>
+        /// <param name="lobbyPlayerCount">Current count of players in a lobby waiting for a host to send a join code</param>
+        /// <param name="queuePlayerCount">Current count of players in queue waiting for a lobby</param>
+        public virtual void PlayerQueueCountUpdated(int lobbyPlayerCount, int queuePlayerCount)
+        {
+        }
     }
 }

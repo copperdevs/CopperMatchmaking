@@ -77,6 +77,7 @@ namespace CopperMatchmaking.Server
                 server.Server.DisconnectClient(client);
             }
 
+            server.Handler.LobbyJoinCodeReceived(Lobbies[lobbyId], hostedLobbyId);
             Lobbies.Remove(lobbyId);
         }
 
