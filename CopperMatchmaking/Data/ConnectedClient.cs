@@ -73,7 +73,7 @@ namespace CopperMatchmaking.Data
         /// <param name="id">Rank id</param>
         public void UpdateRank(byte id)
         {
-            Rank = MatchmakerServer.Instance.Ranks[id];
+            Rank = MatchmakerServer.Ranks[id];
         }
 
         /// <summary>

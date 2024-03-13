@@ -12,7 +12,7 @@ namespace CopperMatchmaking.Client
     /// <summary>
     /// Matchmaker client for connecting to the matchmaker with
     /// </summary>
-    public partial class MatchmakerClient : Singleton<MatchmakerClient>
+    public partial class MatchmakerClient
     {
         /// <summary>
         /// Enabled when <see cref="Update"/> needs to be ran to update the client.
@@ -20,22 +20,23 @@ namespace CopperMatchmaking.Client
         public bool ShouldUpdate { get; private set; }
 
         internal readonly RiptideClient Client;
-        internal readonly IClientHandler Handler;
+        internal readonly BaseClientHandler Handler;
+        internal readonly ClientMessageHandlers MessageHandlers;
 
         private readonly byte rankId;
         private readonly ulong playerId;
 
         internal bool NeededToHost = false;
-        internal uint CurrentLobbyCode;
+        internal uint CurrentLobbyCode = 0;
 
         /// <summary>
         /// Base constructor
         /// </summary>
         /// <param name="ip">Target ip of the matchmaker server</param>
-        /// <param name="clientHandler">Handler for the client</param>
+        /// <param name="baseClientHandler">Handler for the client</param>
         /// <param name="rankId">Id of the clients rank</param>
         /// <param name="playerId">Player id (SteamId for example)</param>
-        public MatchmakerClient(string ip, IClientHandler clientHandler, byte rankId, ulong playerId)
+        public MatchmakerClient(string ip, BaseClientHandler baseClientHandler, byte rankId, ulong playerId)
         {
             // init logs
             CopperLogger.Initialize(CopperLogger.InternalLogInfo, CopperLogger.InternalLogWarning, CopperLogger.InternalLogError);
@@ -44,8 +45,9 @@ namespace CopperMatchmaking.Client
             // values/handlers
             this.rankId = rankId;
             this.playerId = playerId;
-            Handler = clientHandler;
-            SetInstance(this);
+            Handler = baseClientHandler;
+            Handler.Client = this;
+            MessageHandlers = new ClientMessageHandlers(this);
 
             // start riptide crap
             Client = new RiptideClient(new TcpClient());
@@ -55,7 +57,7 @@ namespace CopperMatchmaking.Client
             Client.Connection.CanQualityDisconnect = false;
             
             Client.Connected += ClientConnectedHandler;
-            Client.MessageReceived += ClientMessageHandlers.ClientReceivedMessageHandler;
+            Client.MessageReceived += MessageHandlers.ClientReceivedMessageHandler;
             Client.Disconnected += ClientDisconnectedHandler;
         }
 
@@ -63,7 +65,7 @@ namespace CopperMatchmaking.Client
         {
             ShouldUpdate = false;
             Client.Connected -= ClientConnectedHandler;
-            Client.MessageReceived -= ClientMessageHandlers.ClientReceivedMessageHandler;
+            Client.MessageReceived -= MessageHandlers.ClientReceivedMessageHandler;
             Client.Disconnected -= ClientDisconnectedHandler;
         }
 
@@ -99,7 +101,7 @@ namespace CopperMatchmaking.Client
         }
 
         /// <summary>
-        /// When requested in <see cref="IClientHandler"/> to host, you can call this function to send the lobby id.
+        /// When requested in <see cref="BaseClientHandler"/> to host, you can call this function to send the lobby id.
         /// </summary>
         /// <param name="hostedLobbyId"></param>
         public void SendLobbyCode(string hostedLobbyId)
@@ -122,7 +124,7 @@ namespace CopperMatchmaking.Client
         /// <summary>
         /// Disconnect the client from matchmaking
         /// </summary>
-        /// <param name="silent">If enabled, the disconnect method of the <see cref="IClientHandler"/> won't be called</param>
+        /// <param name="silent">If enabled, the disconnect method of the <see cref="BaseClientHandler"/> won't be called</param>
         public void Disconnect(bool silent = true)
         {
             Log.Info($"Disconnecting the matchmaking client");
@@ -131,10 +133,8 @@ namespace CopperMatchmaking.Client
             ShouldUpdate = false;
             
             Client.Connected -= ClientConnectedHandler;
-            Client.MessageReceived -= ClientMessageHandlers.ClientReceivedMessageHandler;
+            Client.MessageReceived -= MessageHandlers.ClientReceivedMessageHandler;
             Client.Disconnected -= ClientDisconnectedHandler;
-            
-            SetInstance(null);
             
             Client.Disconnect();
             

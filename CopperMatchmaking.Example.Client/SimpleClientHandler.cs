@@ -4,22 +4,22 @@ using Riptide;
 
 namespace CopperMatchmaking.Example.Client;
 
-public class ClientHandler : IClientHandler
+public class SimpleClientHandler : BaseClientHandler
 {
-    public void ClientRequestedToHost()
+    public override void ClientRequestedToHost()
     {
         var serverJoinCode = ((ulong)Random.Shared.NextInt64(1000000000000)).ToString();
         Log.Info($"join code: {serverJoinCode}");
         
-        MatchmakerClient.Instance.SendLobbyCode(serverJoinCode);
+        Client.SendLobbyCode(serverJoinCode);
     }
 
-    public void JoinServer(string serverJoinCode)
+    public override void JoinServer(string serverJoinCode)
     {
         Log.Info($"join code: {serverJoinCode}");
     }
 
-    public void Disconnected(DisconnectReason reason)
+    public override void Disconnected(DisconnectReason reason)
     {
         Log.Info($"Disconnected. | Reason: {reason}");
     }

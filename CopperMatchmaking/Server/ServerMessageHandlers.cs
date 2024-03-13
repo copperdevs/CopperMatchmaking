@@ -5,9 +5,16 @@ using Riptide;
 
 namespace CopperMatchmaking.Server
 {
-    internal static class ServerMessageHandlers
+    internal class ServerMessageHandlers
     {
-        internal static void ServerReceivedMessageHandler(object sender, MessageReceivedEventArgs args)
+        private MatchmakerServer targetServer;
+
+        public ServerMessageHandlers(MatchmakerServer targetServer)
+        {
+            this.targetServer = targetServer;
+        }
+
+        internal void ServerReceivedMessageHandler(object sender, MessageReceivedEventArgs args)
         {
             Log.Info($"Received message of id {args.MessageId}.");
             
@@ -15,11 +22,11 @@ namespace CopperMatchmaking.Server
             {
                 case 1:
                     Log.Info($"Received {nameof(MessageIds.ClientJoined)} message.");
-                    ServerMessageHandlers.ClientJoinedMessageHandler(args.FromConnection.Id, args.Message);
+                    ClientJoinedMessageHandler(args.FromConnection.Id, args.Message);
                     break;
                 case 3:
                     Log.Info($"Received {nameof(MessageIds.ClientHostLobbyId)} message.");
-                    ServerMessageHandlers.ClientHostLobbyIdMessageHandler(args.FromConnection.Id, args.Message);
+                    ClientHostLobbyIdMessageHandler(args.FromConnection.Id, args.Message);
                     break;
                 default:
                     Log.Warning($"Received unknown message of id {args.MessageId}.");
@@ -27,15 +34,15 @@ namespace CopperMatchmaking.Server
             }
         }
 
-        private static void ClientJoinedMessageHandler(ushort sender, Message receivedMessage)
+        private void ClientJoinedMessageHandler(ushort sender, Message receivedMessage)
         {
             var playerId = receivedMessage.GetULong();
             var rankId = receivedMessage.GetByte();
 
             Log.Info($"Received new ClientJoined message. | PlayerId: {playerId} | RankId: {rankId} | Sender: {sender}");
 
-            var connection = MatchmakerServer.Instance.Server.GetConnection(sender);
-            var rank = MatchmakerServer.Instance.Ranks[rankId];
+            var connection = targetServer.Server.GetConnection(sender);
+            var rank = MatchmakerServer.Ranks[rankId];
 
             if (connection is null)
             {
@@ -45,17 +52,17 @@ namespace CopperMatchmaking.Server
 
             connection.CanQualityDisconnect = false;
             
-            MatchmakerServer.Instance.RegisterClient(new ConnectedClient(rank, connection, playerId));
+            targetServer.RegisterClient(new ConnectedClient(rank, connection, playerId));
         }
 
-        private static void ClientHostLobbyIdMessageHandler(ushort sender, Message receivedMessage)
+        private void ClientHostLobbyIdMessageHandler(ushort sender, Message receivedMessage)
         {
             var lobbyId = receivedMessage.GetUInt();
             var hostedLobbyId = receivedMessage.GetString();
 
             Log.Info($"Received new ClientHostLobbyId message. | LobbyId: {lobbyId} | HostedLobbyId: {hostedLobbyId}");
 
-            MatchmakerServer.Instance.LobbyManager.HandleClientHostResponse(lobbyId, hostedLobbyId);
+            targetServer.LobbyManager.HandleClientHostResponse(lobbyId, hostedLobbyId);
         }
     }
 }
