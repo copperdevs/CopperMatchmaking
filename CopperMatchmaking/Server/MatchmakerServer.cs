@@ -82,8 +82,6 @@ namespace CopperMatchmaking.Server
             Server.ClientDisconnected -= QueueManager.ClientDisconnected;
             Server.ClientDisconnected -= LobbyManager.ClientDisconnected;
             Server.MessageReceived -= ServerMessageHandlers.ServerReceivedMessageHandler;
-
-            SetInstance(null);
         }
 
         /// <summary>
