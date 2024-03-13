@@ -33,11 +33,6 @@ namespace CopperMatchmaking.Util
         /// <param name="newInstance">New global instance of the singleton</param>
         public void SetInstance(T? newInstance)
         {
-            if (instance != null)
-            {
-                Log.Error($"Instance of type {nameof(T)} is already set.");
-                return;
-            }
             instance = newInstance;
         }
     }
