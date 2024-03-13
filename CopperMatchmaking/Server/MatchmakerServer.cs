@@ -148,7 +148,7 @@ namespace CopperMatchmaking.Server
         /// Get all currently registered ranks
         /// </summary>
         /// <returns>List of all currently registered ranks</returns>
-        public List<Rank> GetAllRanks()
+        public static List<Rank> GetAllRanks()
         {
             return Ranks;
         }
