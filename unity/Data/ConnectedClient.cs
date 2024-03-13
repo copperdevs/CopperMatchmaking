@@ -1,4 +1,5 @@
 using CopperMatchmaking.Server;
+using Riptide;
 using RiptideConnection = Riptide.Connection;
 
 namespace CopperMatchmaking.Data
@@ -6,7 +7,7 @@ namespace CopperMatchmaking.Data
     /// <summary>
     /// Data for all connected clients
     /// </summary>
-    public class ConnectedClient
+    public class ConnectedClient : IMessageSerializable
     {
         /// <summary>
         /// Clients rank
@@ -16,7 +17,7 @@ namespace CopperMatchmaking.Data
         /// <summary>
         /// Riptides ConnectionId  
         /// </summary>
-        public readonly uint ConnectionId;
+        public uint ConnectionId { get; private set; }
         
         /// <summary>
         /// Riptide Connection
@@ -27,7 +28,7 @@ namespace CopperMatchmaking.Data
         /// <summary>
         /// Player Id sent from the client 
         /// </summary>
-        public readonly ulong PlayerId;
+        public ulong PlayerId { get; private set; }
 
         internal ConnectedClient(Rank rank, RiptideConnection riptideConnection, ulong playerId)
         {
@@ -36,6 +37,13 @@ namespace CopperMatchmaking.Data
 
             ConnectionId = riptideConnection.Id;
             PlayerId = playerId;
+        }
+        
+        /// <summary>
+        /// dont use this
+        /// </summary>
+        public ConnectedClient()
+        {
         }
 
         /// <summary>
@@ -66,6 +74,26 @@ namespace CopperMatchmaking.Data
         public void UpdateRank(byte id)
         {
             Rank = MatchmakerServer.Instance.Ranks[id];
+        }
+
+        /// <summary>
+        /// Riptide message serializing crap
+        /// </summary>
+        public void Serialize(Message message)
+        {
+            message.Add(ConnectionId);
+            message.Add(Rank);
+            message.Add(PlayerId);
+        }
+
+        /// <summary>
+        /// Riptide message serializing crap
+        /// </summary>
+        public void Deserialize(Message message)
+        {
+            ConnectionId = message.GetUInt();
+            Rank = message.GetSerializable<Rank>();
+            PlayerId = message.GetULong();
         }
     }
 }

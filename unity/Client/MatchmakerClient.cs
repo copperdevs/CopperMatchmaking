@@ -37,6 +37,9 @@ namespace CopperMatchmaking.Client
         /// <param name="playerId">Player id (SteamId for example)</param>
         public MatchmakerClient(string ip, IClientHandler clientHandler, byte rankId, ulong playerId)
         {
+            // if there was a client before this remove it
+            SetInstance(null);
+            
             // init logs
             CopperLogger.Initialize(CopperLogger.InternalLogInfo, CopperLogger.InternalLogWarning, CopperLogger.InternalLogError);
             RiptideLogger.Initialize(CopperLogger.LogInfo, CopperLogger.LogInfo, CopperLogger.LogWarning, CopperLogger.LogError, false);

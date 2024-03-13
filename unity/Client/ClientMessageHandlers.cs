@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using CopperMatchmaking.Data;
 using CopperMatchmaking.Info;
 using Riptide;
@@ -33,8 +35,15 @@ namespace CopperMatchmaking.Client
             
             MatchmakerClient.Instance.NeededToHost = true;
             MatchmakerClient.Instance.Handler.ClientRequestedToHost();
+
+            var clientCount = receivedMessage.GetInt();
+
+            var clients = new List<ConnectedClient>();
+
+            for (var i = 0; i < clientCount; i++) 
+                clients.Add(receivedMessage.GetSerializable<ConnectedClient>());
             
-            Log.Info($"Received new ServerRequestedClientToHost message. | LobbyId: {lobbyId}");
+            Log.Info($"Received new ServerRequestedClientToHost message. | LobbyId: {lobbyId} | Lobby Clients: <{clients.Aggregate("", (current, client) => current + $"(Client Id: {client.PlayerId} | Connection Id: {client.ConnectionId} | Rank: {client.Rank.DisplayName}[{client.Rank.Id}]), ")}>");
         }
 
         private static void ClientJoinCreatedLobbyMessageHandler(Message receivedMessage)
@@ -42,7 +51,15 @@ namespace CopperMatchmaking.Client
             MatchmakerClient.Instance.NeededToHost = false;
             
             var lobbyId = receivedMessage.GetString();
-            Log.Info($"Received new ClientJoinCreatedLobby message. | LobbyId: {lobbyId}");
+            
+            var clientCount = receivedMessage.GetInt();
+
+            var clients = new List<ConnectedClient>();
+
+            for (var i = 0; i < clientCount; i++) 
+                clients.Add(receivedMessage.GetSerializable<ConnectedClient>());
+            
+            Log.Info($"Received new ClientJoinCreatedLobby message. | LobbyId: {lobbyId} | Lobby Clients: <{clients.Aggregate("", (current, client) => current + $"(Client Id: {client.PlayerId} | Connection Id: {client.ConnectionId} | Rank: {client.Rank.DisplayName}[{client.Rank.Id}]), ")}>");
             MatchmakerClient.Instance.Handler.JoinServer(lobbyId);
         }
     }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using CopperMatchmaking.Data;
@@ -22,6 +23,11 @@ namespace CopperMatchmaking.Server
         internal readonly ServerQueueManager QueueManager = null!;
         internal readonly ServerLobbyManager LobbyManager = null!;
         internal readonly ServerHandler Handler;
+
+        /// <summary>
+        /// Called when a potential lobby is found
+        /// </summary>
+        public Action<CreatedLobby> LobbyCreated = null!;
 
         /// <summary>
         /// Base Constructor with a pre-made <see cref="ServerHandler"/>
