@@ -6,7 +6,7 @@ namespace CopperDevs.Matchmaking.Components
     /// <summary>
     /// Base class for a component
     /// </summary>
-    public class BaseComponent
+    public abstract class BaseComponent
     {
         /// <summary>
         /// Current instance of the server

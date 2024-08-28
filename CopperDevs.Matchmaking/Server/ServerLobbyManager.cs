@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using CopperDevs.Matchmaking.Data;
-using CopperDevs.Matchmaking.Info;
 using Riptide;
 
 namespace CopperDevs.Matchmaking.Server
@@ -10,14 +9,14 @@ namespace CopperDevs.Matchmaking.Server
     {
         private readonly MatchmakerServer server;
 
-        internal readonly Dictionary<uint, CreatedLobby> Lobbies = new Dictionary<uint, CreatedLobby>();
+        internal readonly Dictionary<uint, MatchmakingLobby> Lobbies = new Dictionary<uint, MatchmakingLobby>();
 
         internal ServerLobbyManager(MatchmakerServer server)
         {
             this.server = server;
         }
 
-        internal void PotentialLobbyFound(List<ConnectedClient> connectedClients, byte rank)
+        internal void PotentialLobbyFound(List<MatchmakingClient> connectedClients, byte rank)
         {
             var host = connectedClients[server.Handler.ChooseLobbyHost(connectedClients)];
 
@@ -29,11 +28,11 @@ namespace CopperDevs.Matchmaking.Server
             
             var lobbyId = host.ConnectionId;
 
-            Lobbies.Add(lobbyId, new CreatedLobby(lobbyId, connectedClients, rank));
+            Lobbies.Add(lobbyId, new MatchmakingLobby(lobbyId, connectedClients, rank));
 
             Log.Info($"Potential Lobby Found. Creating lobby with ConnectedClient[{host.ConnectionId}] as host.");
 
-            var message = Message.Create(MessageSendMode.Reliable, MessageIds.ServerRequestedClientToHost);
+            var message = Message.Create(MessageSendMode.Reliable, NetworkingMessageIds.ServerRequestedClientToHost);
             message.Add(lobbyId);
 
             message.Add(connectedClients.Count);
@@ -61,7 +60,7 @@ namespace CopperDevs.Matchmaking.Server
 
             foreach (var client in Lobbies[lobbyId].Where(client => !(Lobbies[lobbyId].IndexOf(client) is 0)))
             {
-                var message = Message.Create(MessageSendMode.Reliable, MessageIds.ClientJoinCreatedLobby);
+                var message = Message.Create(MessageSendMode.Reliable, NetworkingMessageIds.ClientJoinCreatedLobby);
                 message.Add(hostedLobbyId);
 
                 message.Add(Lobbies[lobbyId].LobbyClients.Count);
@@ -116,7 +115,7 @@ namespace CopperDevs.Matchmaking.Server
             }
         }
         
-        private void RemoveLobby(Connection clientConnection, CreatedLobby lobby)
+        private void RemoveLobby(Connection clientConnection, MatchmakingLobby lobby)
         {
             Log.Info($"Removing lobby due to someone disconnecting. | Client: {clientConnection.Id} | Lobby: {lobby.LobbyId}");
                 

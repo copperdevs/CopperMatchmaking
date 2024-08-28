@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using CopperDevs.Matchmaking.Data;
-using CopperDevs.Matchmaking.Info;
 using Riptide;
 
 namespace CopperDevs.Matchmaking.Client
@@ -22,11 +21,11 @@ namespace CopperDevs.Matchmaking.Client
             switch (args.MessageId)
             {
                 case 2:
-                    Log.Info($"Received {nameof(MessageIds.ServerRequestedClientToHost)} message.");
+                    Log.Info($"Received {nameof(NetworkingMessageIds.ServerRequestedClientToHost)} message.");
                     ServerRequestedClientToHostMessageHandler(args.Message);
                     break;
                 case 4:
-                    Log.Info($"Received {nameof(MessageIds.ClientJoinCreatedLobby)} message.");
+                    Log.Info($"Received {nameof(NetworkingMessageIds.ClientJoinCreatedLobby)} message.");
                     ClientJoinCreatedLobbyMessageHandler(args.Message);
                     break;
                 default:
@@ -45,10 +44,10 @@ namespace CopperDevs.Matchmaking.Client
 
             var clientCount = receivedMessage.GetInt();
 
-            var clients = new List<ConnectedClient>();
+            var clients = new List<MatchmakingClient>();
 
             for (var i = 0; i < clientCount; i++) 
-                clients.Add(receivedMessage.GetSerializable<ConnectedClient>());
+                clients.Add(receivedMessage.GetSerializable<MatchmakingClient>());
             
             Log.Info($"Received new ServerRequestedClientToHost message. | LobbyId: {lobbyId} | Lobby Clients: <{clients.Aggregate("", (current, client) => current + $"(Client Id: {client.PlayerId} | Connection Id: {client.ConnectionId} | Rank: {client.Rank.DisplayName}[{client.Rank.Id}]), ")}>");
         }
@@ -61,10 +60,10 @@ namespace CopperDevs.Matchmaking.Client
             
             var clientCount = receivedMessage.GetInt();
 
-            var clients = new List<ConnectedClient>();
+            var clients = new List<MatchmakingClient>();
 
             for (var i = 0; i < clientCount; i++) 
-                clients.Add(receivedMessage.GetSerializable<ConnectedClient>());
+                clients.Add(receivedMessage.GetSerializable<MatchmakingClient>());
             
             Log.Info($"Received new ClientJoinCreatedLobby message. | LobbyId: {lobbyId} | Lobby Clients: <{clients.Aggregate("", (current, client) => current + $"(Client Id: {client.PlayerId} | Connection Id: {client.ConnectionId} | Rank: {client.Rank.DisplayName}[{client.Rank.Id}]), ")}>");
             targetClient.Handler.JoinServer(lobbyId);

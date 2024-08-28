@@ -7,30 +7,30 @@ namespace CopperDevs.Matchmaking.Data
     /// <summary>
     /// Data for all connected clients
     /// </summary>
-    public class ConnectedClient : IMessageSerializable
+    public class MatchmakingClient : IMessageSerializable
     {
         /// <summary>
         /// Clients rank
         /// </summary>
         public Rank Rank { get; private set; }
-        
+
         /// <summary>
         /// Riptides ConnectionId  
         /// </summary>
         public uint ConnectionId { get; private set; }
-        
+
         /// <summary>
         /// Riptide Connection
         /// </summary>
         internal readonly RiptideConnection RiptideConnection;
-        
-        
+
+
         /// <summary>
         /// Player Id sent from the client 
         /// </summary>
         public ulong PlayerId { get; private set; }
 
-        internal ConnectedClient(Rank rank, RiptideConnection riptideConnection, ulong playerId)
+        internal MatchmakingClient(Rank rank, RiptideConnection riptideConnection, ulong playerId)
         {
             Rank = rank;
             this.RiptideConnection = riptideConnection;
@@ -38,34 +38,38 @@ namespace CopperDevs.Matchmaking.Data
             ConnectionId = riptideConnection.Id;
             PlayerId = playerId;
         }
-        
+
         /// <summary>
-        /// dont use this
+        /// This is here for internal usage and passing a client through Riptide.
+        /// It should not be used.
         /// </summary>
-        public ConnectedClient()
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+        public MatchmakingClient()
         {
         }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+
 
         /// <summary>
         /// Get a clients rank
         /// </summary>
         /// <param name="client">Target client</param>
         /// <returns>Clients rank</returns>
-        public static implicit operator Rank(ConnectedClient client) => client.Rank;
-        
+        public static implicit operator Rank(MatchmakingClient client) => client.Rank;
+
         /// <summary>
         /// Get a clients riptide connection id
         /// </summary>
         /// <param name="client">Target client</param>
         /// <returns>Clients riptide connection id</returns>
-        public static implicit operator uint(ConnectedClient client) => client.ConnectionId;
-        
+        public static implicit operator uint(MatchmakingClient client) => client.ConnectionId;
+
         /// <summary>
         /// Get a clients riptide connect
         /// </summary>
         /// <param name="client">Target client</param>
         /// <returns>Clients riptide connection</returns>
-        public static implicit operator RiptideConnection(ConnectedClient client) => client.RiptideConnection;
+        public static implicit operator RiptideConnection(MatchmakingClient client) => client.RiptideConnection;
 
         /// <summary>
         /// Update a clients rank from a 

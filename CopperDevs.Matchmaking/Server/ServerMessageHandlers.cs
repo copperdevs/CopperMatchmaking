@@ -1,5 +1,4 @@
 using CopperDevs.Matchmaking.Data;
-using CopperDevs.Matchmaking.Info;
 using Riptide;
 
 namespace CopperDevs.Matchmaking.Server
@@ -20,11 +19,11 @@ namespace CopperDevs.Matchmaking.Server
             switch (args.MessageId)
             {
                 case 1:
-                    Log.Info($"Received {nameof(MessageIds.ClientJoined)} message.");
+                    Log.Info($"Received {nameof(NetworkingMessageIds.ClientJoined)} message.");
                     ClientJoinedMessageHandler(args.FromConnection.Id, args.Message);
                     break;
                 case 3:
-                    Log.Info($"Received {nameof(MessageIds.ClientHostLobbyId)} message.");
+                    Log.Info($"Received {nameof(NetworkingMessageIds.ClientHostLobbyId)} message.");
                     ClientHostLobbyIdMessageHandler(args.FromConnection.Id, args.Message);
                     break;
                 default:
@@ -51,7 +50,7 @@ namespace CopperDevs.Matchmaking.Server
 
             connection.CanQualityDisconnect = false;
 
-            targetServer.RegisterClient(new ConnectedClient(rank, connection, playerId));
+            targetServer.RegisterClient(new MatchmakingClient(rank, connection, playerId));
         }
 
         private void ClientHostLobbyIdMessageHandler(ushort sender, Message receivedMessage)

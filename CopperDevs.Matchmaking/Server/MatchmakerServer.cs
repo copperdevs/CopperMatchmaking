@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CopperDevs.Matchmaking.Data;
-using CopperDevs.Matchmaking.Info;
 using Riptide;
 using Riptide.Transports.Tcp;
 using Riptide.Utils;
@@ -29,7 +28,7 @@ namespace CopperDevs.Matchmaking.Server
         /// <summary>
         /// Called when a potential lobby is found
         /// </summary>
-        public Action<CreatedLobby> LobbyCreated = null!;
+        public Action<MatchmakingLobby> LobbyCreated = null!;
 
         /// <summary>
         /// Base Constructor with a pre-made <see cref="ServerHandler"/>
@@ -124,7 +123,7 @@ namespace CopperDevs.Matchmaking.Server
             QueueManager.RegisterRanks(Ranks);
         }
 
-        internal void RegisterClient(ConnectedClient client)
+        internal void RegisterClient(MatchmakingClient client)
         {
             Log.Info($"New Client Joined | Rank: {client.Rank.DisplayName} | ConnectionId: {client.ConnectionId}");
 
@@ -158,7 +157,7 @@ namespace CopperDevs.Matchmaking.Server
         /// Get all current lobbies waiting for a host response
         /// </summary>
         /// <returns>List of all current lobbies awaiting a host response</returns>
-        public List<CreatedLobby> GetCurrentLobbies()
+        public List<MatchmakingLobby> GetCurrentLobbies()
         {
             return LobbyManager.Lobbies.Values.ToList();
         }
@@ -168,7 +167,7 @@ namespace CopperDevs.Matchmaking.Server
         /// </summary>
         /// <returns>Dictionary of all clients currently in queue</returns>
         /// <remarks>The key is the rank</remarks>
-        public Dictionary<byte, List<ConnectedClient>> GetRankQueues()
+        public Dictionary<byte, List<MatchmakingClient>> GetRankQueues()
         {
             return QueueManager.RankQueues;
         }

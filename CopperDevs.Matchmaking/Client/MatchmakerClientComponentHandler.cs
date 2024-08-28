@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using CopperDevs.Matchmaking.Components;
-using CopperDevs.Matchmaking.Info;
+using CopperDevs.Matchmaking.Data;
 
 namespace CopperDevs.Matchmaking.Client
 {

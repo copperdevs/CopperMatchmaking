@@ -1,6 +1,5 @@
 using System;
 using CopperDevs.Matchmaking.Data;
-using CopperDevs.Matchmaking.Info;
 using Riptide;
 using Riptide.Transports.Tcp;
 using Riptide.Utils;
@@ -83,7 +82,7 @@ namespace CopperDevs.Matchmaking.Client
 
         private void ClientConnectedHandler(object sender, EventArgs eventArgs)
         {
-            var joinMessage = Message.Create(MessageSendMode.Reliable, MessageIds.ClientJoined);
+            var joinMessage = Message.Create(MessageSendMode.Reliable, NetworkingMessageIds.ClientJoined);
 
             joinMessage.Add(playerId); // ulong
             joinMessage.Add(rankId); // byte
@@ -111,7 +110,7 @@ namespace CopperDevs.Matchmaking.Client
                 return;
             }
             
-            var message = Message.Create(MessageSendMode.Reliable, MessageIds.ClientHostLobbyId);
+            var message = Message.Create(MessageSendMode.Reliable, NetworkingMessageIds.ClientHostLobbyId);
             message.Add(CurrentLobbyCode);
             message.Add(hostedLobbyId);
 

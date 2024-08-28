@@ -13,7 +13,7 @@ namespace CopperDevs.Matchmaking.Server
         /// </summary>
         /// <param name="client">Target client to verify</param>
         /// <returns>True if client is verified and allowed to connect</returns>
-        public virtual bool VerifyPlayer(ConnectedClient client)
+        public virtual bool VerifyPlayer(MatchmakingClient client)
         {
             return true;
         }
@@ -22,7 +22,7 @@ namespace CopperDevs.Matchmaking.Server
         /// Ran for when a lobby is created on the server
         /// </summary>
         /// <param name="lobby">Created lobby data</param>
-        public virtual void LobbyCreated(CreatedLobby lobby)
+        public virtual void LobbyCreated(MatchmakingLobby lobby)
         {
             
         }
@@ -32,7 +32,7 @@ namespace CopperDevs.Matchmaking.Server
         /// </summary>
         /// <param name="lobbyClients">All the clients in the lobby</param>
         /// <returns>Index of the list corresponding to who should host</returns>
-        public virtual int ChooseLobbyHost(List<ConnectedClient> lobbyClients)
+        public virtual int ChooseLobbyHost(List<MatchmakingClient> lobbyClients)
         {
             return 0;
         }
@@ -42,7 +42,7 @@ namespace CopperDevs.Matchmaking.Server
         /// </summary>
         /// <param name="lobby">Created lobby</param>
         /// <param name="lobbyJoinCode">Created lobby join code</param>
-        public virtual void LobbyJoinCodeReceived(CreatedLobby lobby, string lobbyJoinCode)
+        public virtual void LobbyJoinCodeReceived(MatchmakingLobby lobby, string lobbyJoinCode)
         {
             
         }

@@ -13,19 +13,22 @@ namespace CopperDevs.Matchmaking.Data
         /// Display name of the rank for visual sakes
         /// </summary>
         public string DisplayName;
-        
+
         /// <summary>
         /// Rank id of a client
         /// </summary>
         public byte Id;
 
         /// <summary>
-        /// dont use this stupid
+        /// This is here for internal usage and passing a rank through Riptide.
+        /// It should not be used.
         /// </summary>
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public Rank()
         {
-            
         }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+
 
         /// <summary>
         /// Creates a new rank id with an enum

@@ -1,5 +1,5 @@
 using CopperDevs.Matchmaking.Client;
-using CopperDevs.Matchmaking.Info;
+using CopperDevs.Matchmaking.Data;
 using Riptide;
 
 namespace CopperDevs.Matchmaking.Example.Client;

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CopperDevs.Matchmaking.Data;
-using CopperDevs.Matchmaking.Info;
 
 namespace CopperDevs.Matchmaking.Components
 {
@@ -12,7 +11,7 @@ namespace CopperDevs.Matchmaking.Components
     [ServerOnlyComponent]
     public class LobbyTimeoutComponent : BaseComponent
     {
-        private Dictionary<uint, CreatedLobby> Lobbies => Server?.LobbyManager.Lobbies!;
+        private Dictionary<uint, MatchmakingLobby> Lobbies => Server?.LobbyManager.Lobbies!;
         
         /// <summary>
         /// Time in seconds that the host of a lobby has to send the join code for said lobby 

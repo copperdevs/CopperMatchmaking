@@ -7,7 +7,7 @@ namespace CopperDevs.Matchmaking.Data
     /// <summary>
     /// Created lobby data
     /// </summary>
-    public class CreatedLobby : IEnumerable<ConnectedClient>
+    public class MatchmakingLobby : IEnumerable<MatchmakingClient>
     {
         /// <summary>
         /// Id of the created lobby
@@ -17,7 +17,7 @@ namespace CopperDevs.Matchmaking.Data
         /// <summary>
         /// All clients that are in the lobby
         /// </summary>
-        public List<ConnectedClient> LobbyClients { get; private set; }
+        public List<MatchmakingClient> LobbyClients { get; private set; }
         
         /// <summary>
         /// Time the lobby was created
@@ -36,7 +36,7 @@ namespace CopperDevs.Matchmaking.Data
         /// <param name="lobbyId">Lobby Id</param>
         /// <param name="lobbyClients">Lobby Clients</param>
         /// <param name="lobbyRank">Lobby Rank</param>
-        internal CreatedLobby(uint lobbyId, List<ConnectedClient> lobbyClients, byte lobbyRank)
+        internal MatchmakingLobby(uint lobbyId, List<MatchmakingClient> lobbyClients, byte lobbyRank)
         {
             LobbyId = lobbyId;
             LobbyClients = lobbyClients;
@@ -49,7 +49,7 @@ namespace CopperDevs.Matchmaking.Data
         /// Returns an enumerator that iterates through the list
         /// </summary>
         /// <returns>The enumerator</returns>
-        public IEnumerator<ConnectedClient> GetEnumerator()
+        public IEnumerator<MatchmakingClient> GetEnumerator()
         {
             return LobbyClients.GetEnumerator();
         }
@@ -64,7 +64,7 @@ namespace CopperDevs.Matchmaking.Data
         /// </summary>
         /// <param name="client">Client to find the index of</param>
         /// <returns>Index</returns>
-        public int IndexOf(ConnectedClient client)
+        public int IndexOf(MatchmakingClient client)
         {
             return LobbyClients.IndexOf(client);
         }
@@ -73,6 +73,6 @@ namespace CopperDevs.Matchmaking.Data
         /// Get a client from its index
         /// </summary>
         /// <param name="i">Index of the client you want</param>
-        public ConnectedClient this[int i] => LobbyClients[i];
+        public MatchmakingClient this[int i] => LobbyClients[i];
     }
 }

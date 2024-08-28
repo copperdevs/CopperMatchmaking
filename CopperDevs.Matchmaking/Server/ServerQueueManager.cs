@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CopperDevs.Matchmaking.Data;
-using CopperDevs.Matchmaking.Info;
 using Riptide;
 
 namespace CopperDevs.Matchmaking.Server
@@ -10,11 +9,11 @@ namespace CopperDevs.Matchmaking.Server
     internal class ServerQueueManager
     {
         // byte is used here but its just the rank class
-        internal readonly Dictionary<byte, List<ConnectedClient>> RankQueues = new Dictionary<byte, List<ConnectedClient>>();
+        internal readonly Dictionary<byte, List<MatchmakingClient>> RankQueues = new Dictionary<byte, List<MatchmakingClient>>();
 
         private readonly ushort lobbySize;
 
-        internal Action<List<ConnectedClient>, byte>? PotentialLobbyFound;
+        internal Action<List<MatchmakingClient>, byte>? PotentialLobbyFound;
 
         public ServerQueueManager(ushort lobbySize)
         {
@@ -27,7 +26,7 @@ namespace CopperDevs.Matchmaking.Server
 
             foreach (var rank in ranks)
             {
-                RankQueues.Add(rank, new List<ConnectedClient>());
+                RankQueues.Add(rank, new List<MatchmakingClient>());
             }
         }
 
@@ -46,7 +45,7 @@ namespace CopperDevs.Matchmaking.Server
             }
         }
 
-        internal void RegisterPlayer(ConnectedClient client)
+        internal void RegisterPlayer(MatchmakingClient client)
         {
             RankQueues[client.Rank].Add(client);
             Log.Info($"Registered new client to {GetType().Name}");
@@ -78,7 +77,7 @@ namespace CopperDevs.Matchmaking.Server
             }
         }
 
-        internal void ReturnLobby(CreatedLobby lobby)
+        internal void ReturnLobby(MatchmakingLobby lobby)
         {
             lobby.Skip(1).ToList().ForEach(RegisterPlayer);
             RegisterPlayer(lobby[0]);

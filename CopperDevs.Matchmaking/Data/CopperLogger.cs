@@ -1,6 +1,6 @@
 using System;
 
-namespace CopperDevs.Matchmaking.Info
+namespace CopperDevs.Matchmaking.Data
 {
     /// <summary>
     /// Log class 
