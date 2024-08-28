@@ -54,10 +54,7 @@ namespace CopperDevs.Matchmaking.Server
 
             // checks
             if (lobbySize % 2 != 0)
-            {
-                Log.Error($"Lobby size is not divisible by 2.");
-                return;
-            }
+                throw new Exception($"Lobby size is not divisible by 2.");
 
             // logs
             CopperLogger.Initialize(CopperLogger.InternalLogInfo, CopperLogger.InternalLogWarning, CopperLogger.InternalLogError);
@@ -76,7 +73,7 @@ namespace CopperDevs.Matchmaking.Server
             Server.ClientDisconnected += QueueManager.ClientDisconnected;
             Server.ClientDisconnected += LobbyManager.ClientDisconnected;
             Server.MessageReceived += MessageHandlers.ServerReceivedMessageHandler;
-            
+
             // created last so everything else is setup
             clientCounter = new ServerClientCounter(this);
         }
@@ -97,7 +94,7 @@ namespace CopperDevs.Matchmaking.Server
             // them pesky players
             QueueManager.DisconnectedPlayerCheck();
             LobbyManager.DisconnectedPlayerCheck();
-            
+
             // maybe not all of them are pesky!
             // lets make a lobby
             QueueManager.CheckForLobbies();
@@ -174,6 +171,16 @@ namespace CopperDevs.Matchmaking.Server
         public Dictionary<byte, List<ConnectedClient>> GetRankQueues()
         {
             return QueueManager.RankQueues;
+        }
+
+        /// <summary>
+        /// Tries to get a client connection based off of its user ID
+        /// </summary>
+        /// <param name="id">The ID of the use you want to get</param>
+        /// <returns>The connection if its found, otherwise returns null</returns>
+        public Connection? TryGetClientConnection(ushort id)
+        {
+            return Server.TryGetClient(id, out var connection) ? connection : null;
         }
     }
 }

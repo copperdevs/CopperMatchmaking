@@ -1,6 +1,5 @@
 using CopperDevs.Matchmaking.Data;
 using CopperDevs.Matchmaking.Info;
-using CopperDevs.Matchmaking.Util;
 using Riptide;
 
 namespace CopperDevs.Matchmaking.Server
@@ -17,7 +16,7 @@ namespace CopperDevs.Matchmaking.Server
         internal void ServerReceivedMessageHandler(object sender, MessageReceivedEventArgs args)
         {
             Log.Info($"Received message of id {args.MessageId}.");
-            
+
             switch (args.MessageId)
             {
                 case 1:
@@ -41,7 +40,7 @@ namespace CopperDevs.Matchmaking.Server
 
             Log.Info($"Received new ClientJoined message. | PlayerId: {playerId} | RankId: {rankId} | Sender: {sender}");
 
-            var connection = targetServer.Server.GetConnection(sender);
+            var connection = targetServer.TryGetClientConnection(sender);
             var rank = MatchmakerServer.Ranks[rankId];
 
             if (connection is null)
@@ -51,7 +50,7 @@ namespace CopperDevs.Matchmaking.Server
             }
 
             connection.CanQualityDisconnect = false;
-            
+
             targetServer.RegisterClient(new ConnectedClient(rank, connection, playerId));
         }
 
