@@ -4,7 +4,7 @@ using CopperDevs.Logger;
 using CopperDevs.Matchmaking.Data;
 using Riptide;
 
-namespace CopperDevs.Matchmaking.Client
+namespace CopperDevs.Matchmaking.Client.Internal
 {
     internal class ClientMessageHandlers
     {

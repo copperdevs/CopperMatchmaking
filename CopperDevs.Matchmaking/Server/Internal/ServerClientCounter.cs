@@ -2,7 +2,7 @@ using System.Linq;
 using CopperDevs.Logger;
 using Riptide;
 
-namespace CopperDevs.Matchmaking.Server
+namespace CopperDevs.Matchmaking.Server.Internal
 {
     internal class ServerClientCounter
     {

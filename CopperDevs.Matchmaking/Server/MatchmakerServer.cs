@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CopperDevs.Logger;
 using CopperDevs.Matchmaking.Data;
+using CopperDevs.Matchmaking.Server.Internal;
 using Riptide;
 using Riptide.Transports.Tcp;
 using Riptide.Utils;
@@ -13,18 +14,18 @@ namespace CopperDevs.Matchmaking.Server
     /// <summary>
     /// 
     /// </summary>
-    public partial class MatchmakerServer
+    public class MatchmakerServer
     {
-        internal readonly RiptideServer Server = null!;
+        internal readonly RiptideServer Server;
 
         internal static readonly List<Rank> Ranks = new List<Rank>();
 
-        internal readonly ServerQueueManager QueueManager = null!;
-        internal readonly ServerLobbyManager LobbyManager = null!;
+        internal readonly ServerQueueManager QueueManager;
+        internal readonly ServerLobbyManager LobbyManager;
         internal readonly ServerHandler Handler;
         private readonly ServerClientCounter clientCounter;
 
-        internal readonly ServerMessageHandlers MessageHandlers;
+        private readonly ServerMessageHandlers messageHandlers;
 
         /// <summary>
         /// Called when a potential lobby is found
@@ -50,7 +51,7 @@ namespace CopperDevs.Matchmaking.Server
         {
             // values
             Handler = handler;
-            MessageHandlers = new ServerMessageHandlers(this);
+            messageHandlers = new ServerMessageHandlers(this);
 
             // checks
             if (lobbySize % 2 != 0)
@@ -71,7 +72,7 @@ namespace CopperDevs.Matchmaking.Server
             QueueManager.PotentialLobbyFound += LobbyManager.PotentialLobbyFound;
             Server.ClientDisconnected += QueueManager.ClientDisconnected;
             Server.ClientDisconnected += LobbyManager.ClientDisconnected;
-            Server.MessageReceived += MessageHandlers.ServerReceivedMessageHandler;
+            Server.MessageReceived += messageHandlers.ServerReceivedMessageHandler;
 
             // created last so everything else is setup
             clientCounter = new ServerClientCounter(this);
@@ -82,7 +83,7 @@ namespace CopperDevs.Matchmaking.Server
             QueueManager.PotentialLobbyFound -= LobbyManager.PotentialLobbyFound;
             Server.ClientDisconnected -= QueueManager.ClientDisconnected;
             Server.ClientDisconnected -= LobbyManager.ClientDisconnected;
-            Server.MessageReceived -= MessageHandlers.ServerReceivedMessageHandler;
+            Server.MessageReceived -= messageHandlers.ServerReceivedMessageHandler;
         }
 
         /// <summary>
@@ -98,8 +99,7 @@ namespace CopperDevs.Matchmaking.Server
             // lets make a lobby
             QueueManager.CheckForLobbies();
 
-            // components and crap ig
-            UpdateComponents();
+            // player count update
             clientCounter.PlayerCountUpdateCheck();
 
             // networking!

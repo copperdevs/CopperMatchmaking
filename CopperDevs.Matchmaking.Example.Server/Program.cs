@@ -1,5 +1,4 @@
-﻿using CopperDevs.Matchmaking.Components;
-using CopperDevs.Matchmaking.Data;
+﻿using CopperDevs.Matchmaking.Data;
 using CopperDevs.Matchmaking.Server;
 
 namespace CopperDevs.Matchmaking.Example.Server;
@@ -8,11 +7,7 @@ public static class Program
 {
     public static void Main()
     {
-        var server = new MatchmakerServer(2)
-        {
-            new LobbyTimeoutComponent(),
-            // new InfoLoggerComponent()
-        };
+        var server = new MatchmakerServer(2);
 
         server.RegisterRanks(
             new Rank("Unranked", RankIds.Unranked), // 0

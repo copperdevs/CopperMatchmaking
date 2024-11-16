@@ -1,3 +1,4 @@
+using System;
 using CopperDevs.Matchmaking.Server;
 using Riptide;
 using RiptideConnection = Riptide.Connection;
@@ -33,7 +34,7 @@ namespace CopperDevs.Matchmaking.Data
         internal MatchmakingClient(Rank rank, RiptideConnection riptideConnection, ulong playerId)
         {
             Rank = rank;
-            this.RiptideConnection = riptideConnection;
+            RiptideConnection = riptideConnection;
 
             ConnectionId = riptideConnection.Id;
             PlayerId = playerId;
@@ -43,6 +44,7 @@ namespace CopperDevs.Matchmaking.Data
         /// This is here for internal usage and passing a client through Riptide.
         /// It should not be used.
         /// </summary>
+        [Obsolete]
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public MatchmakingClient()
         {

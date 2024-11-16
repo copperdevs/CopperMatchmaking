@@ -1,5 +1,6 @@
 using System;
 using CopperDevs.Logger;
+using CopperDevs.Matchmaking.Client.Internal;
 using CopperDevs.Matchmaking.Data;
 using Riptide;
 using Riptide.Transports.Tcp;
@@ -11,7 +12,7 @@ namespace CopperDevs.Matchmaking.Client
     /// <summary>
     /// Matchmaker client for connecting to the matchmaker with
     /// </summary>
-    public partial class MatchmakerClient
+    public class MatchmakerClient
     {
         /// <summary>
         /// Enabled when <see cref="Update"/> needs to be ran to update the client.
@@ -25,7 +26,7 @@ namespace CopperDevs.Matchmaking.Client
         private readonly byte rankId;
         private readonly ulong playerId;
 
-        internal bool NeededToHost = false;
+        internal bool NeededToHost;
         internal uint CurrentLobbyCode = 0;
 
         /// <summary>
@@ -76,7 +77,6 @@ namespace CopperDevs.Matchmaking.Client
             if (!ShouldUpdate) 
                 return;
             
-            UpdateComponents();
             Client.Update();
         }
 

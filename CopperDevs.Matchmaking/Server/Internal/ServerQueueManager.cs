@@ -5,7 +5,7 @@ using CopperDevs.Logger;
 using CopperDevs.Matchmaking.Data;
 using Riptide;
 
-namespace CopperDevs.Matchmaking.Server
+namespace CopperDevs.Matchmaking.Server.Internal
 {
     internal class ServerQueueManager
     {
