@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using CopperDevs.Logger;
 using CopperDevs.Matchmaking.Components;
-using CopperDevs.Matchmaking.Data;
 
 namespace CopperDevs.Matchmaking.Client
 {

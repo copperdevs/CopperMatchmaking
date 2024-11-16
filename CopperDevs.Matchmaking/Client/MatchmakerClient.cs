@@ -1,4 +1,5 @@
 using System;
+using CopperDevs.Logger;
 using CopperDevs.Matchmaking.Data;
 using Riptide;
 using Riptide.Transports.Tcp;
@@ -37,8 +38,7 @@ namespace CopperDevs.Matchmaking.Client
         public MatchmakerClient(string ip, BaseClientHandler baseClientHandler, byte rankId, ulong playerId)
         {
             // init logs
-            CopperLogger.Initialize(CopperLogger.InternalLogInfo, CopperLogger.InternalLogWarning, CopperLogger.InternalLogError);
-            RiptideLogger.Initialize(CopperLogger.LogInfo, CopperLogger.LogInfo, CopperLogger.LogWarning, CopperLogger.LogError, false);
+            RiptideLogger.Initialize(Log.Debug, Log.Info, Log.Warning, Log.Error, false);
 
             // values/handlers
             this.rankId = rankId;

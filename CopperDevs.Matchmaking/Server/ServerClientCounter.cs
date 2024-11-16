@@ -1,5 +1,5 @@
 using System.Linq;
-using CopperDevs.Matchmaking.Data;
+using CopperDevs.Logger;
 using Riptide;
 
 namespace CopperDevs.Matchmaking.Server

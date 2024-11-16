@@ -1,3 +1,4 @@
+using CopperDevs.Logger;
 using CopperDevs.Matchmaking.Data;
 using Riptide;
 

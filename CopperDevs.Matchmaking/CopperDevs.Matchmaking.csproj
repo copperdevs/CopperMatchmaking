@@ -27,6 +27,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="CopperDevs.Logger" Version="1.0.1" />
       <PackageReference Include="RiptideNetworking.Riptide" Version="2.2.0" />
     </ItemGroup>
 

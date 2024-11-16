@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CopperDevs.Logger;
 using CopperDevs.Matchmaking.Data;
 using Riptide;
 using Riptide.Transports.Tcp;
@@ -56,8 +57,7 @@ namespace CopperDevs.Matchmaking.Server
                 throw new Exception($"Lobby size is not divisible by 2.");
 
             // logs
-            CopperLogger.Initialize(CopperLogger.InternalLogInfo, CopperLogger.InternalLogWarning, CopperLogger.InternalLogError);
-            RiptideLogger.Initialize(CopperLogger.LogInfo, CopperLogger.LogInfo, CopperLogger.LogWarning, CopperLogger.LogError, false);
+            RiptideLogger.Initialize(Log.Debug, Log.Info, Log.Warning, Log.Error, false);
 
             // networking
             Server = new RiptideServer(new TcpServer());

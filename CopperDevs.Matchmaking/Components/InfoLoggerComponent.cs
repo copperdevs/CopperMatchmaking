@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using CopperDevs.Matchmaking.Data;
+using CopperDevs.Logger;
 using CopperDevs.Matchmaking.Server;
 
 namespace CopperDevs.Matchmaking.Components
