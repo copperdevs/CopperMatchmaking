@@ -44,7 +44,7 @@ namespace CopperDevs.Matchmaking.Server.Internal
             currentQueuePlayerCount = queuePlayerCount;
             
             Handler.PlayerQueueCountUpdated(currentLobbyPlayerCount, currentQueuePlayerCount);
-            Log.Info($"Current player count has been updated | Lobby player count: {currentLobbyPlayerCount} | Queue player count: {currentQueuePlayerCount}");
+            Log.Debug($"Current player count has been updated | Lobby player count: {currentLobbyPlayerCount} | Queue player count: {currentQueuePlayerCount}");
         }
     }
 }

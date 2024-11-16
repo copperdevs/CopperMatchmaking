@@ -23,6 +23,7 @@ namespace CopperDevs.Matchmaking.Data
         /// This is here for internal usage and passing a rank through Riptide.
         /// It should not be used.
         /// </summary>
+        [Obsolete]
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public Rank()
         {

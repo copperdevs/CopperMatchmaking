@@ -15,16 +15,16 @@ namespace CopperDevs.Matchmaking.Server.Internal
 
         internal void ServerReceivedMessageHandler(object sender, MessageReceivedEventArgs args)
         {
-            Log.Info($"Received message of id {args.MessageId}.");
+            Log.Network($"Received message of id {args.MessageId}.");
 
             switch (args.MessageId)
             {
                 case 1:
-                    Log.Info($"Received {nameof(NetworkingMessageIds.ClientJoined)} message.");
+                    Log.Success($"Received {nameof(NetworkingMessageIds.ClientJoined)} message.");
                     ClientJoinedMessageHandler(args.FromConnection.Id, args.Message);
                     break;
                 case 3:
-                    Log.Info($"Received {nameof(NetworkingMessageIds.ClientHostLobbyId)} message.");
+                    Log.Success($"Received {nameof(NetworkingMessageIds.ClientHostLobbyId)} message.");
                     ClientHostLobbyIdMessageHandler(args.FromConnection.Id, args.Message);
                     break;
                 default:
@@ -38,14 +38,14 @@ namespace CopperDevs.Matchmaking.Server.Internal
             var playerId = receivedMessage.GetULong();
             var rankId = receivedMessage.GetByte();
 
-            Log.Info($"Received new ClientJoined message. | PlayerId: {playerId} | RankId: {rankId} | Sender: {sender}");
+            Log.Debug($"Received new ClientJoined message. | PlayerId: {playerId} | RankId: {rankId} | Sender: {sender}");
 
             var connection = targetServer.TryGetClientConnection(sender);
             var rank = MatchmakerServer.Ranks[rankId];
 
             if (connection is null)
             {
-                Log.Info($"Disconnecting client due to connection being null | Sender: {sender}");
+                Log.Warning($"Disconnecting client due to connection being null | Sender: {sender}");
                 return;
             }
 
@@ -59,7 +59,7 @@ namespace CopperDevs.Matchmaking.Server.Internal
             var lobbyId = receivedMessage.GetUInt();
             var hostedLobbyId = receivedMessage.GetString();
 
-            Log.Info($"Received new ClientHostLobbyId message. | LobbyId: {lobbyId} | HostedLobbyId: {hostedLobbyId}");
+            Log.Debug($"Received new ClientHostLobbyId message. | LobbyId: {lobbyId} | HostedLobbyId: {hostedLobbyId}");
 
             targetServer.LobbyManager.HandleClientHostResponse(lobbyId, hostedLobbyId);
         }

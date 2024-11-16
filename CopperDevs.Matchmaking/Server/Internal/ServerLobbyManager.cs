@@ -51,13 +51,13 @@ namespace CopperDevs.Matchmaking.Server.Internal
 
         internal void HandleClientHostResponse(uint lobbyId, string hostedLobbyId)
         {
-            if (!Lobbies.ContainsKey(lobbyId))
+            if (!Lobbies.TryGetValue(lobbyId, out var lobby))
             {
-                Log.Info($"Client has seen join code for lobby {lobbyId}. However there is no lobby with id '{lobbyId}'. It might have timed out or the client is lying.");
+                Log.Warning($"Client has sent join code for lobby {lobbyId}. However there is no lobby with id {lobbyId}. It might have timed out or the client is lying.");
                 return;
             }
 
-            Log.Info($"ConnectedClient[{Lobbies[lobbyId][0].ConnectionId}] has responded with the join code of {hostedLobbyId}. Telling all clients of their lobby, and disconnecting them from the matchmaking server.");
+            Log.Info($"ConnectedClient[{lobby[0].ConnectionId}] has responded with the join code of {hostedLobbyId}. Telling all clients of their lobby, and disconnecting them from the matchmaking server.");
 
             foreach (var client in Lobbies[lobbyId].Where(client => !(Lobbies[lobbyId].IndexOf(client) is 0)))
             {

@@ -17,16 +17,16 @@ namespace CopperDevs.Matchmaking.Client.Internal
 
         internal void ClientReceivedMessageHandler(object sender, MessageReceivedEventArgs args)
         {
-            Log.Info($"Received message of id {args.MessageId}.");
+            Log.Network($"Received message of id {args.MessageId}.");
             
             switch (args.MessageId)
             {
                 case 2:
-                    Log.Info($"Received {nameof(NetworkingMessageIds.ServerRequestedClientToHost)} message.");
+                    Log.Success($"Received {nameof(NetworkingMessageIds.ServerRequestedClientToHost)} message.");
                     ServerRequestedClientToHostMessageHandler(args.Message);
                     break;
                 case 4:
-                    Log.Info($"Received {nameof(NetworkingMessageIds.ClientJoinCreatedLobby)} message.");
+                    Log.Success($"Received {nameof(NetworkingMessageIds.ClientJoinCreatedLobby)} message.");
                     ClientJoinCreatedLobbyMessageHandler(args.Message);
                     break;
                 default:
@@ -50,7 +50,7 @@ namespace CopperDevs.Matchmaking.Client.Internal
             for (var i = 0; i < clientCount; i++) 
                 clients.Add(receivedMessage.GetSerializable<MatchmakingClient>());
             
-            Log.Info($"Received new ServerRequestedClientToHost message. | LobbyId: {lobbyId} | Lobby Clients: <{clients.Aggregate("", (current, client) => current + $"(Client Id: {client.PlayerId} | Connection Id: {client.ConnectionId} | Rank: {client.Rank.DisplayName}[{client.Rank.Id}]), ")}>");
+            Log.Debug($"Received new ServerRequestedClientToHost message. | LobbyId: {lobbyId} | Lobby Clients: <{clients.Aggregate("", (current, client) => current + $"(Client Id: {client.PlayerId} | Connection Id: {client.ConnectionId} | Rank: {client.Rank.DisplayName}[{client.Rank.Id}]), ")}>");
         }
 
         private void ClientJoinCreatedLobbyMessageHandler(Message receivedMessage)
@@ -66,7 +66,7 @@ namespace CopperDevs.Matchmaking.Client.Internal
             for (var i = 0; i < clientCount; i++) 
                 clients.Add(receivedMessage.GetSerializable<MatchmakingClient>());
             
-            Log.Info($"Received new ClientJoinCreatedLobby message. | LobbyId: {lobbyId} | Lobby Clients: <{clients.Aggregate("", (current, client) => current + $"(Client Id: {client.PlayerId} | Connection Id: {client.ConnectionId} | Rank: {client.Rank.DisplayName}[{client.Rank.Id}]), ")}>");
+            Log.Debug($"Received new ClientJoinCreatedLobby message. | LobbyId: {lobbyId} | Lobby Clients: <{clients.Aggregate("", (current, client) => current + $"(Client Id: {client.PlayerId} | Connection Id: {client.ConnectionId} | Rank: {client.Rank.DisplayName}[{client.Rank.Id}]), ")}>");
             targetClient.Handler.JoinServer(lobbyId);
         }
     }

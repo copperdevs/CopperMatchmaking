@@ -117,19 +117,18 @@ namespace CopperDevs.Matchmaking.Server
                 return;
 
             Ranks.AddRange(targetRanks.ToList());
-            Log.Info(
-                $"Registering {targetRanks.Length} new ranks, bringing the total to {Ranks.Count}. | Ranks: {Ranks.Aggregate("", (current, rank) => current + $"{rank.DisplayName}[{rank.Id}], ")}");
+            Log.Info($"Registering {targetRanks.Length} new ranks, bringing the total to {Ranks.Count}. | Ranks: {Ranks.Aggregate("", (current, rank) => current + $"{rank.DisplayName}[{rank.Id}], ")}");
 
             QueueManager.RegisterRanks(Ranks);
         }
 
         internal void RegisterClient(MatchmakingClient client)
         {
-            Log.Info($"New Client Joined | Rank: {client.Rank.DisplayName} | ConnectionId: {client.ConnectionId}");
+            Log.Debug($"New Client Joined | Rank: {client.Rank.DisplayName} | ConnectionId: {client.ConnectionId}");
 
             if (!Handler.VerifyPlayer(client))
             {
-                Log.Info($"Couldn't verify client. Disconnecting");
+                Log.Warning($"Couldn't verify client. Disconnecting");
                 return;
             }
 

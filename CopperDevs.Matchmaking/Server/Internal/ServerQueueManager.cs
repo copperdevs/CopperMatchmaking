@@ -49,13 +49,13 @@ namespace CopperDevs.Matchmaking.Server.Internal
         internal void RegisterPlayer(MatchmakingClient client)
         {
             RankQueues[client.Rank].Add(client);
-            Log.Info($"Registered new client to {GetType().Name}");
+            Log.Debug($"Registered new client to {GetType().Name}");
         }
 
         // This function is used instead of the DisconnectClient below so it can be connected to riptide servers client disconnected callback
         internal void ClientDisconnected(object sender, ServerDisconnectedEventArgs args)
         {
-            Log.Info($"Client disconnected");
+            Log.Debug($"Client disconnected");
             DisconnectClient(args.Client);
         }
         
@@ -72,7 +72,7 @@ namespace CopperDevs.Matchmaking.Server.Internal
                     if (client.RiptideConnection != connection) 
                         continue;
                     
-                    Log.Info($"Removing client {connection.Id} due to being disconnected");
+                    Log.Debug($"Removing client {connection.Id} due to being disconnected");
                     RankQueues[(byte)i].RemoveAt(ii);
                 }
             }
